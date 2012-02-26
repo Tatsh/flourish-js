@@ -13,12 +13,13 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Document all parts of your code using JSDoc syntax.
   * Make sure only public methods and properties can appear in the documentation
   * Unlike PHP, if the method returns undefined (has no `return` statement or only `return;`), do not document the return value.
-  * Use no more than 80 characters per line.
-    * Use use 2 space indent on the next line (see example below).
+  * Use no more than 80 characters per line (code and comments in code may use more than 80 characters).
+    * Use 2 space indent on the next line (see example below).
 * Do not throw exceptions like in the original code; return null or a safe value and/or use `fCore.debug()`.
   * The return value must be documented properly: `@returns {string|null} Return value description.`.
 * Never allow the NaN value to be returned.
 * Dependencies that are non-complex (like functions from phpjs, or your own useful global functions) must go in `00-deps.js` and have a JSDoc block.
+  * License must be MIT compatible; no GPL-only or similar licensed code will be accepted
   * Code that requires large and/or complex depencies, such as jQuery, Prototype, etc will not be accepted.
 * Method names must be of the exact same name and type (static/prototype) in Flourish unless not possible to do so.
 * Please do not use `function nameOfFunction() {}` style anywhere in your code.
@@ -30,7 +31,7 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Do not access another object's private properties from other objects; use the getter method if one is provided.
   * If a getter method is not provided, copy the original method/property from the class until a decision is made to make a public getter method in the original class.
 * Test that every public method you have written works correctly when compiled with Closure Compiler with advanced optimisations: http://closure-compiler.appspot.com/home
-  * For testing, methods and variable does not have to retain their name; just make sure that your calling test code returns expected values.
+  * For testing, methods and variable does not have to retain their name. Just make sure that your calling test code returns expected values.
 * If making a new class (object):
   * Class must be listed at Flourish official documentation http://flourishlib.com/docs
   * No exception classes will be accepted.
@@ -64,7 +65,7 @@ Please read this entire file. To contribute, please follow these rules for new c
 
       var a = function () {
         // function body
-      }; // do not use function a() {} style
+      }; // Do not use function a() {} style
 
       // If a condition is to be made this way, the end bracket may be on the same line
       if (condition) {}
