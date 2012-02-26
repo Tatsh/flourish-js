@@ -6,6 +6,7 @@ var fJSON = function () {};
 /**
  * The last error that occurred during last encoding/decoding.
  * @type number
+ * @private
  */
 fJSON.lastError = 0;
 // /**
@@ -260,9 +261,9 @@ fJSON.decode = function (str_json) {
             return json.parse(str_json);
         } catch (err) {
             if (!(err instanceof SyntaxError)) {
-                throw new Error('Unexpected error type in native decoder');
+                fCore.debug('Unexpected error type in native JSON decoder');
             }
-            fJSON.lastError = 4; // usable by fJSON.getLastError()
+            fJSON.lastError = 4;
             return null;
         }
     }
@@ -336,7 +337,9 @@ fJSON.encode = function (mixed_val) {
             retVal = json.stringify(mixed_val); // Errors will not be caught here if our own equivalent to resource
             //  (an instance of PHPJS_Resource) is used
             if (retVal === undefined) {
-                throw new SyntaxError('json_encode');
+                //throw new SyntaxError('json_encode');
+                fCore.debug('Native JSON encoder returned undefined.');
+                retVal = null;
             }
             return retVal;
         }
@@ -446,7 +449,7 @@ fJSON.encode = function (mixed_val) {
             case 'function':
                 // Fall-through
             default:
-                throw new SyntaxError('json_encode');
+                fCore.debug('Cannot encode type %s', typeof value);
             }
         };
 
@@ -459,9 +462,9 @@ fJSON.encode = function (mixed_val) {
     } catch (err) { // Todo: ensure error handling above throws a SyntaxError in all cases where it could
         // (i.e., when the JSON global is not available and there is an error)
         if (!(err instanceof SyntaxError)) {
-            throw new Error('Unexpected error type in json_encode()');
+            fCore.debug('Unexpected error type in non-native JSON encoder. Returning null.');
         }
-        fJSON.lastError = 4; // usable by json_last_error()
-        return null;
+        fJSON.lastError = 4;
     }
+    return null;
 };
