@@ -181,11 +181,3 @@ fGrammar.inflectOnQuanity = function (number, singular, plural) {
   }
   return singular;
 };
-
-// For exporting with Closure
-// window['fGrammar'] = {
-//   'underscorize': fGrammar.underscorize,
-//   'humanize': fGrammar.humanize,
-//   'camelize': fGrammar.camelize,
-//   'inflectOnQuanity': fGrammar.inflectOnQuanity
-// };
