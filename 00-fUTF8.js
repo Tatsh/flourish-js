@@ -157,3 +157,26 @@ fUTF8.pad = function (input, pad_length, pad_string, pad_type) {
 
     return input;
 };
+/**
+ * Finds the first position (in characters) of the search value in the string.
+ * @param {string} haystack The string to search in.
+ * @param {string} needle The string to search for.
+ * @param {number} [offset=0] The character position to start searching from.
+ * @returns {boolean|number} The character position or false if the string is
+ *   not found.
+ */
+fUTF8.pos = function (haystack, needle, offset) {
+  offset === undefined && (offset = 0);
+  haystack = haystack.substr(offset);
+
+  if (!needle) {
+    return false;
+  }
+
+  var index = haystack.indexOf(needle);
+  if (index === -1) {
+    return false;
+  }
+
+  return index;
+};
