@@ -26,56 +26,7 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Use 2-space 'tabbing'. Do not use real tabs.
 * Always leave a new line at the end of the file.
 * Use UNIX newlines; other formats will not be accepted (such as Windows CRLF).
-* Brackets must be on same line as statement. Examples:
-
-    while (condition) {
-      condition = false;
-    }
-
-    for (var i = 0; i < something.length; i++) {
-      something[i] = something[i] + ' ';
-    }
-
-    // Only increasing i, so end bracket may be on the same line
-    for (var i = 0; i < something.length; i++) {}
-
-    var a = function () {
-      // function body
-    };
-
-    // If a condition is to be made this way, the end bracket may be on the same line
-    if (condition) {}
-    else {
-      doSomething();
-    }
-
-    if (condition) {
-      doSomething();
-    }
-    else if (condition2) {
-      doSomethingElse();
-    }
-    else {
-      doSomethingMore();
-    }
-
-    // These will not be accepted
-    if (condition)
-    {
-      doSomething();
-    } else {
-      doSomethingElse();
-    }
-
-    if (condition)
-    {
-      doSomething();
-    }
-    else
-    {
-      doSomethingElse();
-    }
-
+* Brackets must be on same line as statement (see example below).
 * Do not access another object's private properties from other objects; use the getter method if one is provided.
   * If a getter method is not provided, copy the original method/property from the class until a decision is made to make a public getter method in the original class.
 * Test that every public method you have written works correctly when compiled with Closure Compiler with advanced optimisations: http://closure-compiler.appspot.com/home
@@ -99,6 +50,55 @@ Please read this entire file. To contribute, please follow these rules for new c
      * @returns {string} Return value description.
      */
     var dependencyFunction = function (arg1) {
+      // Brackets!
+      while (condition) {
+        condition = false;
+      }
+
+      for (var i = 0; i < something.length; i++) {
+        something[i] = something[i] + ' ';
+      }
+
+      // Only increasing i, so end bracket may be on the same line
+      for (var i = 0; i < something.length; i++) {}
+
+      var a = function () {
+        // function body
+      }; // do not use function a() {} style
+
+      // If a condition is to be made this way, the end bracket may be on the same line
+      if (condition) {}
+      else {
+        doSomething();
+      }
+
+      if (condition) {
+        doSomething();
+      }
+      else if (condition2) {
+        doSomethingElse();
+      }
+      else {
+        doSomethingMore();
+      }
+
+      // These will not be accepted
+      if (condition)
+      {
+        doSomething();
+      } else {
+        doSomethingElse();
+      }
+
+      if (condition)
+      {
+        doSomething();
+      }
+      else
+      {
+        doSomethingElse();
+      }
+
       return 'something';
     };
 
