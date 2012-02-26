@@ -34,17 +34,6 @@ var fNumber = function (value, scale) {
   return this;
 };
 /**
- * Mini version of strpos().
- * @private
- * @param {string} str String to check.
- * @param {string} charToCheck Character to find.
- * @returns {boolean|number} Boolean false or the character's position.
- */
-fNumber.strpos = function (str, charToCheck) {
-  var index = str.indexOf(charToCheck);
-  return index !== -1 ? index : false;
-};
-/**
  * Strips the leading zeroes off a number.
  * @private
  * @param {number|string} number The number to strip.
@@ -111,15 +100,15 @@ fNumber.parse = function (number, element) {
 
   if (exponent) {
     if (exponentSign === '-') {
-      decimalPosition = fNumber.strpos(number, '.');
+      decimalPosition = fUTF8.pos(number, '.');
 
       if (decimalPosition === false) {
         fraction = '';
         integer = number;
       }
       else {
-        var fracSub = fNumber.strpos(number, '.');
-        var integerSub = parseInt(fNumber.strpos(number, '.'), 10);
+        var fracSub = fUTF8.pos(number, '.');
+        var integerSub = parseInt(fUTF8.pos(number, '.'), 10);
         if (!fracSub) {
           fracSub = 0;
         }
@@ -171,7 +160,7 @@ fNumber.prototype.trunc = function (scale) {
   var number = this._value;
 
   if (scale < 0) {
-    var end = parseInt(fNumber.strpos(number, '.'), 10);
+    var end = parseInt(fUTF8.pos(number, '.'), 10);
     if (isNaN(end)) {
       end = 0;
     }
