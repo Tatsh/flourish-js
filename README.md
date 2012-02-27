@@ -6,11 +6,11 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Functionality must be for use in a browser environment.
   * Another project will host a Flourish class set for use with server-side processors like node.
 * JSHint your code (`npm install jshint`) and fix most if not all code that gives warnings.
-  * Only these JSHint annotations are allowed to make exceptions for code:
-    * `expr`
-    * `sub`
-  * The only exception is fJSON which currently uses eval() to decode a JSON string (a non-eval version based on the PHP version is in the works, it is currently commented out); it is the file allowed to have the `evil` option
-* Code Cannot use large dependencies like jQuery, Prototype, etc.
+  * Only these JSHint annotations are allowed to make exceptions for code (will be expanded as the library grows):
+      * `expr`
+      * `sub`
+  * The only exception is fJSON which currently uses eval() to decode a JSON string (a non-eval version based on the PHP version is in the works, it is currently commented out); it is the only file allowed to have the `evil` option enabled
+* Code cannot use large dependencies like jQuery, Prototype, etc.
 * Code must work in IE7+, Firefox 3.6+, Chrome public version, Safari 5+
   * Fixes for other browsers such as Opera and Konqueror and older browsers will be accepted.
 * Document all parts of your code using JSDoc syntax.
@@ -26,7 +26,7 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Dependencies that are non-complex (like functions from phpjs, or your own useful global functions) must go in `00-deps.js` and have a JSDoc block.
   * License must be MIT compatible; no GPL-only or similar licensed code will be accepted
   * Code that requires large and/or complex depencies, such as jQuery, Prototype, etc will not be accepted.
-  * Code taken from other sources added to either `00-deps.js` or string functions for `fUTF8` are immune to these rules.
+  * Code taken from other sources added to either `00-deps.js` or string functions added to `fUTF8` are immune to these rules except for re-formatting the function naming style.
 * Method names must be of the exact same name and type (static/prototype) in Flourish unless not possible to do so.
 * Please do not use `function nameOfFunction() {}` style anywhere in your code.
 * All parameters and variables should use `camelCaseStyle` and not `underscore_style`.
