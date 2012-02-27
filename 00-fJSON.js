@@ -234,7 +234,7 @@ fJSON.lastError = 0;
  * Decodes JSON to JavaScript object. Based on phpjs' version. Sets
  *   fJSON.lastError.
  * @param {string} str_json JSON string.
- * @returns {Object|Array|number|boolean|string|null} A JavaScript object or null.
+ * @returns {*} A JavaScript object or null. Can also return undefined.
  */
 fJSON.decode = function (str_json) {
     // http://kevin.vanzonneveld.net
@@ -466,5 +466,5 @@ fJSON.encode = function (mixed_val) {
         }
         fJSON.lastError = 4;
     }
-    return null;
+    return '';
 };
