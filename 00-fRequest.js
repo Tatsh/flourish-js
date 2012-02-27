@@ -71,7 +71,7 @@ fRequest.get = function (name, castTo, defaultValue, useDefaultForBlank) {
 
   var ret = fRequest._cast(fRequest._REQUEST[name], castTo);
   if (isNaN(ret) && (castTo === 'number' || castTo === 'float')) {
-    ret = 0;
+    ret = null;
   }
 
   return ret;
