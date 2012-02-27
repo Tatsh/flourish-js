@@ -177,7 +177,7 @@ fGrammar.camelize = function (str, upper, delimiter) {
  */
 fGrammar.inflectOnQuanity = function (number, singular, plural) {
   if (number === 0 || number > 1) {
-    return plural.replace('%d', number);
+    return plural.replace('%d', String(number));
   }
   return singular;
 };
