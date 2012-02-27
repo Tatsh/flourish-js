@@ -9,7 +9,7 @@ fRequest._REQUEST = null;
  * @private
  * @param {string} value Value to cast.
  * @param {string} to Cast to type. One of 'number' or 'float'.
- * @returns {number|string}
+ * @returns {number|string|boolean}
  */
 fRequest._cast = function (value, to) {
   switch (to) {
