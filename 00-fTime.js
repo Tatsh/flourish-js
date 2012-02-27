@@ -37,7 +37,7 @@ fTime._breakPoints =  {
  * Parses the value. Uses phpjs port of PHP's strtotime() if the time value
  *   is a string.
  * @param {string|number} value Time value as string.
- * @return {number} Time stamp.
+ * @return {number|boolean} Time stamp or 0.
  * @see strtotime
  */
 fTime.parseValue = function (value) {
@@ -50,7 +50,7 @@ fTime.parseValue = function (value) {
     return value;
   }
 
-  return strtotime(String(value));
+  return strtotime(String(value)) || 0;
 };
 
 /**
