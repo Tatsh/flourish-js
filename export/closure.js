@@ -6,6 +6,12 @@
  * cat `find -iname '*.js' | grep -v export | sort | xargs` export/closure.js | closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%})()"
  */
 
+// fCryptography
+window['fCryptography'] = {
+  'random': fCryptography.random,
+  'randomString': fCryptography.randomString
+};
+
 // fGrammar
 window['fGrammar'] = {
   'underscorize': fGrammar.underscorize,
@@ -65,3 +71,4 @@ window['fTimestamp'] = fTimestamp; // not the constructor
 window['fTimestamp'].prototype = fTimestamp.prototype;
 window['fTimestamp'].prototype.constructor = fTimestamp; // __construct
 window['fTimestamp'].prototype['getFuzzyDifference'] = fTimestamp.prototype.getFuzzyDifference;
+
