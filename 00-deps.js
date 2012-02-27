@@ -1,3 +1,4 @@
+/*jshint expr:true */
 /**
  * Return a formatted string (phpjs version).
  * @param {string} fmt The format string is composed of zero or more

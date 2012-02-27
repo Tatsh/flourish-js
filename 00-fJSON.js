@@ -1,3 +1,4 @@
+/*jshint evil:true */ /* for now */
 /**
  * JSON encoding and decoding.
  * @constructor
@@ -447,7 +448,7 @@ fJSON.encode = function (mixed_val) {
             case 'undefined':
                 // Fall-through
             case 'function':
-                // Fall-through
+                /* falls through */
             default:
                 fCore.debug('Cannot encode type %s', typeof value);
             }

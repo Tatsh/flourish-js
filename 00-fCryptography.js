@@ -20,7 +20,7 @@ fCryptography.random = function (min, max) {
   }
 
   return Math.random();
-}
+};
 /**
  * Generates a random string.
  * @param {number} [length=32] The length you want the string to be.

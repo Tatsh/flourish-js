@@ -3,39 +3,47 @@
 Please read this entire file. To contribute, please follow these rules for new code:
 
 * Never extend a host object other than `window`.
-* Must be for use in a browser.
+* Functionality must be for use in a browser environment.
   * Another project will host a Flourish class set for use with server-side processors like node.
 * JSHint your code (`npm install jshint`) and fix most if not all code that gives warnings.
-  * Only this annotation is allowed at the top of the file: `/*jshint sub:true */`.
-* Cannot use large dependencies like jQuery, Prototype, etc.
+  * Only these JSHint annotations are allowed to make exceptions for code:
+    * `expr`
+    * `sub`
+  * The only exception is fJSON which currently uses eval() to decode a JSON string (a non-eval version based on the PHP version is in the works, it is currently commented out); it is the file allowed to have the `evil` option
+* Code Cannot use large dependencies like jQuery, Prototype, etc.
 * Code must work in IE7+, Firefox 3.6+, Chrome public version, Safari 5+
-  * Fixes for other browsers such as Opera and Konqueror will be accepted.
+  * Fixes for other browsers such as Opera and Konqueror and older browsers will be accepted.
 * Document all parts of your code using JSDoc syntax.
   * Make sure only public methods and properties can appear in the documentation
-  * Unlike PHP, if the method returns undefined (has no `return` statement or only `return;`), do not document the return value.
+  * Unlike PHP, if the method returns void (in the PHP documentation), do not document the return value.
   * Use no more than 80 characters per line (code and comments in code may use more than 80 characters).
     * Use 2 space indent on the next line (see example below).
 * Do not throw exceptions like in the original code; return null or a safe value and/or use `fCore.debug()`.
   * The return value must be documented properly: `@returns {string|null} Return value description.`.
-* Never allow the NaN value to be returned.
+* Never allow the NaN value to be returned. Instead, return null, 0, or false where appropriate.
+* Never allow 'undefined' to be printed or added to a string from an undefined variable.
+  * If `a` is supposed to be a string but was not passed and will be added to another string: `a === undefined && (a = '');`
 * Dependencies that are non-complex (like functions from phpjs, or your own useful global functions) must go in `00-deps.js` and have a JSDoc block.
   * License must be MIT compatible; no GPL-only or similar licensed code will be accepted
   * Code that requires large and/or complex depencies, such as jQuery, Prototype, etc will not be accepted.
+  * Code taken from other sources added to either `00-deps.js` or string functions for `fUTF8` are immune to these rules.
 * Method names must be of the exact same name and type (static/prototype) in Flourish unless not possible to do so.
 * Please do not use `function nameOfFunction() {}` style anywhere in your code.
 * All parameters and variables should use `camelCaseStyle` and not `underscore_style`.
-* Use 2-space 'tabbing'. Do not use real tabs.
+* Use 2-space 'tabbing': `  `. Do not use real tabs.
 * Always leave a new line at the end of the file.
 * Use UNIX newlines; other formats will not be accepted (such as Windows CRLF).
 * Brackets must be on same line as statement (see example below).
 * Do not access another object's private properties from other objects; use the getter method if one is provided.
   * If a getter method is not provided, copy the original method/property from the class until a decision is made to make a public getter method in the original class.
 * Test that every public method you have written works correctly when compiled with Closure Compiler with advanced optimisations: http://closure-compiler.appspot.com/home
-  * For testing, methods and variable does not have to retain their name. Just make sure that your calling test code returns expected values.
-* If making a new class (object):
+  * For testing, methods and variables do not have to retain their name. Just make sure that your calling test code returns expected values.
+  * Adding to the exports file is optional but would be appreciated.
+* If making a new file:
   * Class must be listed at Flourish official documentation http://flourishlib.com/docs
   * No exception classes will be accepted.
   * You do not have to implement every method. However, if a method calls another method even if it is private, it is expected that you will implement that method so the JavaScript code matches the PHP code as much as possible.
+    * If a method is called in another class, that other class must be at least partially implemented with that method at minimum.
   * If the class has a parent class, the new class must inherit from the parent class if the parent class would also be useful to have (a blank parent class is acceptable).
   * File name must follow the same format as currently being used; when listed with `ls -l` the new code must come after all dependencies.
     * If the class has no dependencies, the file name can use the `00-` prefix.
@@ -44,13 +52,19 @@ Please read this entire file. To contribute, please follow these rules for new c
 
 # Example
 
+    /*jshint expr:true */
     /**
      * A dependency function added to 00-deps.js. Please fix any function that
      *   uses 'function name() {}' style to 'var name = function () {}'.
      * @param {string|null} arg1 Argument description.
+     * @param {string} [arg2] Not required argument.
      * @returns {string} Return value description.
      */
-    var dependencyFunction = function (arg1) {
+    var dependencyFunction = function (arg1, arg2) {
+      // Set the not required argument's value
+      // Note that the () for the second part make a difference
+      arg2 === undefined && (arg2 = '');
+
       // Brackets!
       while (condition) {
         condition = false;
@@ -99,6 +113,11 @@ Please read this entire file. To contribute, please follow these rules for new c
       {
         doSomethingElse();
       }
+
+      // String recommendations
+      // - Please default to using single quotes
+      // - Use 1 space between the concatenation operator (+)
+      var a = ' ' + 'my' + 'string' + ' ';
 
       return 'something';
     };
