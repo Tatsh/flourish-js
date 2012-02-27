@@ -7,21 +7,21 @@
 var fCryptography = function () {};
 /**
  * Generates a random number.
- * @param {number} min The minimum number to generate.
- * @param {number} max The maximum number to generate.
+ * @param {number} [min=0] The minimum number to generate.
+ * @param {number} [max=1] The maximum number to generate.
  * @returns {number} A random number.
  */
 fCryptography.random = function (min, max) {
   min = parseInt(min, 10);
   max = parseInt(max, 10);
-  
+
   if(!isNaN(min) && !isNaN(max)) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
-  
+
   return Math.random();
 }
-/** 
+/**
  * Generates a random string.
  * @param {number} [length=32] The length you want the string to be.
  * @param {string} [type='base64'] The alphabet of string you want generated.
@@ -31,10 +31,10 @@ fCryptography.random = function (min, max) {
 */
 fCryptography.randomString = function (length, type) {
   length === undefined && (length = 32);
-  
+
   var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/';
   var output = '';
-  
+
   if (type === 'alphanumeric') {
     alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   }
@@ -53,10 +53,10 @@ fCryptography.randomString = function (length, type) {
   else if (type === 'numeric') {
     alphabet = '0123456789';
   }
-  
+
   for (var i = 0, alphaLen = alphabet.length; i < length; i++) {
     output += alphabet.charAt(fCryptography.random(0, alphaLen));
   }
-  
+
   return output;
 };
