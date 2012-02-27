@@ -35,23 +35,25 @@ fCryptography.randomString = function (length, type) {
   var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/';
   var output = '';
 
-  if (type === 'alphanumeric') {
-    alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  }
-  else if (type === 'base56') {
-    alphabet = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  }
-  else if (type === 'alpha') {
-    alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  }
-  else if (type === 'base36') {
-    alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  }
-  else if (type === 'hexadecimal') {
-    alphabet = 'abcdef0123456789';
-  }
-  else if (type === 'numeric') {
-    alphabet = '0123456789';
+  if (type !== undefined) {
+    if (type === 'alphanumeric') {
+      alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    }
+    else if (type === 'base56') {
+      alphabet = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    }
+    else if (type === 'alpha') {
+      alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    }
+    else if (type === 'base36') {
+      alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    }
+    else if (type === 'hexadecimal') {
+      alphabet = 'abcdef0123456789';
+    }
+    else if (type === 'numeric') {
+      alphabet = '0123456789';
+    }
   }
 
   for (var i = 0, alphaLen = alphabet.length; i < length; i++) {
