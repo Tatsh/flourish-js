@@ -25,7 +25,7 @@ fTimestamp._breakPoints[2147483647] = [31536000, 'year', 'years'];
 fTimestamp.prototype = new fTime(0);
 /**
  * @private
- * @type function()
+ * @type function (new:fTimestamp, string): (fTimestamp|null)
  */
 fTimestamp.prototype.constructor = fTimestamp;
 /**
