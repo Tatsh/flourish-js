@@ -73,6 +73,6 @@ window['fNumber'].prototype['toFloat'] = fNumber.prototype.toFloat; // special
 
 // fTimestamp
 window['fTimestamp'] = fTimestamp; // not the constructor
-window['fTimestamp'].prototype = new fTime(0);
+window['fTimestamp'].prototype = fTimestamp.prototype;
 window['fTimestamp'].prototype.constructor = fTimestamp; // __construct
 window['fTimestamp'].prototype['getFuzzyDifference'] = fTimestamp.prototype.getFuzzyDifference;
