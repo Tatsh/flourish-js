@@ -3,7 +3,7 @@
  *   Static classes should be plain objects. See fGrammar below.
  *
  * To compile from the root directory:
- * cat `find -iname '*.js' | grep -v export | sort | xargs` export/closure.js | closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%})()"
+ * cat `find -iname '*.js' | grep -v export | sort | xargs` export/closure.js | closure-compiler --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%})()" --warning_level VERBOSE
  */
 
 // fCryptography
@@ -33,6 +33,16 @@ window['fJSON'] = {
 // fRequest
 window['fRequest'] = {
   'get': fRequest.get
+};
+
+// fSession
+window['fSession'] = {
+  'add': fSession.add,
+  'clear': fSession.clear,
+  'deleteKey': fSession.deleteKey,
+  'destroy': fSession.destroy,
+  'get': fSession.get,
+  'set': fSession.set
 };
 
 // fTime
