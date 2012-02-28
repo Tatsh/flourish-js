@@ -388,7 +388,7 @@ var strtotime = function (str, now) {
  * Gets the keys from an object.
  * @param {Object} obj The object to get keys from.
  * @param {boolean} [sort=false] Set to <em>true</em> to sort the keys.
- * @returns {string[]} Array of strings.
+ * @returns {Array} Array of strings.
  */
 var objectKeys = function (obj, sort) {
   sort === undefined && (sort = false);

@@ -314,7 +314,7 @@ fJSON.decode = function (str_json) {
 /**
  * Encode a JavaScript object to a JSON string. Based on phpjs' version.
  * @param {*} mixed_val Value to encode.
- * @returns {string} JSON string.
+ * @returns {string|null} JSON string or null.
  */
 fJSON.encode = function (mixed_val) {
     // http://kevin.vanzonneveld.net

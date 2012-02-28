@@ -120,8 +120,13 @@ fGrammar.camelize = function (str, upper, delimiter) {
     return fGrammar._camelizeCache.lower[str];
   }
 
-  delimiter === undefined && (delimiter = '_');
   upper === undefined && (upper = false);
+
+  // This is the only way the compiler can see we are not going to pass
+  //   undefined to the String.prototype.replace() method.
+  if (delimiter === undefined) {
+    delimiter = '_';
+  }
 
   var original = str;
 

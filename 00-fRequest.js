@@ -49,20 +49,25 @@ fRequest._initialize = function () {
  * @param {string} name The key to get the value of.
  * @param {string} [castTo=null] Cast the value to this data type. One of:
  *   'number', 'float', 'bool', 'boolean'.
- * @param {string|number} [defaultValue=null] The default value to return if
- *   the key does not exist.
+ * @param {string|number|null} [defaultValue=null] The default value to return
+ *   if the key does not exist.
  * @param {boolean} [useDefaultForBlank=false] If the request value is a blank
  *   string and <code>defaultValue</code> is specified,
  *   <code>defaultValue</code> will be returned.
- * @returns {string|null|number} The value or null if the value does not exist
- *   and <code>defaultValue</code> is not specified.
+ * @returns {string|null|number|boolean} The value or null if the value does
+ *   not exist and <code>defaultValue</code> is not specified.
  */
 fRequest.get = function (name, castTo, defaultValue, useDefaultForBlank) {
   fRequest._initialize();
 
-  castTo === undefined && (castTo = 'string');
-  defaultValue === undefined && (defaultValue = null);
   useDefaultForBlank === undefined && (useDefaultForBlank = false);
+
+  if (defaultValue === undefined) {
+    defaultValue = null;
+  }
+  if (castTo === undefined) {
+    castTo = 'string';
+  }
 
   if (!fURL.getQueryString() || fRequest._REQUEST[name] === undefined ||
     (fRequest._REQUEST[name] === '' && useDefaultForBlank)) {

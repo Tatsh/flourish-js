@@ -37,20 +37,29 @@ fTime._breakPoints =  {
  * Parses the value. Uses phpjs port of PHP's strtotime() if the time value
  *   is a string.
  * @param {string|number} value Time value as string.
- * @return {number|boolean} Time stamp or 0.
+ * @return {number} Time stamp or 0.
  * @see strtotime
  */
 fTime.parseValue = function (value) {
   value = parseInt(value, 10);
+  var isnan = isNaN(value);
 
-  if (!isNaN(value)) {
+  if (!isnan) {
     if (value > 9999999999) { // Handle if the time is in ms
       value /= 1000;
     }
     return value;
   }
+  else if (isnan) {
+    return 0;
+  }
 
-  return strtotime(String(value)) || 0;
+  var ret = strtotime(String(value));
+  if (ret === false) {
+    ret = 0;
+  }
+
+  return ret;
 };
 
 /**

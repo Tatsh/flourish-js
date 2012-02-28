@@ -166,7 +166,10 @@ fUTF8.pad = function (input, pad_length, pad_string, pad_type) {
  *   not found.
  */
 fUTF8.pos = function (haystack, needle, offset) {
-  offset === undefined && (offset = 0);
+  if (offset === undefined) {
+    offset = 0;
+  }
+
   haystack = haystack.substr(offset);
 
   if (!needle) {
