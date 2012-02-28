@@ -26,6 +26,10 @@ fSession.store = window.sessionStorage;
  * @param {boolean} beginning If the value should be added to the beginning.
  */
 fSession.add = function (key, value, beginning) {
+  if (!fSession.isSupported) {
+    return;
+  }
+
   beginning === undefined && (beginning = false);
 
   var item = fSession.store.getItem(key);
@@ -45,6 +49,10 @@ fSession.add = function (key, value, beginning) {
  * @param {string|null} [prefix=null] Prefix to clear all session values for.
  */
 fSession.clear = function (prefix) {
+  if (!fSession.isSupported) {
+    return;
+  }
+
   prefix === undefined && (prefix = null);
 
   if (!prefix) {
@@ -71,6 +79,10 @@ fSession.deleteKey = function (key, defaultValue) {
     defaultValue = null;
   }
 
+  if (!fSession.isSupported) {
+    return defaultValue;
+  }
+
   var returnValue = String(fSession.store.getItem(key));
 
   if (returnValue === 'null') {
@@ -85,6 +97,9 @@ fSession.deleteKey = function (key, defaultValue) {
  * Deletes all values in the session storage.
  */
 fSession.destroy = function () {
+  if (!fSession.isSupported) {
+    return;
+  }
   fSession.store.clear();
 };
 /**
@@ -97,6 +112,10 @@ fSession.destroy = function () {
 fSession.get = function (key, defaultValue) {
   if (defaultValue === undefined) {
     defaultValue = null;
+  }
+
+  if (!fSession.isSupported) {
+    return defaultValue;
   }
 
   var item = String(fSession.store.getItem(key));
@@ -113,6 +132,10 @@ fSession.get = function (key, defaultValue) {
  * @param {string|boolean|number} value Value to set.
  */
 fSession.set = function (key, value) {
+  if (!fSession.isSupported) {
+    return;
+  }
+
   value === undefined && (value = '');
   return fSession.store.setItem(key, String(value));
 };
