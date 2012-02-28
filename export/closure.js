@@ -63,7 +63,8 @@ window['fUTF8'] = {
   'trim': fUTF8.trim,
   'ltrim': fUTF8.ltrim,
   'pad': fUTF8.pad,
-  'pos': fUTF8.pos
+  'pos': fUTF8.pos,
+  'rtrim': fUTF8.rtrim
 };
 
 // fCore
