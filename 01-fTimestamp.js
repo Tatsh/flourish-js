@@ -30,7 +30,7 @@ fTimestamp.prototype = new fTime(0);
 fTimestamp.prototype.constructor = fTimestamp;
 /**
  * Access to the parent class.
- * @type fTime
+ * @type fTime.prototype
  */
 fTimestamp.prototype.parent = fTime.prototype;
 /**

@@ -8,7 +8,11 @@
  */
 var fNumber = function (value, scale) {
   scale === undefined && (scale = null);
-  typeof value !== 'string' && (value = String(value));
+
+  if (typeof value !== 'string') {
+    value = String(value);
+  }
+
   value = fNumber.parse(value, 'array');
 
   if (scale !== null) {
