@@ -6,7 +6,14 @@
  * @return {fTimestamp} The timestamp object.
  */
 function fTimestamp(value) {
-  this.parent.constructor.call(this, value);
+  // TODO Fix this
+  // This class is to be independent of fTime and fDate
+  // Needs to be more like the original constructor in PHP
+  /**
+   * @type {number}
+   * @private
+   */
+  this.value = fTime.parseValue(value);
   return this;
 }
 /**
@@ -14,30 +21,46 @@ function fTimestamp(value) {
  * @type Object
  * @private
  */
-fTimestamp._breakPoints = fTime._breakPoints;
-fTimestamp._breakPoints[1814400] = [604800, 'week', 'weeks'];
-fTimestamp._breakPoints[23328000] = [2592000, 'month', 'months'];
-fTimestamp._breakPoints[2147483647] = [31536000, 'year', 'years'];
-/**
- * @private
- * @type fTime
- */
-fTimestamp.prototype = new fTime(0);
-/**
- * @private
- * @type function (new:fTimestamp, string): (fTimestamp|null)
- */
-fTimestamp.prototype.constructor = fTimestamp;
-/**
- * Access to the parent class.
- * @type fTime.prototype
- */
-fTimestamp.prototype.parent = fTime.prototype;
+fTimestamp._breakPoints =  {
+  45:         [1, 'second', 'seconds'],
+  2700:       [60, 'minute', 'minutes'],
+  64800:      [3600, 'hour', 'hours'],
+  432000:     [86400, 'day', 'days'],
+  1814400:    [604800, 'week', 'weeks'],
+  23328000:   [2592000, 'month', 'months'],
+  2147483647: [31536000, 'year', 'years']
+};
 /**
  * Unlike Flourish, this only compares against 'now'. Same as
  *   fTime.getFuzzyDifference() but with a few larger intervals.
  * @return {string} The fuzzy time in English.
  */
 fTimestamp.prototype.getFuzzyDifference = function () {
-  return this._getFuzzyDifferenceCommon(fTimestamp._breakPoints);
+  return (function (breakPoints, value) {
+    var now = parseInt((new Date()).getTime() / 1000, 10);
+    var diff = now - value;
+    var unitDiff = 0, units = 'seconds';
+
+    if (Math.abs(diff) < 10) {
+      return 'right now';
+    }
+
+    for (var point in breakPoints) {
+      if (breakPoints.hasOwnProperty(point)) {
+        if (Math.abs(diff) > point) {
+          continue;
+        }
+
+        unitDiff = Math.round(Math.abs(diff) / breakPoints[point][0]);
+        units = fGrammar.inflectOnQuanity(unitDiff, breakPoints[point][1], breakPoints[point][2]);
+        break;
+      }
+    }
+
+    if (diff < 0) {
+      return unitDiff + ' ' + units + ' from now';
+    }
+
+    return unitDiff + ' ' + units + ' ago';
+  })(fTimestamp._breakPoints, this.value);
 };
