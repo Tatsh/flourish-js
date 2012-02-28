@@ -1,3 +1,7 @@
+/**
+ * Provides request-related methods.
+ * @constructor
+ */
 var fRequest = function () {};
 /**
  * @type Object|null
