@@ -36,6 +36,7 @@ Please read this entire file. To contribute, please follow these rules for new c
 * Brackets must be on same line as statement (see example below).
 * Do not access another object's private properties from other objects; use the getter method if one is provided.
   * If a getter method is not provided, copy the original method/property from the class until a decision is made to make a public getter method in the original class.
+  * The exception to this rule is methods within Flourish that are public in the code and marked @internal in the documentation.
 * Test that every public method you have written works correctly when compiled with Closure Compiler with advanced optimisations: http://closure-compiler.appspot.com/home
   * For testing, methods and variables do not have to retain their name. Just make sure that your calling test code returns expected values.
   * Adding to the exports file is optional but would be appreciated.
