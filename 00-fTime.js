@@ -54,8 +54,8 @@ fTime.parseValue = function (value) {
     return 0;
   }
 
-  var ret = strtotime(String(value));
-  if (ret === false) {
+  var ret = parseInt(strtotime(String(value)), 10);
+  if (isNaN(ret)) {
     ret = 0;
   }
 

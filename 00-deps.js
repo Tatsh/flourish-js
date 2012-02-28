@@ -48,6 +48,7 @@ var sprintf = function (fmt, args) {
      * @param {number} minWidth
      * @param {boolean} zeroPad
      * @param {string} [customPadChar]
+     * @returns {string}
      * @private
      */
     var justify = function (value, prefix, leftJustify, minWidth, zeroPad, customPadChar) {
@@ -76,6 +77,15 @@ var sprintf = function (fmt, args) {
     };
 
     // formatString()
+    /**
+     * @param {string} value
+     * @param {boolean} leftJustify
+     * @param {number} minWidth
+     * @param {number|undefined} precision
+     * @param {boolean} zeroPad
+     * @param {string} [customPadChar]
+     * @returns {string}
+     */
     var formatString = function (value, leftJustify, minWidth, precision, zeroPad, customPadChar) {
         if (precision !== null) {
             value = value.slice(0, precision);

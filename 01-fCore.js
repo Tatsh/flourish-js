@@ -47,8 +47,8 @@ fCore.checkOS = function (args) {
   *   directives: ordinary characters (excluding %) that are copied directly to
   *   the result, and conversion specifications, each of which results in
   *   fetching its own parameter.
-  * @param [args] Variable number of arguments specified according to the format
-  *   string.
+  * @param {string|number} [args] Variable number of arguments specified
+  *   according to the format string.
   * @returns {Object} The object to allow method chaining.
   */
 fCore.debug = function (fmt, args) {

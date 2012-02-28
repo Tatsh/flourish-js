@@ -126,7 +126,9 @@ fUTF8.pad = function (input, pad_length, pad_string, pad_type) {
 
     /**
      * @private
-     * @type function()
+     * @param {string} s
+     * @param {number} len
+     * @returns {string}
      */
     var str_pad_repeater = function (s, len) {
         var collect = '',
