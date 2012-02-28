@@ -22,6 +22,10 @@ var fUTF8 = function () {};
  * @returns {string} The trimmed string.
  */
 fUTF8.trim = function (str, charlist) {
+    if (str.trim && charlist === undefined) {
+      return str.trim();
+    }
+
     // http://kevin.vanzonneveld.net
     // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +   improved by: mdsjack (http://www.mdsjack.bo.it)
@@ -69,7 +73,6 @@ fUTF8.trim = function (str, charlist) {
 
     return whitespace.indexOf(str.charAt(0)) === -1 ? str : '';
 };
-
 /**
  * Strip whitespace (or other characters) from the beginning of a string.
  * Without the second parameter, ltrim() will strip these characters:
@@ -182,4 +185,35 @@ fUTF8.pos = function (haystack, needle, offset) {
   }
 
   return index;
+};
+/**
+ * Strip whitespace (or other characters) from the end of a string.
+ * Without the second parameter, ltrim() will strip these characters:
+ * <ul>
+ * <li>" " (ASCII 32 (0x20)), an ordinary space.</li>
+ * <li>"\t" (ASCII 9 (0x09)), a tab.</li>
+ * <li>"\n" (ASCII 10 (0x0A)), a new line (line feed).</li>
+ * <li>"\r" (ASCII 13 (0x0D)), a carriage return.</li>
+ * <li>"\0" (ASCII 0 (0x00)), the NUL-byte.</li>
+ * <li>"\x0B" (ASCII 11 (0x0B)), a vertical tab.</li>
+ * </ul>
+ * @param {string} str The input string.
+ * @param {string} [charlist=null] Optionally, the stripped characters can also be
+ *   specified using the charlist parameter. Simply list all characters that
+ *   you want to be stripped in a string.
+ * @returns {string} The trimmed string.
+ */
+fUTF8.rtrim = function (str, charlist) {
+  // http://kevin.vanzonneveld.net
+  // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +      input by: Erkekjetter
+  // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+  // +   bugfixed by: Onno Marsman
+  // +   input by: rem
+  // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+  // *     example 1: rtrim('    Kevin van Zonneveld    ');
+  // *     returns 1: '    Kevin van Zonneveld'
+  charlist = !charlist ? ' \\s\u00A0' : (charlist + '').replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\\$1');
+  var re = new RegExp('[' + charlist + ']+$', 'g');
+  return (str + '').replace(re, '');
 };
