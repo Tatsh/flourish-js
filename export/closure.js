@@ -77,6 +77,17 @@ window['fCore'] = {
   'getDebug': fCore.getDebug
 };
 
+// fDate
+window['fDate'] = fDate;
+window['fDate'].prototype['adjust'] = fDate.prototype.adjust;
+window['fDate'].prototype['eq'] = fDate.prototype.eq;
+window['fDate'].prototype['getFuzzyDifference'] = fDate.prototype.getFuzzyDifference;
+window['fDate'].prototype['gt'] = fDate.prototype.gt;
+window['fDate'].prototype['gte'] = fDate.prototype.gte;
+window['fDate'].prototype['lt'] = fDate.prototype.lt;
+window['fDate'].prototype['lte'] = fDate.prototype.lte;
+window['fDate'].prototype['toString'] = fDate.prototype.toString;
+
 // fNumber
 window['fNumber'] = fNumber; // __construct
 window['fNumber']['pi'] = fNumber.pi;
@@ -99,7 +110,6 @@ window['fNumber'].prototype['toInteger'] = fNumber.prototype.toInteger; // speci
 window['fNumber'].prototype['toFloat'] = fNumber.prototype.toFloat; // special
 
 // fTimestamp
-window['fTimestamp'] = fTimestamp; // not the constructor
+window['fTimestamp'] = fTimestamp;
 window['fTimestamp'].prototype = fTimestamp.prototype;
-window['fTimestamp'].prototype.constructor = fTimestamp; // __construct
 window['fTimestamp'].prototype['getFuzzyDifference'] = fTimestamp.prototype.getFuzzyDifference;
