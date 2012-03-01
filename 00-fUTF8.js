@@ -219,3 +219,41 @@ fUTF8.rtrim = function (str, charlist) {
   var re = new RegExp('[' + charlist + ']+$', 'g');
   return (str + '').replace(re, '');
 };
+/**
+ * Compares strings using a natural order algorithm.<br>
+ * License: LGPL
+ * @param {string} a The first string.
+ * @param {string} b The second string.
+ * @returns {number} Less than 0 if f_string1 is less than f_string2, greater
+ *   than 0 if f_string1 is f_string2, and 0 if they are equal.
+ * @see http://www.davekoelle.com/files/alphanum.js
+ */
+fUTF8.natcmp = function (a, b) {
+  function chunkify(t) {
+    var tz = [], x = 0, y = -1, n = 0, i, j;
+
+    while ((i = (j = t.charAt(x++)).charCodeAt(0))) {
+      var m = (i == 46 || (i >=48 && i <= 57));
+      if (m !== n) {
+        tz[++y] = "";
+        n = m;
+      }
+      tz[y] += j;
+    }
+    return tz;
+  }
+
+  var aa = chunkify(a);
+  var bb = chunkify(b);
+
+  for (var x = 0; aa[x] && bb[x]; x++) {
+    if (aa[x] !== bb[x]) {
+      var c = Number(aa[x]), d = Number(bb[x]);
+      if (c == aa[x] && d == bb[x]) {
+        return c - d;
+      } else return (aa[x] > bb[x]) ? 1 : -1;
+    }
+  }
+
+  return aa.length - bb.length;
+};
