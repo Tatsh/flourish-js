@@ -32,31 +32,34 @@ fCryptography.random = function (min, max) {
 fCryptography.randomString = function (length, type) {
   length === undefined && (length = 32);
 
-  var alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/';
+  var digits = '0123456789';
+  var abcdef = 'abcdef';
+  var upperAlpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var alphabet = upperAlpha.toLowerCase() + upperAlpha + digits + '+/';
   var output = '';
 
   if (type !== undefined) {
     if (type === 'alphanumeric') {
-      alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      alphabet = upperAlpha.toLowerCase() + upperAlpha + digits;
     }
     else if (type === 'base56') {
-      alphabet = 'abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      alphabet = upperAlpha.toLowerCase() + upperAlpha + digits.substr(2);
     }
     else if (type === 'alpha') {
-      alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      alphabet = upperAlpha.toLowerCase() + upperAlpha;
     }
     else if (type === 'base36') {
-      alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      alphabet = upperAlpha + digits;
     }
     else if (type === 'hexadecimal') {
-      alphabet = 'abcdef0123456789';
+      alphabet = abcdef + digits;
     }
     else if (type === 'numeric') {
-      alphabet = '0123456789';
+      alphabet = digits;
     }
   }
 
-  for (var i = 0, alphaLen = alphabet.length; i < length; i++) {
+  for (var i = 0, alphaLen = alphabet.length - 1; i < length; i++) {
     output += alphabet.charAt(fCryptography.random(0, alphaLen));
   }
 
