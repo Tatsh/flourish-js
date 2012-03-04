@@ -1,7 +1,7 @@
 /**
  * Provides date support functions.
  * Copyright (c) 2012 StonerAries.
- * Copyright (c) 2012 Andrew Udvare.
+ * Copyright (c) 2012 Andrew Udvare @tatsh
  * License: http://www.opensource.org/licenses/mit-license.php
  * @constructor
  */
@@ -35,7 +35,7 @@ var fDate = function (date) {
     // TODO
     //date = fTimestamp.callUnformatCallback(date);
     //date = fTimestamp.fixISOWeek(date);
-    timestamp = strtotime(date);
+    timestamp = parseInt(strtotime(date), 10);
   }
 
   if (timestamp === false) {
