@@ -194,92 +194,93 @@ fNumber.parse = function (number, element) {
   // Falls through for element 'number'
   return parts.join('.');
 };
-/**
- * Converts any positive integer between any two bases ranging from 2 to 16.
- * @param {fNumber|string|number} number The positive integer to convert.
- * @param {number} fromBase The base to convert from; must be between 2 and 16.
- * @param {number} toBase The base to convert to; must be between 2 and 16.
- * @returns {string} The number converted to the new base. If an error occurs,
- *   the original number will be returned.
- */
-fNumber.baseConvert = function (number, fromBase, toBase) {
-  if (typeof number === 'object' && fromBase != 10) {
-    fCore.debug('The from base specified, %d, is not valid for an fNumber object.', fromBase);
-    return String(number);
-  }
-  else {
-    number = String(number);
-  }
-
-  if (number.length && number.charAt(0) === '+') {
-    number = number.substr(1);
-  }
-
-  if (!number.match(/^[A-Fa-f\d]+$/g)) {
-    fCore.debug('The number specified does not appear to be a positive integer.');
-    return number;
-  }
-
-  if (isNaN(parseInt(number, fromBase)) || fromBase < 2 || fromBase > 16) {
-    fCore.debug('The from base specified, %d, is not between 2 and 16.', fromBase);
-    return number;
-  }
-
-  if (isNaN(parseInt(number, fromBase)) || toBase < 2 || toBase > 16) {
-    fCore.debug('The to base specified, %d, is not between 2 and 16.', fromBase);
-    return number;
-  }
-
-  var baseString = '0123456789ABCDEF';
-  var baseMap = {
-    'A': 10,
-    'B': 11,
-    'C': 12,
-    'D': 13,
-    'E': 14,
-    'F': 15
-  };
-  var decimal, output = '';
-
-  // Convert input number to base 10
-  if (fromBase !== 10) {
-    var baseNum = new fNumber(fromBase);
-    var charS, value;
-
-    decimal = new fNumber('0');
-
-    for (var i = 0; i < number.length; i++) {
-      charS = number.charAt(i).toUpperCase();
-      value = new fNumber(baseMap[charS] !== undefined ? baseMap[charS] : charS);
-      decimal = decimal.add(value.mul(baseNum.pow(number.length-(i+1))).round(0));
-    }
-  }
-  else if (typeof number !== 'object') {
-    decimal = new fNumber(number);
-  }
-  else {
-    decimal = number;
-  }
-
-  if (toBase != 10) {
-    var frac, x;
-
-    do {
-      frac = decimal.div(toBase, 3).toString();
-      frac = '0' + frac.substr(frac.indexOf('.'));
-      x = +(frac * toBase + 1.5);
-
-      output = baseString[x-1] + output;
-
-      decimal = decimal.div(toBase, 0);
-    } while (decimal.gt('0.0'));
-  }
-  else {
-    output = decimal.toString();
-  }
-
-  return output;
-};
+// TODO Fix
+// /**
+//  * Converts any positive integer between any two bases ranging from 2 to 16.
+//  * @param {fNumber|string|number} number The positive integer to convert.
+//  * @param {number} fromBase The base to convert from; must be between 2 and 16.
+//  * @param {number} toBase The base to convert to; must be between 2 and 16.
+//  * @returns {string} The number converted to the new base. If an error occurs,
+//  *   the original number will be returned.
+//  */
+// fNumber.baseConvert = function (number, fromBase, toBase) {
+//   if (typeof number === 'object' && fromBase != 10) {
+//     fCore.debug('The from base specified, %d, is not valid for an fNumber object.', fromBase);
+//     return String(number);
+//   }
+//   else {
+//     number = String(number);
+//   }
+//
+//   if (number.length && number.charAt(0) === '+') {
+//     number = number.substr(1);
+//   }
+//
+//   if (!number.match(/^[A-Fa-f\d]+$/g)) {
+//     fCore.debug('The number specified does not appear to be a positive integer.');
+//     return number;
+//   }
+//
+//   if (isNaN(parseInt(number, fromBase)) || fromBase < 2 || fromBase > 16) {
+//     fCore.debug('The from base specified, %d, is not between 2 and 16.', fromBase);
+//     return number;
+//   }
+//
+//   if (isNaN(parseInt(number, fromBase)) || toBase < 2 || toBase > 16) {
+//     fCore.debug('The to base specified, %d, is not between 2 and 16.', fromBase);
+//     return number;
+//   }
+//
+//   var baseString = '0123456789ABCDEF';
+//   var baseMap = {
+//     'A': 10,
+//     'B': 11,
+//     'C': 12,
+//     'D': 13,
+//     'E': 14,
+//     'F': 15
+//   };
+//   var decimal, output = '';
+//
+//   // Convert input number to base 10
+//   if (fromBase !== 10) {
+//     var baseNum = new fNumber(fromBase);
+//     var charS, value;
+//
+//     decimal = new fNumber('0');
+//
+//     for (var i = 0; i < number.length; i++) {
+//       charS = number.charAt(i).toUpperCase();
+//       value = new fNumber(baseMap[charS] !== undefined ? baseMap[charS] : charS);
+//       decimal = decimal.add(value.mul(baseNum.pow(number.length-(i+1))).round(0));
+//     }
+//   }
+//   else if (typeof number !== 'object') {
+//     decimal = new fNumber(number);
+//   }
+//   else {
+//     decimal = number;
+//   }
+//
+//   if (toBase != 10) {
+//     var frac, x;
+//
+//     do {
+//       frac = decimal.div(toBase, 3).toString();
+//       frac = '0' + frac.substr(frac.indexOf('.'));
+//       x = +(frac * toBase + 1.5);
+//
+//       output = baseString[x-1] + output;
+//
+//       decimal = decimal.div(toBase, 0);
+//     } while (decimal.gt('0.0'));
+//   }
+//   else {
+//     output = decimal.toString();
+//   }
+//
+//   return output;
+// };
 /**
  * Pi decimal points. Would like to have this calculated instead if possible
  *   so it can be packed better by the compiler.
@@ -321,27 +322,27 @@ fNumber.prototype.abs = function (scale) {
  * @returns {Array} The two normalised numbers as string.
  */
 fNumber._normalize = function (number1, number2, scale) {
-  number1 = fNumber.parse(number1.toString(), 'array');
-  number2 = fNumber.parse(number2.toString(), 'array');
+  var objNumber1 = fNumber.parse(number1.toString(), 'array');
+  var objNumber2 = fNumber.parse(number2.toString(), 'array');
 
-  if (scale !== undefined || number1['fraction'] || number2['fraction']) {
+  if (scale !== undefined || objNumber1['fraction'] || objNumber2['fraction']) {
     var fracLen = scale !== undefined ? scale : 0;
 
     if (scale === undefined) {
-      fracLen = Math.max(number1['fraction'].length, number2['fraction'].length);
+      fracLen = Math.max(objNumber1['fraction'].length, objNumber2['fraction'].length);
     }
 
-    if (scale !== undefined && number1['fraction'].length > scale) {
-      number1['fraction'] = number1['fraction'].substr(0, scale);
+    if (scale !== undefined && objNumber1['fraction'].length > scale) {
+      objNumber1['fraction'] = objNumber1['fraction'].substr(0, scale);
     }
     else {
-      number1['fraction'] = fUTF8.pad(number1['fraction'], fracLen, '0', 'right');
+      objNumber1['fraction'] = fUTF8.pad(objNumber1['fraction'], fracLen, '0', 'right');
     }
-    if (scale !== undefined && number2['fraction'].length > scale) {
-      number2['fraction'] = number2['fraction'].substr(0, scale);
+    if (scale !== undefined && objNumber2['fraction'].length > scale) {
+      objNumber2['fraction'] = objNumber2['fraction'].substr(0, scale);
     }
     else {
-      number2['fraction'] = fUTF8.pad(number2['fraction'], fracLen, '0', 'right');
+      objNumber2['fraction'] = fUTF8.pad(objNumber2['fraction'], fracLen, '0', 'right');
     }
 
     /**
@@ -372,12 +373,13 @@ fNumber._normalize = function (number1, number2, scale) {
       return ret;
     };
 
-    number1 = joinObject(number1, '.');
-    number2 = joinObject(number2, '.');
+    /* GAH! WARNING - actual parameter 1 of joinObject does not match formal parameter */
+    number1 = joinObject(objNumber1, '.');
+    number2 = joinObject(objNumber2, '.');
   }
   else {
-    number1 = number1['integer'];
-    number2 = number2['integer'];
+    number1 = objNumber1['integer'];
+    number2 = objNumber2['integer'];
   }
 
   var len = Math.max(number1.length - 1, number2.length - 1);
@@ -573,342 +575,343 @@ fNumber._toArray = function (str) {
   }
   return ret;
 };
-/**
- * Multiplies two numbers.
- * @param {string} multiplicand
- * @param {string} multiplier
- * @param {number} [scale] Currently not used.
- * @returns {string} The product.
- * @private
- */
-fNumber._performMul = function (multiplicand, multiplier, scale) {
-  if (scale === undefined) {
-    scale = 0;
-  }
-
-  multiplicand = fNumber._fixSign(multiplicand);
-  multiplier = fNumber._fixSign(multiplier);
-
-  if (fNumber.isZero(multiplicand) || fNumber.isZero(multiplier)) {
-    return fNumber._setScale('+0', scale);
-  }
-
-  var afterDecimal = 0;
-
-  if (fUTF8.pos(multiplicand, '.') !== false) {
-    afterDecimal += multiplicand.length - (multiplicand.indexOf('.') + 1);
-    multiplicand = multiplicand.replace(/\./, '');
-  }
-
-  if (fUTF8.pos(multiplier, '.') !== false) {
-    afterDecimal += multiplier.length - (multiplier.indexOf('.') + 1);
-    multiplier = multiplier.replace(/\./, '');
-  }
-
-  var n = multiplicand.length - 1;
-  var m = multiplier.length - 1;
-
-  var product = multiplier + fUTF8.pad('', n, '0');
-
-  // Make into arrays for ease of use
-  var toArray = fNumber._toArray;
-  multiplicand = toArray(multiplicand);
-  multiplier = toArray(multiplier);
-  product = toArray(product);
-  product[0] = multiplicand[0] == multiplier[0] ? '+' : '-';
-
-  var j = m, i, k, t;
-
-  while (j > 0) {
-    if (multiplier[j] === '0') {
-      product[j] = '0';
-    }
-
-    i = n;
-    k = 0;
-
-    while (i > 0) {
-      t = (multiplicand[i] + multiplier[j]) + product[i+j] + k;
-      product[i+j] = t % 10;
-      k = t / 10;
-      --i;
-    }
-    product[j] = k;
-
-    --j;
-  }
-
-  product = product.join('');
-
-  var integer = product.substr(0, product.length - afterDecimal);
-  var fraction = product.substr(product.length - afterDecimal);
-  fraction = fraction.length ? '.' + fraction : '';
-
-  product = integer + fraction;
-
-  product = fNumber._setScale(product, scale);
-  product = fNumber.stripLeadingZeroes(product);
-
-  return product;
-};
-/**
- * Multiplies against this number.
- * @param {fNumber|number|string} multiplier The multiplier.
- * @param {number} [scale] The number of places after the decimal.
- * @returns {fNumber} The product.
- */
-fNumber.prototype.mul = function (multiplier, scale) {
-  scale = fNumber._fixScale(scale);
-  multiplier = fNumber.parse(multiplier.toString(), 'number').toString();
-
-  var value = fNumber._performMul(this._value, multiplier, scale);
-
-  return new fNumber(value, scale);
-};
-/**
- * Calculates the integer power of a number.
- * @param {string} number The number to raise to the power.
- * @param {string} power The power to raise to. Must be betweeen
- *   <code>−2,147,483,648</code> and <code>2,147,483,647</code>.
- * @param {number} [scale] The number of places after the decimal point.
- * @returns {string|boolean} The product. False if the product cannot be
- *   computed.
- */
-fNumber._performPow = function (number, power, scale) {
-  number = fNumber._fixSign(number);
-  power = fNumber._fixSign(power);
-  scale = fNumber._fixScale(scale);
-
-  if (fNumber._cmp(power, '-2147483648') < 0 || fNumber._cmp(power, '+2147483648') > 0) {
-    fCore.debug('The power specified, %s, is beyond the range of supported powers.', power);
-    return false;
-  }
-
-  if (fNumber.isZero(power)) {
-    return '+1';
-  }
-
-  var negativePower = power.charAt(0) === '-';
-  var product;
-
-  power = '+' + power.substr(1);
-
-  // Rely on casting
-  if (power % 2 === 0) {
-    product = fNumber._performPow(fNumber._performMul(number.toString(), number.toString()), (power / 2).toString());
-  }
-  else {
-    product = fNumber._performMul(number, fNumber._performPow(fNumber._performMul(number.toString(), number.toString()), String(Math.floor(power / 2))).toString());
-  }
-
-  if (negativePower) {
-    product = fNumber._performDiv('+1', product.toString(), scale);
-  }
-
-  product = fNumber._setScale(product.toString(), scale);
-
-  return product;
-};
-/**
- * Raise this number to the power specified.
- * @param {number} exponent The power to raise to.
- * @param {number} [scale] The number of places after the decimal.
- * @returns {fNumber} The product.
- */
-fNumber.prototype.pow = function (exponent, scale) {
-  scale = fNumber._fixScale(scale);
-
-  exponent = +exponent;
-  if (isNaN(exponent)) {
-    exponent = 1;
-  }
-
-  var value = fNumber._performPow(this._value, exponent.toString(), scale);
-
-  return new fNumber(value.toString(), scale);
-};
-/**
- * Performs division.
- * @private
- * @param {string} dividend
- * @param {string} divisor
- * @param {number} [scale]
- * @returns {Array|boolean}
- * @see http://en.wikipedia.org/wiki/Multiplication_algorithm#Linear_time_multiplication
- */
-fNumber._performDiv = function (dividend, divisor, scale) {
-  var array = fNumber._normalize(dividend, divisor);
-
-  scale = fNumber._fixScale(scale);
-  dividend = fNumber.stripLeadingZeroes(array[0]);
-  divisor = fNumber.stripLeadingZeroes(array[1]);
-
-  if (fNumber.isZero(dividend)) {
-    return [fNumber._setScale('+0', scale), '+0'];
-  }
-
-  if (fNumber.isZero(divisor)) {
-    return false;
-  }
-
-  var sign = dividend.charAt(0) === divisor.charAt(0) ? '+' : '-';
-  var afterDecimal = 0;
-
-  if (fUTF8.pos(dividend, '.') !== false) {
-    dividend = dividend.replace(/\./, '');
-    divisor = divisor.replace(/\./, '');
-  }
-
-  if (scale !== undefined) {
-    for (var i = 0; i < scale; i++) {
-      dividend += '0';
-      afterDecimal++;
-    }
-  }
-
-  if (dividend.length < divisor.length) {
-    return [fNumber._setScale('+0', scale), dividend];
-  }
-
-  // Perform multiplication using Knuth's algorithm from Art of Computer Science Vol 2
-  var u = fNumber._toArray('+' + dividend.substr(1));
-  var v = fNumber._toArray('+' + divisor.substr(1));
-
-  var n = v.length - 1;
-  var m = (u.length - 1) - n;
-  var quotient, remainder, d;
-  var j;
-
-  // For single digit divisors
-  if (n === 1) {
-    n = u.length - 1;
-    var w = fNumber._toArray(sign + fUTF8.pad('', n, '0'));
-    var r = 0;
-    j = 1;
-
-    while (j <= n) {
-      w[j] = Math.floor(((r * 10) + u[j])/v[1]);
-      r = ((r * 10) + u[j]) % v[1];
-      j++;
-    }
-    quotient = w.join('');
-    remainder = '+' + r;
-  }
-  else {
-    // Multi-digit divisors
-    quotient = fNumber._toArray('0' + fUTF8.pad('', m, '0'));
-
-    // Step D1
-    d = Math.floor(10 / (v[1] + 1));
-
-    u = fNumber._toArray(fNumber._performMul(u.join(''), d.toString()));
-    v = fNumber._toArray(fNumber._performMul(v.join(''), d.toString()));
-
-    if (u.length === dividend.length) {
-      u = '0' + u.join('').substr(1);
-    }
-    else {
-      u = u.join('').substr(1);
-    }
-
-    // Step D2
-    j = 0;
-
-    var uj1, uj2, ujn, q, borrow;
-    while (j <= m) {
-      // Step D3
-      uj1 = (u[j+1] !== undefined) ? u[j+1] : '0';
-
-      if (u[j] === v[1]) {
-        q = 9;
-      }
-      else {
-        q = Math.floor(((u[j] * 10) + uj1) / v[1]);
-      }
-
-      uj2 = (u[j+2] !== undefined) ? u[j+2] : '0';
-
-      if (v[2] * q > ((u[j] * 10) + uj1 - (q * v[1])) * 10 + uj2) {
-        q--;
-        if (v[2] * q > ((u[j] * 10) + uj1 - (q * v[1])) * 10 + uj2) {
-          q--;
-        }
-      }
-
-      // Step D4
-      ujn = fNumber._performSub(u.substr(j, n + 1), fNumber._performMul(q.toString(), v.join('')));
-      while (ujn.length - 1 < n+1) {
-        ujn = ujn.charAt(0) + '0' + ujn.substr(1);
-      }
-      while (ujn.length - 1 > n+1) {
-        ujn = ujn.charAt(0) + ujn.substr(2);
-      }
-      borrow = false;
-      if (ujn.charAt(0) === '-') {
-        ujn = fNumber._performAdd(fNumber._performPow('10', (n + 1).toString()).toString(), ujn);
-        borrow = true;
-      }
-      while (ujn.length - 1 > n+1) {
-        ujn = ujn.charAt(0) + ujn.substr(2);
-      }
-
-      // Step D5
-      if (borrow) {
-        // Step D6
-        q--;
-        ujn = fNumber._performAdd(v.join(''), ujn).substr(1);
-      }
-
-      u = u.join('').substr(0, j) + ujn.substr(1) + u.join('').substr(j+n+1);
-
-      quotient[j] = q;
-
-      // Step D7
-      j++;
-    }
-
-    remainder = fNumber._performDiv(u.join('').substr(1+m, n), d.toString());
-  }
-
-  if (quotient.length < afterDecimal) {
-    quotient = fUTF8.pad(quotient.join(''), afterDecimal+1, '0', 'left');
-  }
-
-  var integer = quotient.substr(0, quotient.length - afterDecimal);
-  var fraction = quotient.substr(quotient.length - afterDecimal);
-  fraction = fraction.length ? '.' + fraction : '';
-
-  quotient = fNumber.stripLeadingZeroes(integer + fraction);
-
-  if (quotient.charAt(0).match(/[0-9]/)) {
-    quotient = sign + quotient;
-  }
-
-  return [quotient, remainder];
-};
-/**
- * Divides against this number.
- * @param {number|fNumber|string} divisor The divisor.
- * @param {number} [scale] The number of places after the decimal.
- * @returns {boolean|fNumber} False if the divisor is zero, or the quotient.
- */
-fNumber.prototype.div = function (divisor, scale) {
-  scale = fNumber._fixScale(scale);
-  divisor = fNumber.parse(divisor.toString(), 'number').toString();
-
-  if (fNumber.isZero(divisor)) {
-    fCore.debug('Warning: Division by zero.');
-    return false;
-  }
-
-  var value = fNumber._performDiv(this._value, divisor, scale);
-
-  if (!value) {
-    return false;
-  }
-
-  return new fNumber(value[0], scale);
-};
+// TODO Fix
+// /**
+//  * Multiplies two numbers.
+//  * @param {string} multiplicand
+//  * @param {string} multiplier
+//  * @param {number} [scale] Currently not used.
+//  * @returns {string} The product.
+//  * @private
+//  */
+// fNumber._performMul = function (multiplicand, multiplier, scale) {
+//   if (scale === undefined) {
+//     scale = 0;
+//   }
+//
+//   multiplicand = fNumber._fixSign(multiplicand);
+//   multiplier = fNumber._fixSign(multiplier);
+//
+//   if (fNumber.isZero(multiplicand) || fNumber.isZero(multiplier)) {
+//     return fNumber._setScale('+0', scale);
+//   }
+//
+//   var afterDecimal = 0;
+//
+//   if (fUTF8.pos(multiplicand, '.') !== false) {
+//     afterDecimal += multiplicand.length - (multiplicand.indexOf('.') + 1);
+//     multiplicand = multiplicand.replace(/\./, '');
+//   }
+//
+//   if (fUTF8.pos(multiplier, '.') !== false) {
+//     afterDecimal += multiplier.length - (multiplier.indexOf('.') + 1);
+//     multiplier = multiplier.replace(/\./, '');
+//   }
+//
+//   var n = multiplicand.length - 1;
+//   var m = multiplier.length - 1;
+//
+//   var product = multiplier + fUTF8.pad('', n, '0');
+//
+//   // Make into arrays for ease of use
+//   var toArray = fNumber._toArray;
+//   multiplicand = toArray(multiplicand);
+//   multiplier = toArray(multiplier);
+//   product = toArray(product);
+//   product[0] = multiplicand[0] == multiplier[0] ? '+' : '-';
+//
+//   var j = m, i, k, t;
+//
+//   while (j > 0) {
+//     if (multiplier[j] === '0') {
+//       product[j] = '0';
+//     }
+//
+//     i = n;
+//     k = 0;
+//
+//     while (i > 0) {
+//       t = (multiplicand[i] + multiplier[j]) + product[i+j] + k;
+//       product[i+j] = t % 10;
+//       k = t / 10;
+//       --i;
+//     }
+//     product[j] = k;
+//
+//     --j;
+//   }
+//
+//   product = product.join('');
+//
+//   var integer = product.substr(0, product.length - afterDecimal);
+//   var fraction = product.substr(product.length - afterDecimal);
+//   fraction = fraction.length ? '.' + fraction : '';
+//
+//   product = integer + fraction;
+//
+//   product = fNumber._setScale(product, scale);
+//   product = fNumber.stripLeadingZeroes(product);
+//
+//   return product;
+// };
+// /**
+//  * Multiplies against this number.
+//  * @param {fNumber|number|string} multiplier The multiplier.
+//  * @param {number} [scale] The number of places after the decimal.
+//  * @returns {fNumber} The product.
+//  */
+// fNumber.prototype.mul = function (multiplier, scale) {
+//   scale = fNumber._fixScale(scale);
+//   multiplier = fNumber.parse(multiplier.toString(), 'number').toString();
+//
+//   var value = fNumber._performMul(this._value, multiplier, scale);
+//
+//   return new fNumber(value, scale);
+// };
+// /**
+//  * Calculates the integer power of a number.
+//  * @param {string} number The number to raise to the power.
+//  * @param {string} power The power to raise to. Must be betweeen
+//  *   <code>−2,147,483,648</code> and <code>2,147,483,647</code>.
+//  * @param {number} [scale] The number of places after the decimal point.
+//  * @returns {string|boolean} The product. False if the product cannot be
+//  *   computed.
+//  */
+// fNumber._performPow = function (number, power, scale) {
+//   number = fNumber._fixSign(number);
+//   power = fNumber._fixSign(power);
+//   scale = fNumber._fixScale(scale);
+//
+//   if (fNumber._cmp(power, '-2147483648') < 0 || fNumber._cmp(power, '+2147483648') > 0) {
+//     fCore.debug('The power specified, %s, is beyond the range of supported powers.', power);
+//     return false;
+//   }
+//
+//   if (fNumber.isZero(power)) {
+//     return '+1';
+//   }
+//
+//   var negativePower = power.charAt(0) === '-';
+//   var product;
+//
+//   power = '+' + power.substr(1);
+//
+//   // Rely on casting
+//   if (power % 2 === 0) {
+//     product = fNumber._performPow(fNumber._performMul(number.toString(), number.toString()), (power / 2).toString());
+//   }
+//   else {
+//     product = fNumber._performMul(number, fNumber._performPow(fNumber._performMul(number.toString(), number.toString()), String(Math.floor(power / 2))).toString());
+//   }
+//
+//   if (negativePower) {
+//     product = fNumber._performDiv('+1', product.toString(), scale);
+//   }
+//
+//   product = fNumber._setScale(product.toString(), scale);
+//
+//   return product;
+// };
+// /**
+//  * Raise this number to the power specified.
+//  * @param {number} exponent The power to raise to.
+//  * @param {number} [scale] The number of places after the decimal.
+//  * @returns {fNumber} The product.
+//  */
+// fNumber.prototype.pow = function (exponent, scale) {
+//   scale = fNumber._fixScale(scale);
+//
+//   exponent = +exponent;
+//   if (isNaN(exponent)) {
+//     exponent = 1;
+//   }
+//
+//   var value = fNumber._performPow(this._value, exponent.toString(), scale);
+//
+//   return new fNumber(value.toString(), scale);
+// };
+// /**
+//  * Performs division.
+//  * @private
+//  * @param {string} dividend
+//  * @param {string} divisor
+//  * @param {number} [scale]
+//  * @returns {Array|boolean}
+//  * @see http://en.wikipedia.org/wiki/Multiplication_algorithm#Linear_time_multiplication
+//  */
+// fNumber._performDiv = function (dividend, divisor, scale) {
+//   var array = fNumber._normalize(dividend, divisor);
+//
+//   scale = fNumber._fixScale(scale);
+//   dividend = fNumber.stripLeadingZeroes(array[0]);
+//   divisor = fNumber.stripLeadingZeroes(array[1]);
+//
+//   if (fNumber.isZero(dividend)) {
+//     return [fNumber._setScale('+0', scale), '+0'];
+//   }
+//
+//   if (fNumber.isZero(divisor)) {
+//     return false;
+//   }
+//
+//   var sign = dividend.charAt(0) === divisor.charAt(0) ? '+' : '-';
+//   var afterDecimal = 0;
+//
+//   if (fUTF8.pos(dividend, '.') !== false) {
+//     dividend = dividend.replace(/\./, '');
+//     divisor = divisor.replace(/\./, '');
+//   }
+//
+//   if (scale !== undefined) {
+//     for (var i = 0; i < scale; i++) {
+//       dividend += '0';
+//       afterDecimal++;
+//     }
+//   }
+//
+//   if (dividend.length < divisor.length) {
+//     return [fNumber._setScale('+0', scale), dividend];
+//   }
+//
+//   // Perform multiplication using Knuth's algorithm from Art of Computer Science Vol 2
+//   var u = fNumber._toArray('+' + dividend.substr(1));
+//   var v = fNumber._toArray('+' + divisor.substr(1));
+//
+//   var n = v.length - 1;
+//   var m = (u.length - 1) - n;
+//   var quotient, remainder, d;
+//   var j;
+//
+//   // For single digit divisors
+//   if (n === 1) {
+//     n = u.length - 1;
+//     var w = fNumber._toArray(sign + fUTF8.pad('', n, '0'));
+//     var r = 0;
+//     j = 1;
+//
+//     while (j <= n) {
+//       w[j] = Math.floor(((r * 10) + u[j])/v[1]);
+//       r = ((r * 10) + u[j]) % v[1];
+//       j++;
+//     }
+//     quotient = w.join('');
+//     remainder = '+' + r;
+//   }
+//   else {
+//     // Multi-digit divisors
+//     quotient = fNumber._toArray('0' + fUTF8.pad('', m, '0'));
+//
+//     // Step D1
+//     d = Math.floor(10 / (v[1] + 1));
+//
+//     u = fNumber._toArray(fNumber._performMul(u.join(''), d.toString()));
+//     v = fNumber._toArray(fNumber._performMul(v.join(''), d.toString()));
+//
+//     if (u.length === dividend.length) {
+//       u = '0' + u.join('').substr(1);
+//     }
+//     else {
+//       u = u.join('').substr(1);
+//     }
+//
+//     // Step D2
+//     j = 0;
+//
+//     var uj1, uj2, ujn, q, borrow;
+//     while (j <= m) {
+//       // Step D3
+//       uj1 = (u[j+1] !== undefined) ? u[j+1] : '0';
+//
+//       if (u[j] === v[1]) {
+//         q = 9;
+//       }
+//       else {
+//         q = Math.floor(((u[j] * 10) + uj1) / v[1]);
+//       }
+//
+//       uj2 = (u[j+2] !== undefined) ? u[j+2] : '0';
+//
+//       if (v[2] * q > ((u[j] * 10) + uj1 - (q * v[1])) * 10 + uj2) {
+//         q--;
+//         if (v[2] * q > ((u[j] * 10) + uj1 - (q * v[1])) * 10 + uj2) {
+//           q--;
+//         }
+//       }
+//
+//       // Step D4
+//       ujn = fNumber._performSub(u.substr(j, n + 1), fNumber._performMul(q.toString(), v.join('')));
+//       while (ujn.length - 1 < n+1) {
+//         ujn = ujn.charAt(0) + '0' + ujn.substr(1);
+//       }
+//       while (ujn.length - 1 > n+1) {
+//         ujn = ujn.charAt(0) + ujn.substr(2);
+//       }
+//       borrow = false;
+//       if (ujn.charAt(0) === '-') {
+//         ujn = fNumber._performAdd(fNumber._performPow('10', (n + 1).toString()).toString(), ujn);
+//         borrow = true;
+//       }
+//       while (ujn.length - 1 > n+1) {
+//         ujn = ujn.charAt(0) + ujn.substr(2);
+//       }
+//
+//       // Step D5
+//       if (borrow) {
+//         // Step D6
+//         q--;
+//         ujn = fNumber._performAdd(v.join(''), ujn).substr(1);
+//       }
+//
+//       u = u.join('').substr(0, j) + ujn.substr(1) + u.join('').substr(j+n+1);
+//
+//       quotient[j] = q;
+//
+//       // Step D7
+//       j++;
+//     }
+//
+//     remainder = fNumber._performDiv(u.join('').substr(1+m, n), d.toString());
+//   }
+//
+//   if (quotient.length < afterDecimal) {
+//     quotient = fUTF8.pad(quotient.join(''), afterDecimal+1, '0', 'left');
+//   }
+//
+//   var integer = quotient.substr(0, quotient.length - afterDecimal);
+//   var fraction = quotient.substr(quotient.length - afterDecimal);
+//   fraction = fraction.length ? '.' + fraction : '';
+//
+//   quotient = fNumber.stripLeadingZeroes(integer + fraction);
+//
+//   if (quotient.charAt(0).match(/[0-9]/)) {
+//     quotient = sign + quotient;
+//   }
+//
+//   return [quotient, remainder];
+// };
+// /**
+//  * Divides against this number.
+//  * @param {number|fNumber|string} divisor The divisor.
+//  * @param {number} [scale] The number of places after the decimal.
+//  * @returns {boolean|fNumber} False if the divisor is zero, or the quotient.
+//  */
+// fNumber.prototype.div = function (divisor, scale) {
+//   scale = fNumber._fixScale(scale);
+//   divisor = fNumber.parse(divisor.toString(), 'number').toString();
+//
+//   if (fNumber.isZero(divisor)) {
+//     fCore.debug('Warning: Division by zero.');
+//     return false;
+//   }
+//
+//   var value = fNumber._performDiv(this._value, divisor, scale);
+//
+//   if (!value) {
+//     return false;
+//   }
+//
+//   return new fNumber(value[0], scale);
+// };
 /**
  * Indicates if this value is equal to the one passed.
  * @param {fNumber|number|string} number The number to compare to.
@@ -997,7 +1000,7 @@ fNumber.prototype.lte = function (number, scale) {
  * @returns {fNumber} A new fNumber object.
  */
 fNumber.prototype.trunc = function (scale) {
-  scale = fNumber._fixScale(scale);
+  scale = fNumber._fixScale(parseInt(scale, 10));
   var number = this._value;
 
   if (scale < 0) {
