@@ -4,7 +4,7 @@
  *   Static classes should be plain objects. See fGrammar below.
  *
  * To compile from the root directory:
- * JSARG=""; for i in `find -iname '*.js' | sort`; do JSARG="$JSARG --js $i"; done && closure-compiler $JSARG --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
+ * JSARG=""; for i in $(find -iname '*.js' | grep -v fMoney | sort); do JSARG="$JSARG --js $i"; done && closure-compiler $JSARG --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
  */
 
 // fCryptography
