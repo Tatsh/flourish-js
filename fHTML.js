@@ -321,6 +321,8 @@ fHTML.makeLinks = function(content, linkTextLength) {
     var matches;
     var printedText, scheme, replace;
     var container, tag;
+    var matchRegex;
+    var used = {};
 
     // Find every #text node and parse URIs
     for (var i = 0, j; i < nodes.length; i++) {
@@ -339,6 +341,10 @@ fHTML.makeLinks = function(content, linkTextLength) {
         matches = currentText.match(regex);
         if (matches !== null && matches.length) {
           for (j = 0; j < matches.length; j++) {
+            if (used[matches[j]] !== undefined) {
+              continue;
+            }
+
             printedText = matches[j];
 
             if (linkTextLength !== undefined) {
@@ -357,7 +363,9 @@ fHTML.makeLinks = function(content, linkTextLength) {
             }
             replace += '>' + printedText + '</a>';
 
-            currentText = currentText.replace(matches[j], replace);
+            matchRegex = new RegExp(matches[j], 'g');
+            used[matches[j]] = matches[j];
+            currentText = currentText.replace(matchRegex, replace);
           }
         }
       }
