@@ -312,7 +312,7 @@ fHTML.makeLinks = function(content, linkTextLength) {
   div.innerHTML = content; // Encodes everything
 
   if (!div.childNodes.length) {
-    return div.innerHTML;
+    return content;
   }
 
   content = div.innerHTML;
