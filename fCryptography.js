@@ -1,7 +1,6 @@
 ﻿/**
  * Provides cryptography functions.
  * Copyright (c) 2012 StonerAries.
- * License: http://www.opensource.org/licenses/mit-license.php
  * @constructor
  */
 var fCryptography = function () {};
