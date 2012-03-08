@@ -4,7 +4,7 @@
  *   Static classes should be plain objects. See fGrammar below.
  *
  * To compile from the root directory:
- * closure-compiler --js deps.js --js fCryptography.js --js fDatabase.js --js fGrammar.js --js fHTML.js --js fJSON.js --js fRequest.js --js fSession.js --js fTime.js --js fURL.js --js fUTF8.js --js fCore.js --js fDate.js --js fNumber.js --js fTimestamp.js --js fMoney.js --js export/window-export.js --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
+ * JSARG=""; for i in $(cat order.json | xargs | sed -e 's#\[##' -e 's#\]##' -e 's#,##g'); do JSARG="$JSARG --js $i"; done && closure-compiler $JSARG --js export/window-export.js --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
  */
 
 // fCryptography
