@@ -4,7 +4,7 @@
  *   Static classes should be plain objects. See fGrammar below.
  *
  * To compile from the root directory:
- * JSARG=""; for i in $(find -iname '*.js' | sort); do JSARG="$JSARG --js $i"; done && closure-compiler $JSARG --js export/99-window-export.js --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
+ * closure-compiler --js deps.js --js fCryptography.js --js fDatabase.js --js fGrammar.js --js fHTML.js --js fJSON.js --js fRequest.js --js fSession.js --js fTime.js --js fURL.js --js fUTF8.js --js fCore.js --js fDate.js --js fNumber.js --js fTimestamp.js --js fMoney.js --js export/window-export.js --compilation_level ADVANCED_OPTIMIZATIONS --output_wrapper "(function(){%output%}())" --warning_level VERBOSE
  */
 
 // fCryptography
@@ -33,8 +33,14 @@ window['fGrammar'] = {
 };
 
 // fHTML
-// Nothing is in the class yet
-// window['fHTML'] = {};
+window['fHTML'] = {
+  'containsBlockLevelHTML': fHTML.containsBlockLevelHTML,
+  'convertNewLines': fHTML.convertNewLines,
+  'decode': fHTML.decode,
+  'encode': fHTML.encode,
+  'makeLinks': fHTML.makeLinks,
+  'prepare': fHTML.prepare
+};
 
 // fJSON
 window['fJSON'] = {
