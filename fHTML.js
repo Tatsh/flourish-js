@@ -301,7 +301,9 @@ fHTML.encode = function (content) {
 /**
  * Make links within a content string.
  * @param {string} content Content to process.
- * @param {number} [linkTextLength=0] Length of the text within the tag.
+ * @param {number} [linkTextLength=0] Length of the text within the tag. If
+ *   this argument is used, then a title attribute will be on each link with
+ *   the full link text.
  * @returns {string}
  */
 fHTML.makeLinks = function(content, linkTextLength) {
@@ -317,7 +319,7 @@ fHTML.makeLinks = function(content, linkTextLength) {
   return (function make(nodes) {
     var currentText = '', tmp;
     var matches;
-    var printedText, scheme;
+    var printedText, scheme, replace;
     var container, tag;
 
     // Find every #text node and parse URIs
@@ -340,7 +342,7 @@ fHTML.makeLinks = function(content, linkTextLength) {
             printedText = matches[j];
 
             if (linkTextLength !== undefined) {
-              printedText = matches[j].substr(0, linkTextLength);
+              printedText = matches[j].substr(0, linkTextLength) + '...';
             }
 
             // Simple check
@@ -349,7 +351,13 @@ fHTML.makeLinks = function(content, linkTextLength) {
               scheme = 'mailto:';
             }
 
-            currentText = currentText.replace(matches[j], '<a href="' + scheme + matches[j] + '">' + printedText + '</a>');
+            replace = '<a href="' + scheme + matches[j] + '" ';
+            if (linkTextLength !== undefined) {
+              replace += 'title="' + matches[j] + '"';
+            }
+            replace += '>' + printedText + '</a>';
+
+            currentText = currentText.replace(matches[j], replace);
           }
         }
       }
