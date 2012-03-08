@@ -46,10 +46,9 @@ Please read this entire file. To contribute, please follow these rules for new c
   * You do not have to implement every method. However, if a method calls another method even if it is private, it is expected that you will implement that method so the JavaScript code matches the PHP code as much as possible.
     * If a method is called in another class, that other class must be at least partially implemented with that method at minimum.
   * If the class has a parent class, the new class must inherit from the parent class if the parent class would also be useful to have (a blank parent class is acceptable).
-  * File name must follow the same format as currently being used; when listed with `ls -l` the new code must come after all dependencies.
-    * If the class has no dependencies, the file name can use the `00-` prefix.
   * Do not wrap the code in a self-invoking closure or function.
   * Object extensions must be done in manual style (see example).
+  * Update the order.json file to include the new file after all its dependencies.
 
 # Example
 
