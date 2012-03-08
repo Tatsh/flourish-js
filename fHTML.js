@@ -305,8 +305,8 @@ fHTML.encode = function (content) {
  * @returns {string}
  */
 fHTML.makeLinks = function(content, linkTextLength) {
-  var div = document.createElement('div'), dom;
-  var regex = /\b([a-z]{3,}:\/\/[a-z0-9%\$\-_.+!*;/?:@=&\'\#,]+[a-z0-9\$\-_+!*;/?:@=&\'\#,])\b|\b(www\.(?:[a-z0-9\-]+\.)+[a-z]{2,}(?:\/[a-z0-9%\$\-_.+!*;/?:@=&\'\#,]+[a-z0-9\$\-_+!*;/?:@=&\'\#,])?)\b|\b([a-z0-9\\.+\'_\\-]+@(?:[a-z0-9\\-]+\.)+[a-z]{2,})\b/gi;
+  var div = document.createElement('div');
+  var regex = /\b([a-z]{3,}:\/\/[a-z0-9%\$\-_.+!*;\/?:@=&\'\#,]+[a-z0-9\$\-_+!*;\/?:@=&\'\#,])\b|\b(www\.(?:[a-z0-9\-]+\.)+[a-z]{2,}(?:\/[a-z0-9%\$\-_.+!*;\/?:@=&\'\#,]+[a-z0-9\$\-_+!*;\/?:@=&\'\#,])?)\b|\b([a-z0-9\\.+\'_\\\-]+@(?:[a-z0-9\\\-]+\.)+[a-z]{2,})\b/gi;
   div.innerHTML = content; // Encodes everything
 
   if (!div.childNodes.length) {
