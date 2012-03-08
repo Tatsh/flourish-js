@@ -1,5 +1,5 @@
 /**
- * This is the namespace for phpjs' ports of PHP string functions.
+ * Provides string functions for UTF-8 strings.
  * @constructor
  */
 var fUTF8 = function () {};
