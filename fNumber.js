@@ -346,7 +346,7 @@ fNumber._normalize = function (number1, number2, scale) {
     }
 
     /**
-     * @param {Object} obj
+     * @param {Object|string} obj
      * @param {string} sep
      * @returns {string}
      * @private
@@ -373,9 +373,19 @@ fNumber._normalize = function (number1, number2, scale) {
       return ret;
     };
 
-    /* GAH! WARNING - actual parameter 1 of joinObject does not match formal parameter */
-    number1 = joinObject(objNumber1, '.');
-    number2 = joinObject(objNumber2, '.');
+    // This is to get rid of this warning: actual parameter 1 of joinObject does not match formal parameter
+    var populate = function (obj) {
+      var ret = {};
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          ret[key] = obj[key];
+        }
+      }
+      return key;
+    };
+    var obj1 = populate(objNumber1), obj2 = populate(objNumber2);
+    number1 = joinObject(obj1, '.');
+    number2 = joinObject(obj2, '.');
   }
   else {
     number1 = objNumber1['integer'];
