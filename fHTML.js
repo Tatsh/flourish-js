@@ -98,15 +98,7 @@ fHTML.containsBlockLevelHTML = function (content, strict) {
   container.innerHTML = content;
 
   var inArray = function (nodeName, filter) {
-    nodeName = nodeName.toLowerCase();
-
-    for (var i = 0; i < filter.length; i++) {
-      if (filter[i] === nodeName) {
-        return true;
-      }
-    }
-
-    return false;
+    return filter.indexOf(nodeName.toLowerCase()) !== -1;
   };
 
   return (function check(nodes) {
