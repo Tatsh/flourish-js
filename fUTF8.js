@@ -85,12 +85,16 @@ fUTF8.trim = function (str, charlist) {
  * <li>"\x0B" (ASCII 11 (0x0B)), a vertical tab.</li>
  * </ul>
  * @param {string} str The input string.
- * @param {string} [charlist=null] Optionally, the stripped characters can also be
+ * @param {string} [charlist] Optionally, the stripped characters can also be
  *   specified using the charlist parameter. Simply list all characters that
  *   you want to be stripped in a string.
  * @returns {string} The trimmed string.
  */
 fUTF8.ltrim = function (str, charlist) {
+  if (str.trimLeft && charlist === undefined) {
+    return str.trimLeft();
+  }
+
     // http://kevin.vanzonneveld.net
     // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
     // +      input by: Erkekjetter
@@ -206,6 +210,9 @@ fUTF8.pos = function (haystack, needle, offset) {
  * @returns {string} The trimmed string.
  */
 fUTF8.rtrim = function (str, charlist) {
+  if (str.trimRight && charlist === undefined) {
+    return str.trimRight();
+  }
   // http://kevin.vanzonneveld.net
   // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
   // +      input by: Erkekjetter
@@ -256,4 +263,82 @@ fUTF8.natcmp = function (a, b) {
   }
 
   return aa.length - bb.length;
+};
+/**
+ * @param {string} string
+ * @returns {boolean}
+ * @private
+ */
+fUTF8._detect = function (string) {
+  return !!string.match(/[^\x00-\x7F]/);
+};
+/**
+ * Converts all upper-case characters to lower-case.
+ * @param {string} string The string to convert.
+ * @returns {string} The input string with all upper-case characters in
+ *   lower-case.
+ */
+fUTF8.lower = function (string) {
+  return string.toLocaleLowerCase();
+};
+/**
+ * Converts all lower-case characters to upper-case.
+ * @param {string} string The string to convert.
+ * @returns {string} The input string with all lower-case characters in
+ *   upper-case.
+ */
+fUTF8.upper = function (string) {
+  return string.toLocaleUpperCase();
+};
+/**
+ * Converts a unicode value into a UTF-8 character.
+ * @param {number} charPoint The character to create, decimal code
+ *   point.
+ * @returns {string} The character, or empty string.
+ */
+fUTF8.chr = function (charPoint) {
+  charPoint = parseInt(charPoint, 10);
+
+  if (isNaN(charPoint)) {
+    return '';
+  }
+
+  // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/fromCharCode
+  if (charPoint > 0xFFFF) {
+    charPoint -= 0x10000;
+    return String.fromCharCode(0xD800 + (charPoint >> 10), 0xDC00 + (charPoint & 0x3FF));
+  }
+
+  return String.fromCharCode(charPoint);
+};
+/**
+ * Compares strings.
+ * @param {string} str1 The first string to compare.
+ * @param {string} str2 The second string to compare.
+ * @returns {number} < 0 if str1 < str2, 0 if they are equal, > 0 if str1 >
+ *   str2.
+ */
+fUTF8.cmp = function (str1, str2) {
+  return str1.localeCompare(str2);
+};
+/**
+ * Explodes a string on a delimiter.
+ * @param {string} string The string to explode.
+ * @param {string} [delimiter] The delimiter.
+ * @returns {Array} The exploded string.
+ */
+fUTF8.explode = function (string, delimiter) {
+  if (delimiter === undefined) {
+    return string.split('');
+  }
+
+  return string.split(delimiter);
+};
+/**
+ * Determines the length (in characters) of a string.
+ * @param {string} string The string to measure.
+ * @returns {number} The length.
+ */
+fUTF8.len = function (string) {
+  return string.length;
 };

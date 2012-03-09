@@ -83,7 +83,13 @@ window['fUTF8'] = {
   'pad': fUTF8.pad,
   'pos': fUTF8.pos,
   'rtrim': fUTF8.rtrim,
-  'natcmp': fUTF8.natcmp
+  'natcmp': fUTF8.natcmp,
+  'lower': fUTF8.lower,
+  'upper': fUTF8.upper,
+  'chr': fUTF8.chr,
+  'cmp': fUTF8.cmp,
+  'explode': fUTF8.explode,
+  'len': fUTF8.len
 };
 
 // fCore
