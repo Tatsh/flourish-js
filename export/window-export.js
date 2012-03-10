@@ -78,18 +78,33 @@ window['fURL'] = {
 
 // fUTF8
 window['fUTF8'] = {
-  'trim': fUTF8.trim,
-  'ltrim': fUTF8.ltrim,
-  'pad': fUTF8.pad,
-  'pos': fUTF8.pos,
-  'rtrim': fUTF8.rtrim,
-  'natcmp': fUTF8.natcmp,
-  'lower': fUTF8.lower,
-  'upper': fUTF8.upper,
   'chr': fUTF8.chr,
   'cmp': fUTF8.cmp,
   'explode': fUTF8.explode,
-  'len': fUTF8.len
+  'icmp': fUTF8.icmp,
+  'inatcmp': fUTF8.inatcmp,
+  'ipos': fUTF8.ipos,
+  'ireplace': fUTF8.ireplace,
+  'irpos': fUTF8.irpos,
+  'istr': fUTF8.istr,
+  'len': fUTF8.len,
+  'lower': fUTF8.lower,
+  'ltrim': fUTF8.ltrim,
+  'natcmp': fUTF8.natcmp,
+  'ord': fUTF8.ord,
+  'pad': fUTF8.pad,
+  'pos': fUTF8.pos,
+  'replace': fUTF8.replace,
+  'rev': fUTF8.rev,
+  'rpos': fUTF8.rpos,
+  'rtrim': fUTF8.rtrim,
+  'str': fUTF8.str,
+  'sub': fUTF8.sub,
+  'trim': fUTF8.trim,
+  'ucfirst': fUTF8.ucfirst,
+  'ucwords': fUTF8.ucwords,
+  'upper': fUTF8.upper,
+  'wordwrap': fUTF8.wordwrap
 };
 
 // fCore

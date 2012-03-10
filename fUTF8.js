@@ -338,3 +338,321 @@ fUTF8.explode = function (string, delimiter) {
 fUTF8.len = function (string) {
   return string.length;
 };
+/**
+ * Compares strings in a case-insensitive manner.
+ * @param {string} str1 The first string to compare.
+ * @param {string} str2 The second string to compare.
+ * @returns {number} < 0 if str1 < str2, 0 if they are equal, > 0 if str1 >
+ *   str2.
+ */
+fUTF8.icmp = function (str1, str2) {
+  return fUTF8.cmp(str1.toLocaleLowerCase(), str2.toLocaleLowerCase());
+};
+/**
+ * Compares strings using a natural order algorithm in a case-insensitive
+ *   manner.
+ * @param {string} str1 The first string to compare.
+ * @param {string} str2 The second string to compare.
+ * @returns {number} < 0 if str1 < str2, 0 if they are equal, > 0 if str1 >
+ *   str2.
+ */
+fUTF8.inatcmp = function (str1, str2) {
+  return fUTF8.natcmp(str1.toLocaleLowerCase(), str2.toLocaleLowerCase());
+};
+/**
+ * Finds the first position (in characters) of the search value in the string
+ *   in a case-insensitive manner.
+ * @param {string} haystack The string to search in.
+ * @param {string} needle The string to search for.
+ * @param {number} [offset=0] The character position to start searching from.
+ * @returns {boolean|number} The character position or false if the string is
+ *   not found.
+ */
+fUTF8.ipos = function (haystack, needle, offset) {
+  return fUTF8.pos(haystack.toLocaleLowerCase(), needle.toLocaleLowerCase(), offset);
+};
+/**
+ * Replaces matching parts of the string, with matches being done in a
+ *   case-insensitive manner.
+ * @param {string} string The string to perfrom replacements on.
+ * @param {string|Array} search The string or array of strings to search for.
+ * @param {string|Array} replace The string or array of replacements to use.
+ * @returns {string} The input string with the specified replacements.
+ */
+fUTF8.ireplace = function (string, search, replace) {
+  if (typeof search === 'string') {
+    search = [search];
+  }
+  if (typeof replace === 'string') {
+    replace = [replace];
+  }
+
+  for (var i = 0, original; i < search.length; i++) {
+    if (replace[i] === undefined) {
+      replace[i] = search[i];
+    }
+
+    string = string.replace(new RegExp(search[i], 'i'), replace[i]);
+  }
+
+  return string;
+};
+/**
+ * Finds the last position (in characters) of the search value in the string.
+ * @param {string} haystack String to search in.
+ * @param {string} needle String to search for.
+ * @param {number} [offset=0] The character position to start searching from.
+ * @returns {number|boolean} The last position of the character, or boolean
+ *   false if it is not found.
+ */
+fUTF8.rpos = function (haystack, needle, offset) {
+  var i = -1;
+
+  if (offset !== undefined) {
+    i = haystack.slice(offset).lastIndexOf(needle);
+    if (i !== -1) {
+      i += offset;
+    }
+  }
+  else {
+    i = haystack.lastIndexOf(needle);
+  }
+
+  return i >= 0 ? i : false;
+};
+/**
+ * Finds the last position (in characters) of the search value in the string,
+ *   in a case-insensitive manner.
+ * @param {string} haystack String to search in.
+ * @param {string} needle String to search for.
+ * @param {number} [offset=0] The character position to start searching from.
+ * @returns {number|boolean} The last position of the character, or boolean
+ *   false if it is not found.
+ */
+fUTF8.irpos = function (haystack, needle, offset) {
+  return fUTF8.rpos(haystack.toLocaleLowerCase(), needle.toLocaleLowerCase(), offset);
+};
+/**
+ *  Matches a string needle in the string haystack, returning a substring from
+ *   the beginning of the needle to the end of the haystack.
+ * @param {string} haystack The string to search in.
+ * @param {string} needle The string to search for. This match will be done in
+ *   a case-insensitive manner.
+ * @param {boolean} [beforeNeedle=false] If a substring of the haystack before
+ *   the needle should be returned instead of the substring from the needle to
+ *   the end of the haystack.
+ * @returns {string|boolean} The specified part of the haystack, or false if
+ *   the needle was not found.
+ */
+fUTF8.istr = function (haystack, needle, beforeNeedle) {
+  if (beforeNeedle === undefined) {
+    beforeNeedle = false;
+  }
+
+  var lowerHaystack = haystack.toLocaleLowerCase();
+  var lowerNeedle = haystack.toLocaleLowerCase();
+  var pos = parseInt(fUTF8.pos(lowerHaystack, lowerNeedle), 10);
+
+  if (isNaN(pos)) {
+    return false;
+  }
+
+  if (beforeNeedle) {
+    return haystack.substr(0, pos);
+  }
+
+  return haystack.substr(pos);
+};
+/**
+ * Converts a UTF-8 character to a unicode code point. Based on phpjs version.
+ * @param {string} string The character to decode.
+ * @returns {string} The U+hex unicode code point for the character.
+ * @see http://phpjs.org/functions/ord:483
+ */
+fUTF8.ord = function (string) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Brett Zamir (http://brett-zamir.me)
+    // +   input by: incidence
+    // *     example 1: ord('K');
+    // *     returns 1: 75
+    // *     example 2: ord('\uD800\uDC00'); // surrogate pair to create a single Unicode character
+    // *     returns 2: 65536
+    var str = string + '',
+        code = str.charCodeAt(0);
+    if (0xD800 <= code && code <= 0xDBFF) { // High surrogate (could change last hex to 0xDB7F to treat high private surrogates as single characters)
+        var hi = code;
+        if (str.length === 1) {
+            return 'U+' + fUTF8.pad(code.toString(), 4, '0', 'left'); // This is just a high surrogate with no following low surrogate, so we return its value;
+            // we could also throw an error as it is not a complete character, but someone may want to know
+        }
+        var low = str.charCodeAt(1);
+        return 'U+' + fUTF8.pad((((hi - 0xD800) * 0x400) + (low - 0xDC00) + 0x10000).toString(), 4, '0', 'left');
+    }
+    if (0xDC00 <= code && code <= 0xDFFF) { // Low surrogate
+        return 'U+' + fUTF8.pad(code.toString(), 4, '0', 'left'); // This is just a low surrogate with no preceding high surrogate, so we return its value;
+        // we could also throw an error as it is not a complete character, but someone may want to know
+    }
+    return 'U+' + fUTF8.pad(code.toString(), 4, '0', 'left');
+};
+/**
+ * Replaces matching parts of the string.
+ * @param {string} string The string to perfrom replacements on.
+ * @param {string|Array} search The string or array of strings to search for.
+ * @param {string|Array} replace The string or array of replacements to use.
+ * @returns {string} The input string with the specified replacements.
+ */
+fUTF8.replace = function (string, search, replace) {
+  if (typeof search === 'string') {
+    search = [search];
+  }
+  if (typeof replace === 'replace') {
+    replace = [replace];
+  }
+
+  for (var i = 0; i < search.length; i++) {
+    if (replace[i] === undefined) {
+      replace[i] = search[i];
+    }
+
+    string = string.replace(new RegExp(search[i]), replace[i]);
+  }
+
+  return string;
+};
+/**
+ * Reverses a string.
+ * @param {string} string The string to reverse.
+ * @returns {string} The reversed string.
+ */
+fUTF8.rev = function (string) {
+  return string.split('').reverse().join('');
+};
+/**
+ *  Matches a string needle in the string haystack, returning a substring from
+ *   the beginning of the needle to the end of the haystack.
+ * @param {string} haystack The string to search in.
+ * @param {string} needle The string to search for. This match will be done in
+ *   a case-insensitive manner.
+ * @param {boolean} [beforeNeedle=false] If a substring of the haystack before
+ *   the needle should be returned instead of the substring from the needle to
+ *   the end of the haystack.
+ * @returns {string|boolean} The specified part of the haystack, or false if
+ *   the needle was not found.
+ */
+fUTF8.str = function (haystack, needle, beforeNeedle) {
+  var pos = parseInt(fUTF8.pos(haystack, needle), 10);
+
+  if (isNaN(pos)) {
+    return false;
+  }
+
+  if (beforeNeedle) {
+    return haystack.substr(0, pos);
+  }
+
+  return haystack.substr(pos);
+};
+/**
+ * Extracts part of a string.
+ * @param {string} string The string to extract from.
+ * @param {number} start The zero-based starting index.
+ * @param {number} [length] The length of the returned string.
+ * @returns {string|boolean} The extracted substring or false.
+ */
+fUTF8.sub = function (string, start, length) {
+  if (Math.abs(start) > string.length) {
+    return false;
+  }
+
+  if (start > (string.length / 2)) {
+    start = 0 - (string.length - start);
+  }
+
+  string = string.substr(start);
+
+  if (length === undefined) {
+    return string;
+  }
+
+  return string.substr(0, length);
+};
+/**
+ * Converts the first character of the string to upper-case.
+ * @param {string} string The string to process.
+ * @returns {string} The processed string.
+ */
+fUTF8.ucfirst = function (string) {
+  return fUTF8.upper(string.substr(0, 1)) + fUTF8.sub(string, 1);
+};
+/**
+ * Converts the first character of every word to upper-case. Currently, this
+ *   only works for ASCII strings.
+ * @param {string} str The string to process.
+ * @returns {string} The processed string.
+ * @see http://phpjs.org/functions/ucwords:569
+ */
+fUTF8.ucwords = function (str) {
+  // TODO Regex needs to be expanded to include other alphabets besides ASCII
+    // http://kevin.vanzonneveld.net
+    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+    // +   improved by: Waldo Malqui Silva
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Robin
+    // +      input by: James (http://www.james-bell.co.uk/)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // *     example 1: ucwords('kevin van  zonneveld');
+    // *     returns 1: 'Kevin Van  Zonneveld'
+    // *     example 2: ucwords('HELLO WORLD');
+    // *     returns 2: 'HELLO WORLD'
+    return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
+        return $1.toUpperCase();
+    });
+};
+/**
+ * Wraps a string to a specific character width.
+ * @param {string} str The string to wrap.
+ * @param {number} [width=75] The charcter width to wrap to.
+ * @param {string} [breakChar] The string to insert as a break. Default is a
+ *   newline character.
+ * @param {boolean} [cut=false] If words longer than the character width should
+ *   be split to fit.
+ * @returns {string} The given string wrapped at the specified column.
+ * @see http://phpjs.org/functions/wordwrap:581
+ */
+fUTF8.wordwrap = function (str, width, breakChar, cut) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+    // +   improved by: Nick Callen
+    // +    revised by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   improved by: Sakimori
+    // +   bugfixed by: Michael Grier
+    // *     example 1: wordwrap('Kevin van Zonneveld', 6, '|', true);
+    // *     returns 1: 'Kevin |van |Zonnev|eld'
+    // *     example 2: wordwrap('The quick brown fox jumped over the lazy dog.', 20, '<br />\n');
+    // *     returns 2: 'The quick brown fox <br />\njumped over the lazy<br />\n dog.'
+    // *     example 3: wordwrap('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.');
+    // *     returns 3: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod \ntempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim \nveniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea \ncommodo consequat.'
+    // PHP Defaults
+    var m = ((arguments.length >= 2) ? arguments[1] : 75);
+    var b = ((arguments.length >= 3) ? arguments[2] : "\n");
+    var c = ((arguments.length >= 4) ? arguments[3] : false);
+
+    var i, j, l, s, r;
+
+    str += '';
+
+    if (m < 1) {
+        return str;
+    }
+
+    for (i = -1, l = (r = str.split(/\r\n|\n|\r/)).length; ++i < l; r[i] += s) {
+        for (s = r[i], r[i] = ""; s.length > m; r[i] += s.slice(0, j) + ((s = s.slice(j)).length ? b : "")) {
+            j = c == 2 || (j = s.slice(0, m + 1).match(/\S*(\s)?$/))[1] ? m : j.input.length - j[0].length || c == 1 && m || j.input.length + (j = s.slice(m).match(/^\S*/)).input.length;
+        }
+    }
+
+    return r.join("\n");
+};
