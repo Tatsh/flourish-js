@@ -265,14 +265,6 @@ fUTF8.natcmp = function (a, b) {
   return aa.length - bb.length;
 };
 /**
- * @param {string} string
- * @returns {boolean}
- * @private
- */
-fUTF8._detect = function (string) {
-  return !!string.match(/[^\x00-\x7F]/);
-};
-/**
  * Converts all upper-case characters to lower-case.
  * @param {string} string The string to convert.
  * @returns {string} The input string with all upper-case characters in
