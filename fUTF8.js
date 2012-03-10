@@ -299,10 +299,6 @@ fUTF8.upper = function (string) {
 fUTF8.chr = function (charPoint) {
   charPoint = parseInt(charPoint, 10);
 
-  if (isNaN(charPoint)) {
-    return '';
-  }
-
   // https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/String/fromCharCode
   if (charPoint > 0xFFFF) {
     charPoint -= 0x10000;
