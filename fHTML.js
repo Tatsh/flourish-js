@@ -254,7 +254,7 @@ fHTML._decodeHashMap = (function () {
     }
   }
 
-  delete ret['&'];
+  //delete ret['&'];
   ret['&'] = '&amp;';
 
   return ret;
