@@ -1,7 +1,7 @@
 /*jshint expr:true */
-/** @license php.js phpjs.org | http://phpjs.org/pages/license/#MIT
- * alphanum.js (c) Brian Huisman | http://www.gnu.org/licenses/lgpl.html
- * flourish-js | http://www.opensource.org/licenses/mit-license.php
+/** @license php.js phpjs.org | http://phpjs.org/pages/license/#MIT ,
+ * alphanum.js (c) Brian Huisman | http://www.gnu.org/licenses/lgpl.html ,
+ * flourish-js | http://www.opensource.org/licenses/mit-license.php ,
  * Based on original project by Will Bond: http://flourishlib.com/
  */
 
