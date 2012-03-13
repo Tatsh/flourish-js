@@ -26,7 +26,7 @@ var fTimestamp = function (datetime, timezone) {
   var timestamp;
 
   if (timezone !== undefined) {
-    if (!fTimestamp.isValidTimezone(timezone)) {
+    if (!fTimestamp.isValidTimezone(timezone.toString())) {
       fCore.debug('The timezone specified, %s, is not a valid timezone.', timezone);
       return null;
     }
@@ -61,7 +61,7 @@ var fTimestamp = function (datetime, timezone) {
       month = '0' + month;
     }
 
-    timestamp = strtotime(date.getFullYear() + '-' + month + '-' + day);
+    timestamp = +strtotime(date.getFullYear() + '-' + month + '-' + day);
   }
 //   else {
 //     if (typeof datetime === 'object') {
@@ -87,7 +87,7 @@ var fTimestamp = function (datetime, timezone) {
 //   }
 
   if (timestamp === false) {
-    fCore.debug('The date/time specified, %s, does not appear to be a valid date/time', datetime);
+    fCore.debug('The date/time specified, %s, does not appear to be a valid date/time', datetime.toString());
     return null;
   }
 
@@ -576,18 +576,14 @@ fTimestamp._breakPoints =  {
 /**
  * Returns the approximate difference in time, discarding any unit of measure
  *   but the least specific.
- * @param {fTimestamp|Date|string|number} [otherTimestamp] The timestamp to
- *   compare with. If not specified, compares against 'now'.
+ * @param {fTimestamp|Date|string|number|null} [otherTimestamp] The timestamp
+ *   to compare with. If not specified or null, compares against 'now'.
  * @param {boolean} [simple=false] When true, the returned value will include
  *   the difference in the two timestamps, but not 'from now', 'ago', 'after', or 'before'.
  * @return {string} The fuzzy time in English.
  */
 fTimestamp.prototype.getFuzzyDifference = function (otherTimestamp, simple) {
-  // Allows the first argument to take place of second
-  if (otherTimestamp === true || otherTimestamp === false) {
-    simple = otherTimestamp;
-    otherTimestamp = null;
-  }
+  // Does not support having simple be the first argument
 
   var relativeToNow = false;
   if (!otherTimestamp) {
