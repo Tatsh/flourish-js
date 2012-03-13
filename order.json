@@ -13,6 +13,7 @@
   "fCore.js",
   "fDate.js",
   "fNumber.js",
+  "timezone_abbreviations_list.js",
   "fTimestamp.js",
   "fMoney.js"
 ]
