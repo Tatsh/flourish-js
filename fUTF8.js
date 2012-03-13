@@ -580,27 +580,17 @@ fUTF8.ucfirst = function (string) {
 };
 /**
  * Converts the first character of every word to upper-case. Currently, this
- *   only works for ASCII strings.
+ *   only works for ASCII strings.<br>
+ * Thanks to mauke in ##javascript for the regular expression.
  * @param {string} str The string to process.
  * @returns {string} The processed string.
- * @see http://phpjs.org/functions/ucwords:569
  */
 fUTF8.ucwords = function (str) {
-  // TODO Regex needs to be expanded to include other alphabets besides ASCII
-    // http://kevin.vanzonneveld.net
-    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
-    // +   improved by: Waldo Malqui Silva
-    // +   bugfixed by: Onno Marsman
-    // +   improved by: Robin
-    // +      input by: James (http://www.james-bell.co.uk/)
-    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
-    // *     example 1: ucwords('kevin van  zonneveld');
-    // *     returns 1: 'Kevin Van  Zonneveld'
-    // *     example 2: ucwords('HELLO WORLD');
-    // *     returns 2: 'HELLO WORLD'
-    return (str + '').replace(/^([a-z])|\s+([a-z])/g, function ($1) {
-        return $1.toUpperCase();
-    });
+  // JavaScript seems to have less problems with this compared to PHP, so this should work most of the time
+  // 'ⓔ ἡ ᾥ ａ ჴ ց ր' -> Ⓔ Ἡ ᾭ Ａ ჴ Ց Ր
+  return str.replace(/(?:^|\s)\S/g, function ($1) {
+    return $1.toUpperCase();
+  });
 };
 /**
  * Wraps a string to a specific character width.
