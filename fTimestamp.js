@@ -1,8 +1,8 @@
 /**
  * Represents a date and time as a value object.
  * @constructor
- * @param {fTimestamp|Object|string|number|null} [datetime=null] The date/time
- *   to represent. <code>null</code> is interpreted as now.
+ * @param {fTimestamp|Object|string|number|Date|null} [datetime=null] The
+ *   date/time to represent. <code>null</code> is interpreted as now.
  * @param {string|null} [timezone=null] The timezone for the date/time. This
  *   causes date/time to be interpreted as being in the specified timezone.
  * @return {fTimestamp} The timestamp object.
@@ -12,7 +12,7 @@ var fTimestamp = function (datetime, timezone) {
    * @type string
    * @private
    */
-  var defaultTimezone = date_default_timezone_get();
+  var defaultTimezone = fTimestamp.getDefaultTimezone();
   /**
    * @type number
    * @private
@@ -62,11 +62,11 @@ var fTimestamp = function (datetime, timezone) {
 
     timestamp = +strtotime(date.getFullYear() + '-' + month + '-' + day);
   }
-//   else {
-//     if (typeof datetime === 'object') {
-//       if (datetime.getTime) { // Handle if a Date object is passed
-//         timestamp = date.getTime() / 1000;
-//       }
+  else {
+    if (typeof datetime === 'object') {
+      if (datetime.getTime) { // Handle if a Date object is passed
+        timestamp = datetime.getTime() / 1000;
+      }
 //       else if (datetime.toString || numberDatetime === datetime) {
 //         datetime = date.toString();
 //       }
@@ -82,8 +82,8 @@ var fTimestamp = function (datetime, timezone) {
 //       if (timezone !== defaultTimezone) {
 //
 //       }
-//     }
-//   }
+    }
+  }
 
   if (timestamp === false) {
     fCore.debug('The date/time specified, %s, does not appear to be a valid date/time', datetime.toString());
@@ -97,6 +97,12 @@ var fTimestamp = function (datetime, timezone) {
 
   return this;
 };
+/**
+ * The default time zone if set.
+ * @type (string|null)
+ * @private
+ */
+fTimestamp._defaultTimezone = null;
 /**
  * Valid timezones.
  * @type Object
@@ -557,6 +563,24 @@ fTimestamp._validTimezones = {
  */
 fTimestamp.isValidTimezone = function (timezone) {
   return fTimestamp._validTimezones[timezone] !== undefined;
+};
+/**
+ * Set the default timezone. Does nothing if the <code>timezone</code>
+ *   parameter is invalid.
+ * @param {string} timezone A timezone string, such as America/Chicago.
+ */
+fTimestamp.setDefaultTimezone = function (timezone) {
+  if (!fTimestamp.isValidTimezone(timezone)) {
+    return;
+  }
+  fTimestamp._defaultTimezone = timezone;
+};
+/**
+ * Get the default time zone.
+ * @returns {string} The time zone string.
+ */
+fTimestamp.getDefaultTimezone = function () {
+  return fTimestamp._defaultTimezone || date_default_timezone_get();
 };
 /**
  * @const
