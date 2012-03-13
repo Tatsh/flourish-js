@@ -44,7 +44,6 @@ fUTF8.trim = function (str, charlist) {
     // *     returns 3: 6
     var whitespace, l = 0,
         i = 0;
-    str += '';
 
     if (!charlist) {
         // default list
@@ -102,9 +101,9 @@ fUTF8.ltrim = function (str, charlist) {
     // +   bugfixed by: Onno Marsman
     // *     example 1: ltrim('    Kevin van Zonneveld    ');
     // *     returns 1: 'Kevin van Zonneveld    '
-    charlist = !charlist ? ' \\s\u00A0' : (charlist + '').replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '$1');
+    charlist = !charlist ? ' \\s\u00A0' : charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '$1');
     var re = new RegExp('^[' + charlist + ']+', 'g');
-    return (str + '').replace(re, '');
+    return str.replace(re, '');
 };
 
 /**
@@ -222,9 +221,9 @@ fUTF8.rtrim = function (str, charlist) {
   // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
   // *     example 1: rtrim('    Kevin van Zonneveld    ');
   // *     returns 1: '    Kevin van Zonneveld'
-  charlist = !charlist ? ' \\s\u00A0' : (charlist + '').replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\\$1');
+  charlist = !charlist ? ' \\s\u00A0' : charlist.replace(/([\[\]\(\)\.\?\/\*\{\}\+\$\^\:])/g, '\\$1');
   var re = new RegExp('[' + charlist + ']+$', 'g');
-  return (str + '').replace(re, '');
+  return str.replace(re, '');
 };
 /**
  * Compares strings using a natural order algorithm.<br>
@@ -471,7 +470,7 @@ fUTF8.ord = function (string) {
     // *     returns 1: 75
     // *     example 2: ord('\uD800\uDC00'); // surrogate pair to create a single Unicode character
     // *     returns 2: 65536
-    var str = string + '',
+    var str = string,
         code = str.charCodeAt(0);
     if (0xD800 <= code && code <= 0xDBFF) { // High surrogate (could change last hex to 0xDB7F to treat high private surrogates as single characters)
         var hi = code;
