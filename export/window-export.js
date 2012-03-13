@@ -150,6 +150,8 @@ window['fNumber'].prototype['toFloat'] = fNumber.prototype.toFloat; // special
 // fTimestamp
 window['fTimestamp'] = fTimestamp;
 window['fTimestamp']['isValidTimezone'] = fTimestamp.isValidTimezone;
+window['fTimestamp']['setDefaultTimezone'] = fTimestamp.setDefaultTimezone;
+window['fTimestamp']['getDefaultTimezone'] = fTimestamp.getDefaultTimezone;
 window['fTimestamp'].prototype['getFuzzyDifference'] = fTimestamp.prototype.getFuzzyDifference;
 
 // fMoney
