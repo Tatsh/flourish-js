@@ -1,6 +1,5 @@
 /**
- * Note that this does not do anything different from fTime yet.
- * @augments fTime
+ * Represents a date and time as a value object.
  * @constructor
  * @param {fTimestamp|Object|string|number|null} [datetime=null] The date/time
  *   to represent. <code>null</code> is interpreted as now.
