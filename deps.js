@@ -149,6 +149,7 @@ var sprintf = function (fmt, args) {
             minWidth = +a[i++];
         } else if (minWidth.charAt(0) == '*') {
             minWidth = +a[minWidth.slice(1, -1)];
+        }
         else if (!isFinite(minWidth)) {
           minWidth = 0;
         } else {
