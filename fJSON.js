@@ -460,7 +460,7 @@ fJSON.encode = function (mixed_val) {
             '': value
         });
 
-    } catch (err) { // Todo: ensure error handling above throws a SyntaxError in all cases where it could
+    } catch (err) {
         // (i.e., when the JSON global is not available and there is an error)
         if (!(err instanceof SyntaxError)) {
             fCore.debug('Unexpected error type in non-native JSON encoder. Returning null.');
