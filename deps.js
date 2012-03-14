@@ -143,12 +143,14 @@ var sprintf = function (fmt, args) {
 
         // parameters may be null, undefined, empty-string or real valued
         // we want to ignore null, undefined and empty-string values
-        if (!minWidth || !isFinite(minWidth)) {
+        if (!minWidth) {
             minWidth = 0;
         } else if (minWidth == '*') {
             minWidth = +a[i++];
         } else if (minWidth.charAt(0) == '*') {
             minWidth = +a[minWidth.slice(1, -1)];
+        else if (!isFinite(minWidth)) {
+          minWidth = 0;
         } else {
             minWidth = +minWidth;
         }
