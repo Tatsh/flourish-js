@@ -2811,10 +2811,10 @@ var timezone_abbreviations_list = function () {
 
   php_js_shared.tz_prefixes = ['Africa'];
   var americas = ['', 'Argentina', '', 'Indiana', '', 'Kentucky', '', 'North_Dakota', ''];
-  for (var i = 0 ; i < americas.length; i++) {
-    php_js_shared.tz_prefixes.push(americas[i] ? 'America' : 'America/' + americas[i]);
+  for (var i = 0; i < americas.length; i++) {
+    php_js_shared.tz_prefixes.push(americas[i] ? 'America/' + americas[i] : 'America');
   }
-  php_js_shared.tz_prefixes.concat.apply(php_js_shared.tz_prefixes, [
+  php_js_shared.tz_prefixes = php_js_shared.tz_prefixes.concat.apply(php_js_shared.tz_prefixes, [
     'Antarctica',
     'Arctic',
     'Asia',
@@ -2849,7 +2849,7 @@ var timezone_abbreviations_list = function () {
       timezone_id = null;
 
       if (tz_abbrs[city][index][2] !== undefined) {
-        timezone_id = php_js_shared.tz_prefixes[tz_abbrs[city][index][2]] + city;
+        timezone_id = php_js_shared.tz_prefixes[tz_abbrs[city][index][2]] + '/' + city;
       }
 
       list[abbr].push({
