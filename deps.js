@@ -409,11 +409,17 @@ var strtotime = function (str, now) {
 var objectKeys = function (obj, sort) {
   sort === undefined && (sort = false);
 
-  var ret = [];
+  var ret;
 
-  for (var key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      ret.push(key);
+  if (Object.keys) {
+    ret = Object.keys(obj);
+  }
+  else {
+    ret = [];
+    for (var key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        ret.push(key);
+      }
     }
   }
 
