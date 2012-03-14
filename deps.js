@@ -11,7 +11,7 @@
  *   directives: ordinary characters (excluding %) that are copied directly to
  *   the result, and conversion specifications, each of which results in
  *   fetching its own parameter.
- * @param [args] Variable number of arguments specified according to the format
+ * @param {...} [args] Variable number of arguments specified according to the format
  *   string.
  * @returns {string} String with the format specified in the first argument.
  * @see http://www.php.net/manual/en/function.sprintf.php
@@ -412,7 +412,7 @@ var objectKeys = function (obj, sort) {
   var ret;
 
   if (Object.keys) {
-    ret = Object.keys(obj);
+    ret = Object.keys(obj || {});
   }
   else {
     ret = [];
