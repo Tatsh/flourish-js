@@ -143,7 +143,7 @@ var sprintf = function (fmt, args) {
 
         // parameters may be null, undefined, empty-string or real valued
         // we want to ignore null, undefined and empty-string values
-        if (!minWidth) {
+        if (!minWidth || !isFinite(minWidth)) {
             minWidth = 0;
         } else if (minWidth == '*') {
             minWidth = +a[i++];
@@ -159,9 +159,9 @@ var sprintf = function (fmt, args) {
             leftJustify = true;
         }
 
-        if (!isFinite(minWidth)) {
-            throw new Error('sprintf: (minimum-)width must be finite');
-        }
+//         if (!isFinite(minWidth)) {
+//             throw new Error('sprintf: (minimum-)width must be finite');
+//         }
 
         if (!precision) {
             precision = 'fFeE'.indexOf(type) > -1 ? 6 : (type == 'd') ? 0 : undefined;
