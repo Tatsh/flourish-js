@@ -2865,6 +2865,7 @@ var timezone_abbreviations_list = function () {
 };
 
 /**
+ * Get the default timezone from the system.
  * @returns {string} The default timezone.
  */
 var date_default_timezone_get = function () {
