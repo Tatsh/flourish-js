@@ -53,8 +53,8 @@ fRequest._initialize = function () {
  * @param {string} name The key to get the value of.
  * @param {string} [castTo=null] Cast the value to this data type. One of:
  *   'number', 'float', 'bool', 'boolean'.
- * @param {string|number|null} [defaultValue=null] The default value to return
- *   if the key does not exist.
+ * @param {string|number|null|boolean} [defaultValue=null] The default value to
+ *   return if the key does not exist.
  * @param {boolean} [useDefaultForBlank=false] If the request value is a blank
  *   string and <code>defaultValue</code> is specified,
  *   <code>defaultValue</code> will be returned.
