@@ -15,6 +15,7 @@
  *   string.
  * @returns {string} String with the format specified in the first argument.
  * @see http://www.php.net/manual/en/function.sprintf.php
+ * @private
  */
 var sprintf = function (fmt, args) {
     // http://kevin.vanzonneveld.net
@@ -91,6 +92,7 @@ var sprintf = function (fmt, args) {
      * @param {boolean} zeroPad
      * @param {string} [customPadChar]
      * @returns {string}
+     * @private
      */
     var formatString = function (value, leftJustify, minWidth, precision, zeroPad, customPadChar) {
         if (precision !== null) {
@@ -226,6 +228,7 @@ var sprintf = function (fmt, args) {
  * @param {number|Date} [now=null] The timestamp which is used as a base for
  *   the calculation of relative dates.
  * @returns {number|boolean} Returns a timestamp on success, false otherwise.
+ * @private
  */
 var strtotime = function (str, now) {
     // http://kevin.vanzonneveld.net
@@ -408,6 +411,7 @@ var strtotime = function (str, now) {
  * @param {Object} obj The object to get keys from.
  * @param {boolean} [sort=false] Set to <em>true</em> to sort the keys.
  * @returns {Array} Array of strings.
+ * @private
  */
 var objectKeys = function (obj, sort) {
   sort === undefined && (sort = false);

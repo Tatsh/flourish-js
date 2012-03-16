@@ -6,6 +6,7 @@ var _timezone_abbreviations_list = null;
 
 /**
  * Get the timezone abbreviation list. Based on phpjs version.
+ * @private
  * @returns {Object} Timezone abbreviation in format:
  * <ul>
  *   <li>Timezone abbreviation
@@ -2867,6 +2868,7 @@ var timezone_abbreviations_list = function () {
 /**
  * Get the default timezone from the system.
  * @returns {string} The default timezone.
+ * @private
  */
 var date_default_timezone_get = function () {
     // http://kevin.vanzonneveld.net
