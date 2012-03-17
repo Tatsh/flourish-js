@@ -75,10 +75,21 @@ fHTML._inlineElementsStrict = [
   'td'
 ];
 /**
- * Checks a string of HTML for block level elements.
+ * Checks a string of HTML for block level elements. Elements that are by
+ *   default not counted as block-level:
+ * <ul>
+ * <li><code>&lt;link&gt;</code></li>
+ * <li><code>&lt;nav&gt;</code></li>
+ * <li><code>&lt;optgroup&gt;</code></li>
+ * <li><code>&lt;option&gt;</code></li>
+ * <li><code>&lt;summary&gt;</code></li>
+ * <li><code>&lt;tbody&gt;</code></li>
+ * <li><code>&lt;td&gt;</code></li>
+ * </ul>
+ * To check for these elements, set the <code>strict</code> argument to
+ *   <code>true</code>.
  * @param {string} content The HTML content to check.
- * @param {boolean} [strict=false] Do not allow exceptions: &lt;nav&gt,
- *   &lt;optgroup&gt;, etc.
+ * @param {boolean} [strict=false] Do not allow exceptions.
  * @returns {boolean} If the content has a block level tag.
  */
 fHTML.containsBlockLevelHTML = function (content, strict) {
@@ -96,10 +107,6 @@ fHTML.containsBlockLevelHTML = function (content, strict) {
 
   var container = document.createElement('div');
   container.innerHTML = content;
-
-  var inArray = function (nodeName, filter) {
-    return filter.indexOf(nodeName.toLowerCase()) !== -1;
-  };
 
   return (function check(nodes) {
     for (var i = 0; i < nodes.length; i++) {
@@ -120,8 +127,8 @@ fHTML.containsBlockLevelHTML = function (content, strict) {
   })(container.childNodes);
 };
 /**
- * Converts new lines to &lt;br&gt; tags as long as there aren't any block-level
- *   HTML tags present.
+ * Converts new lines to <code>&lt;br&gt;</code> tags as long as there are not
+ *   any block-level HTML tags in the content.
  * @param {string} content The content to display.
  * @returns {string} The content.
  */
@@ -130,7 +137,7 @@ fHTML.convertNewLines = function (content) {
     return content;
   }
 
-  var offset = fHTML._inlineElements.indexOf('br');
+  var offset = arrayIndexOf('br', fHTML._inlineElements);
   var inlineWithoutBr = fHTML._inlineElements.slice(0, offset);
   var add = fHTML._inlineElements.slice(offset + 1);
   inlineWithoutBr = inlineWithoutBr.concat.apply(inlineWithoutBr, add);
@@ -286,16 +293,26 @@ fHTML.encode = function (content) {
   if (typeof content === 'string') {
     content = [content];
   }
-  var div = document.createElement('div');
-  div.innerHTML = content.join('');
-  return div.innerHTML;
+
+  // Mini version of htmlspecialchars()
+  var specialChars = function (str) {
+    var ret = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    ret = ret.replace(/"/g, '&quot;');
+    ret = ret.replace(/'/g, '&#039;');
+    return ret;
+  };
+  for (var i = 0; i < content.length; i++) {
+    content[i] = specialChars(content[i].toString());
+  }
+
+  return content.join('');
 };
 /**
  * Make links within a content string.
  * @param {string} content Content to process.
- * @param {number} [linkTextLength=0] Length of the text within the tag. If
- *   this argument is used, then a title attribute will be on each link with
- *   the full link text.
+ * @param {number} [linkTextLength] Length of the text within the tag. If this
+ *   argument is used, then a title attribute will be on each link with the
+ *   full link text.
  * @returns {string}
  */
 fHTML.makeLinks = function(content, linkTextLength) {
