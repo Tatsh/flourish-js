@@ -1,8 +1,7 @@
 /**
- * Provides date support functions.
- * Copyright (c) 2012 StonerAries.
- * Copyright (c) 2012 Andrew Udvare @tatsh
- * License: http://www.opensource.org/licenses/mit-license.php
+ * Provides date support functions.<br>
+ * Copyright (c) 2012 Charles S.<br>
+ * Improved by Andrew Udvare.
  * @constructor
  */
 var fDate = function (date) {
@@ -106,10 +105,12 @@ fDate.prototype.eq = function (otherDate) {
   return this._date === otherDate._date; // The PHP does it this way
 };
 /**
- * Unlike Flourish, this only compares against 'now'.
+ * Get a fuzzy difference string. Unlike Flourish, this only compares against
+ *   'now'.
  * @return {string} A fuzzy time string in English.
  */
 fDate.prototype.getFuzzyDifference = function () {
+  // TODO Complete implementation
   return (function (breakPoints, value) {
     var now = fDate._now();
     var diff = now - value;
@@ -139,7 +140,7 @@ fDate.prototype.getFuzzyDifference = function () {
   })(fDate._breakPoints, this._date);
 };
 /**
- * Checks if the date is greater.
+ * Checks if the date is greater than the other date.
  * @param {fDate|Object|string|number} [otherDate] The date to compare with.
  * @returns {boolean} If the dates are greater then
  */
@@ -148,7 +149,7 @@ fDate.prototype.gt = function (otherDate) {
   return this._date > otherDate._date;
 };
 /**
- * Checks if our date is greater or equal to.
+ * Checks if our date is greater or equal to the other date.
  * @param {fDate|Object|string|number} [otherDate] The date to compare with.
  * @returns {boolean} If the dates are greater or equal then
  */
@@ -157,7 +158,7 @@ fDate.prototype.gte = function (otherDate) {
   return this._date >= otherDate._date;
 };
 /**
- * Checks if our date is less than.
+ * Checks if our date is less than the other date.
  * @param {fDate|Object|string|number} [otherDate] The date to compare with.
  * @returns {boolean} If the dates are less then
  */
@@ -166,7 +167,7 @@ fDate.prototype.lt = function (otherDate) {
   return this._date < otherDate._date;
 };
 /**
- * Checks if our date is less or equal to.
+ * Checks if our date is less or equal to the other date.
  * @param {fDate|Object|string|number} [otherDate] The date to compare with.
  * @returns {boolean} If the dates are less or equal then
  */
@@ -176,7 +177,7 @@ fDate.prototype.lte = function (otherDate) {
 };
 /**
  * Implements toString().
- * @returns {string} The date in Y-m-d format.
+ * @returns {string} The date in YYYY-mm-dd format.
  */
 fDate.prototype.toString = function () {
   var date = new Date(this._date * 1000);
