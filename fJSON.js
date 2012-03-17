@@ -367,8 +367,6 @@ fJSON.decode = function (json, useNative) {
   }
   matches = replace;
 
-  window.Debug && window.Debug.writeln(matches);
-
   if (matches[0] !== '[' && matches[0] !== '{') {
     return null; // invalid JSON
   }
