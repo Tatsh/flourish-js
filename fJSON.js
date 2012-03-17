@@ -271,7 +271,9 @@ fJSON.scalarize = function (type, element) {
  * @param {string} json JSON string to decode.
  * @param {boolean} [useNative=true] Pass <code>false</code> to force not using
  *   <code>window.JSON</code> (if it is available).
- * @returns {Object|Array|number|string|null} An object, array, string, number, or null.
+ * @returns {*} An object, array, string, number, or null. Can also return
+ *   undefined. However, if the non-native decoder is used, only the mentioned
+ *   types can be returned.
  */
 fJSON.decode = function (json, useNative) {
   if (json === undefined) {
@@ -280,6 +282,8 @@ fJSON.decode = function (json, useNative) {
   if (useNative === undefined) {
     useNative = true;
   }
+
+  var type;
 
   if (window.JSON && window.JSON.parse && useNative) {
     try {
@@ -312,7 +316,6 @@ fJSON.decode = function (json, useNative) {
   var lastKey = null;
   var output = null;
   var container = null;
-  var type;
   var refMatch;
   var newContainer;
   var stackEnd;
