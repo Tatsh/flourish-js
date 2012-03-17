@@ -283,7 +283,7 @@ fJSON.decode = function (json, useNative) {
 
   if (window.JSON && window.JSON.parse && useNative) {
     try {
-      window.JSON.parse(json);
+      return window.JSON.parse(json);
     }
     catch (e) {
       return null;
