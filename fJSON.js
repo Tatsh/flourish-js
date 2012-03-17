@@ -270,19 +270,19 @@ fJSON.scalarize = function (type, element) {
 /**
  * Decode a JSON string.
  * @param {string} json JSON string to decode.
- * @param {boolean} [native=true] Pass <code>false</code> to force not using
+ * @param {boolean} [useNative=true] Pass <code>false</code> to force not using
  *   <code>window.JSON</code> (if it is available).
  * @returns {Object|Array|number|string|null} An object, array, string, number, or null.
  */
-fJSON.decode = function (json, native) {
+fJSON.decode = function (json, useNative) {
   if (json === undefined) {
     return null;
   }
-  if (native === undefined) {
-    native = true;
+  if (useNative === undefined) {
+    useNative = true;
   }
 
-  if (window.JSON && window.JSON.parse && native) {
+  if (window.JSON && window.JSON.parse && useNative) {
     try {
       window.JSON.parse(json);
     }
