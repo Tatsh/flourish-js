@@ -10,12 +10,19 @@ var fRequest = function () {};
 fRequest._REQUEST = null;
 
 /**
+ * Casts the value to a type specified.
  * @private
  * @param {string} value Value to cast.
  * @param {string} to Cast to type. One of 'number' or 'float'.
  * @returns {number|string|boolean}
  */
 fRequest._cast = function (value, to) {
+  var lcValue, trues = {
+    'true': 1,
+    'yes': 1,
+    'on': 1
+  };
+
   switch (to) {
     case 'number':
       return parseInt(value, 10);
@@ -25,7 +32,11 @@ fRequest._cast = function (value, to) {
 
     case 'bool':
     case 'boolean':
-      return !!value;
+      lcValue = value.toLowerCase();
+      if (trues[lcValue] === undefined) {
+        return false;
+      }
+      return true;
   }
 
   return value;
