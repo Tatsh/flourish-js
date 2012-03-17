@@ -1,11 +1,13 @@
 ﻿/**
- * Provides cryptography functions.
- * Copyright (c) 2012 StonerAries.
+ * Provides cryptography functions.<br>
+ * Copyright (c) 2012 Charles S.<br>
+ * Improved by Andrew Udvare.
  * @constructor
  */
 var fCryptography = function () {};
 /**
- * Generates a random number.
+ * Generates a random number. If either parameter passed is invalid
+ *   (<code>NaN</code>), then <code>Math.random().</code> will be called.
  * @param {number} [min=0] The minimum number to generate.
  * @param {number} [max=1] The maximum number to generate.
  * @returns {number} A random number.
@@ -24,12 +26,15 @@ fCryptography.random = function (min, max) {
  * Generates a random string.
  * @param {number} [length=32] The length you want the string to be.
  * @param {string} [type='base64'] The alphabet of string you want generated.
- *   One of: 'alphanumeric', 'base56', 'alpha', 'base36', 'hexadecimal',
- *   'numeric'.
+ *   One of: <code>'alphanumeric'</code>, <code>'base56'</code>,
+ *   <code>'alpha'</code>, <code>'base36'</code>, <code>'hexadecimal'</code>,
+ *   <code>'numeric'</code>, <code>'base64'</code>.
  * @returns {string} Random string.
 */
 fCryptography.randomString = function (length, type) {
-  length === undefined && (length = 32);
+  if (!length) {
+    length = 32;
+  }
 
   var digits = '0123456789';
   var abcdef = 'abcdef';
