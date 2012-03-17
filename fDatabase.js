@@ -1,10 +1,9 @@
+// TODO To write data, use getConnection/getDatabase to get the IDBDatabase object or use an fActiveRecord model.
+// TODO To read data, use getConnection/getDatabase to get the IDBDatabase or use fActiveRecord model/fRecordSet.
+// TODO Fallback? Server-side?
 /**
  * Front end to IndexedDB. For all methods here, if the browser lacks support,
- *   they will all fail silently.
- * TODO To write data, use getConnection/getDatabase to get the IDBDatabase
- *   object or use an fActiveRecord model.
- * TODO To read data, use getConnection/getDatabase to get the IDBDatabase or
- *   use fActiveRecord model/fRecordSet.
+ *   they will fail silently.
  * @constructor
  * @param {string} name Database name to open.
  * @param {string} [version] Version to open. Recommended but not required.
@@ -35,7 +34,7 @@ var fDatabase = function (name, version) {
   this._isConnected = false;
   /**
    * The indexed database.
-   * @type IDBDatabase|null
+   * @type (IDBDatabase|null)
    * @private
    */
   this._database = null;
