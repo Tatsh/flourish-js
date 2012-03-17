@@ -9,7 +9,6 @@ Please read this entire file. To contribute, please follow these rules for new c
   * Only these JSHint annotations are allowed to make exceptions for code (will be expanded as the library grows):
       * `expr`
       * `sub`
-  * The only exception is fJSON which currently uses eval() to decode a JSON string (a non-eval version based on the PHP version is in the works, it is currently commented out); it is the only file allowed to have the `evil` option enabled
 * Code cannot use large dependencies like jQuery, Prototype, etc.
 * Code must work in IE7+, Firefox 3.6+, Chrome public version, Safari 5+
   * Fixes for other browsers such as Opera and Konqueror and older browsers will be accepted.
