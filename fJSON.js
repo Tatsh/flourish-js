@@ -371,7 +371,8 @@ fJSON.decode = function (json, useNative) {
     return null; // invalid JSON
   }
 
-  for (i = 0, match; i < matches.length; i++) {
+  var match;
+  for (i = 0; i < matches.length; i++) {
     match = matches[i];
 
     if (matchedLength === 0) {
