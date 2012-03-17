@@ -345,6 +345,11 @@ fJSON.decode = function (json, useNative) {
              ~x', $json, $matches);
 */
 
+  // IE 7 has trouble with escaped '/' which is \/, so replace all real \ with nothing
+  if (json.indexOf('\/')) {
+    json = json.replace(/\\/g, '');
+  }
+
   // Ugly, just combined version of the above
   matches = json.match(/\[|\]|\{|\}|-?(?:0|[1-9]\d*)(?:\.\d*(?:[eE][+\-]?\d+)?|(?:[eE][+\-]?\d+))|-?(?:0|[1-9]\d*)|true|false|null|,|\:|"(?:(?:(?!\\\\u)[^\\\\"\n\b\f\r\t]+)|\\\\\\\\|\\\\\/|\\\\"|\\\\b|\\\\f|\\\\n|\\\\r|\\\\t|\\\\u[0-9a-fA-F]{4})*"|\s+/g);
 
@@ -352,6 +357,17 @@ fJSON.decode = function (json, useNative) {
   if (matches === null) {
     return json;
   }
+
+  // IE7 creates blanks for some reason
+  var replace = [];
+  for (var i = 0; i < matches.length; i++) {
+    if (matches[i] !== '') {
+      replace.push(matches[i]);
+    }
+  }
+  matches = replace;
+
+  window.Debug && window.Debug.writeln(matches);
 
   if (matches[0] !== '[' && matches[0] !== '{') {
     return null; // invalid JSON
@@ -445,7 +461,7 @@ fJSON.decode = function (json, useNative) {
     }
     else {
       if (refMatch) {
-        container.push(stackEnd);
+        container.push(stackEnd[1]);
         container = stackEnd[1];
       }
       else {
