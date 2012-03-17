@@ -436,3 +436,42 @@ var objectKeys = function (obj, sort) {
 
   return ret;
 };
+/**
+ * Checks if a value exists in an array.
+ * @param {string|number|boolean} value The value to search for.
+ * @param {Array} arr The array to search within.
+ * @returns {boolean} If the value exists in the array.
+ */
+var inArray = function (value, arr) {
+  if (arr.indexOf) {
+    return arr.indexOf(value) !== -1;
+  }
+
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === value) {
+      return true;
+    }
+  }
+
+  return false;
+};
+/**
+ * Get the index of a value within an array.
+ * @param {string|number|boolean} value The value to search for.
+ * @param {Array} arr The array to search within.
+ * @returns {number} The index of <code>value</code> in the array, or
+ *   <code>-1</code> if the value does not exist.
+ */
+var arrayIndexOf = function (value, arr) {
+  if (arr.indexOf) {
+    return arr.indexOf(value);
+  }
+
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === value) {
+      return i;
+    }
+  }
+
+  return -1;
+};
