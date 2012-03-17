@@ -1,7 +1,5 @@
 /**
  * Provides notation conversion support.
- * Copyright 2012 Andrew Udvare.
- * License: http://www.opensource.org/licenses/mit-license.php
  * @constructor
  */
 var fGrammar = function () {};
@@ -27,6 +25,8 @@ fGrammar._camelizeCache = {
   lower: {}
 };
 /**
+ * This method is marked private, but it is intended to be used by extensions
+ *   such as sGrammar.
  * @private
  * @param {string} str
  * @param {string} delimiter
@@ -65,10 +65,8 @@ fGrammar._commonize = function (str, delimiter, cacheToCheck) {
  * Converts a <code>camelCase</code>, human-friendly or
  *   <code>underscore_notation</code> string to
  *   <code>underscore_notation</code>.
- * Port of fGrammar::underscorize() from Flourish.
- *
- * @param {string} str String to underscorize.
- * @returns {string} String, underscorized.
+ * @param {string} str String to underscorise.
+ * @returns {string} String, underscorised.
  */
 fGrammar.underscorize = function (str) {
   return fGrammar._commonize(str, '_', fGrammar._underscorizeCache);
@@ -76,12 +74,8 @@ fGrammar.underscorize = function (str) {
 /**
  * Makes an <code>underscore_notation</code>, <code>camelCase</code>, or
  *   human-friendly string into a human-friendly string.
- * Port of fGrammar::humanize() from Flourish.
- *
  * @param {string} str String to 'humanise'.
  * @returns {string} String, 'humanised.'
- *
- * TODO Check that the handling of common file extensions works
  */
 fGrammar.humanize = function (str) {
   if (fGrammar._humanizeCache[str]) {
@@ -94,6 +88,7 @@ fGrammar.humanize = function (str) {
     str = fGrammar.underscorize(str);
   }
 
+  //TODO Check that this part works; test!
   var regex = /(\b(api|css|gif|html|id|jpg|js|mp3|pdf|php|png|sql|swf|url|xhtml|xml)\b|\b\w)/;
   str = str.replace(/_/g, ' ').replace(regex, function (str, p1) {
     return p1.charAt(0).toUpperCase();
@@ -107,7 +102,7 @@ fGrammar.humanize = function (str) {
  * Converts an <code>underscore_notation</code>, human-friendly or
  *   <code>camelCase</code> string to <code>camelCase</code>.
  * @param {string} str String to convert.
- * @param {boolean} [upper=false] If the camel case should
+ * @param {boolean} [upper=false] If the camel case should be
  *   <code>UpperCamelCase</code>.
  * @param {string} [delimiter] Force a delimiter to be used.
  * @returns {string} The converted string.
@@ -120,10 +115,9 @@ fGrammar.camelize = function (str, upper, delimiter) {
     return fGrammar._camelizeCache.lower[str];
   }
 
-  upper === undefined && (upper = false);
-
-  // This is the only way the compiler can see we are not going to pass
-  //   undefined to the String.prototype.replace() method.
+  if (upper === undefined) {
+    upper = false;
+  }
   if (delimiter === undefined) {
     delimiter = '_';
   }
@@ -172,11 +166,12 @@ fGrammar.camelize = function (str, upper, delimiter) {
 /**
  * Returns the singular or plural form of the word or based on the quantity
  *   specified.
- * @param {number} number The quantity (integer).
+ * @param {number} number The quantity.
  * @param {string} singular The string to be returned for when <code>number =
  *   1</code>.
- * @param {string} plural The string to be returned for when number != 1; use
- *   %d to place the quantity in the string.
+ * @param {string} plural The string to be returned for when
+ *   <code>number != 1</code>; use <code>%d</code> to place the quantity in the
+ *   string.
  * @return {string} The singular or plural form of the word or based on the
  *   quantity specified.
  */
