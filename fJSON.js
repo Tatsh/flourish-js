@@ -173,8 +173,8 @@ fJSON._stack = [];
 
 /**
  * @private
- * @type {number} last
- * @type {string} element
+ * @param {number|null} last
+ * @param {string} element
  * @returns {number}
  */
 fJSON.getElementType = function (last, element) {
@@ -229,43 +229,42 @@ fJSON.getElementType = function (last, element) {
  * @param {number} type
  * @param {string} element
  * @private
- * @@returns {string|number|null|boolean}
+ * @returns {string|number|null|boolean}
  */
 fJSON.scalarize = function (type, element) {
+  var ret = null;
+
   if (type === fJSON.J_INTEGER) {
-    element = parseInt(element, 10);
-    if (isNaN(element)) {
-      element = 0;
+    ret = parseInt(element, 10);
+    if (isNaN(ret)) {
+      ret = 0;
     }
   }
   if (type === fJSON.J_FLOAT) {
-    element = parseFloat(element);
-    if (isNaN(element)) {
-      element = 0;
+    ret = parseFloat(ret);
+    if (isNaN(ret)) {
+      ret = 0;
     }
   }
   if (type === fJSON.J_FALSE) {
-    element = false;
+    ret = false;
   }
   if (type === fJSON.J_TRUE) {
-    element = true;
-  }
-  if (type === fJSON.J_NULL) {
-    element = null;
+    ret = true;
   }
   if (type === fJSON.J_STRING || type === fJSON.J_KEY) {
-    element = element.substr(1, element.length - 2);
+    ret = element.substr(1, element.length - 2);
 
     for (var key in fJSON.controlCharacterMap) {
-      element = element.replace(new RegExp(fJSON.controlCharacterMap[key], 'g'), key);
+      ret = ret.replace(new RegExp(fJSON.controlCharacterMap[key], 'g'), key);
     }
 
-    element = element.replace(/\\\\u([0-9a-fA-F]{4})/, function (m0, m1) {
-      return fUTF8.chr('U+' + m1);
+    ret = ret.replace(/\\\\u([0-9a-fA-F]{4})/, function (m0, m1) {
+      return fUTF8.chr(m1);
     });
   }
 
-  return element;
+  return ret;
 };
 /**
  * Decode a JSON string.
