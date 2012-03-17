@@ -4,7 +4,7 @@
  */
 var fRequest = function () {};
 /**
- * @type Object|null
+ * @type (Object|null)
  * @private
  */
 fRequest._REQUEST = null;
@@ -33,10 +33,7 @@ fRequest._cast = function (value, to) {
     case 'bool':
     case 'boolean':
       lcValue = value.toLowerCase();
-      if (trues[lcValue] === undefined) {
-        return false;
-      }
-      return true;
+      return trues[lcValue] !== undefined;
   }
 
   return value;
