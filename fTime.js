@@ -91,7 +91,7 @@ fTime.prototype._getFuzzyDifferenceCommon = function (breakPoints) {
       }
 
       unitDiff = Math.round(Math.abs(diff) / breakPoints[point][0]);
-      units = fGrammar.inflectOnQuanity(unitDiff, breakPoints[point][1], breakPoints[point][2]);
+      units = fGrammar.inflectOnQuantity(unitDiff, breakPoints[point][1], breakPoints[point][2]);
       break;
     }
   }
