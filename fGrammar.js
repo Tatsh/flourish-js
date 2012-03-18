@@ -175,7 +175,7 @@ fGrammar.camelize = function (str, upper, delimiter) {
  * @return {string} The singular or plural form of the word or based on the
  *   quantity specified.
  */
-fGrammar.inflectOnQuanity = function (number, singular, plural) {
+fGrammar.inflectOnQuantity = function (number, singular, plural) {
   if (number === 0 || number > 1) {
     return plural.replace('%d', String(number));
   }
