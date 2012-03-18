@@ -1,0 +1,739 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="generator" content="JsDoc Toolkit" />
+		
+		<title>JsDoc Reference - fDatabase</title>
+
+		<style type="text/css">
+			/* default.css */
+body
+{
+	font: 12px "Lucida Grande", Tahoma, Arial, Helvetica, sans-serif;
+	width: 800px;
+}
+
+.header
+{
+	clear: both;
+	background-color: #ccc;
+	padding: 8px;
+}
+
+h1
+{
+	font-size: 150%;
+	font-weight: bold;
+	padding: 0;
+	margin: 1em 0 0 .3em;
+}
+
+hr
+{
+	border: none 0;
+	border-top: 1px solid #7F8FB1;
+	height: 1px;
+}
+
+pre.code
+{
+	display: block;
+	padding: 8px;
+	border: 1px dashed #ccc;
+}
+
+#index
+{
+	margin-top: 24px;
+	float: left;
+	width: 160px;
+	position: absolute;
+	left: 8px;
+	background-color: #F3F3F3;
+	padding: 8px;
+}
+
+#content
+{
+	margin-left: 190px;
+	width: 600px;
+}
+
+.classList
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0 0 0 8px;
+	font-family: arial, sans-serif;
+	font-size: 1em;
+	overflow: auto;
+}
+
+.classList li
+{
+	padding: 0;
+	margin: 0 0 8px 0;
+}
+
+.summaryTable { width: 100%; }
+
+h1.classTitle
+{
+	font-size:170%;
+	line-height:130%;
+}
+
+h2 { font-size: 110%; }
+caption, div.sectionTitle
+{
+	background-color: #7F8FB1;
+	color: #fff;
+	font-size:130%;
+	text-align: left;
+	padding: 2px 6px 2px 6px;
+	border: 1px #7F8FB1 solid;
+}
+
+div.sectionTitle { margin-bottom: 8px; }
+.summaryTable thead { display: none; }
+
+.summaryTable td
+{
+	vertical-align: top;
+	padding: 4px;
+	border-bottom: 1px #7F8FB1 solid;
+	border-right: 1px #7F8FB1 solid;
+}
+
+/*col#summaryAttributes {}*/
+.summaryTable td.attributes
+{
+	border-left: 1px #7F8FB1 solid;
+	width: 140px;
+	text-align: right;
+}
+
+td.attributes, .fixedFont
+{
+	line-height: 15px;
+	color: #002EBE;
+	font-family: "Courier New",Courier,monospace;
+	font-size: 13px;
+}
+
+.summaryTable td.nameDescription
+{
+	text-align: left;
+	font-size: 13px;
+	line-height: 15px;
+}
+
+.summaryTable td.nameDescription, .description
+{
+	line-height: 15px;
+	padding: 4px;
+	padding-left: 4px;
+}
+
+.summaryTable { margin-bottom: 8px; }
+
+ul.inheritsList
+{
+	list-style: square;
+	margin-left: 20px;
+	padding-left: 0;
+}
+
+.detailList {
+	margin-left: 20px; 
+	line-height: 15px;
+}
+.detailList dt { margin-left: 20px; }
+
+.detailList .heading
+{
+	font-weight: bold;
+	padding-bottom: 6px;
+	margin-left: 0;
+}
+
+.light, td.attributes, .light a:link, .light a:visited
+{
+	color: #777;
+	font-style: italic;
+}
+
+.fineprint
+{
+	text-align: right;
+	font-size: 10px;
+}
+		</style>
+	</head>
+
+	<body>
+<!-- ============================== header ================================= -->	
+		<!-- begin static/header.html -->
+		<div id="header">
+</div>
+		<!-- end static/header.html -->
+
+<!-- ============================== classes index ============================ -->
+		<div id="index">
+			<!-- begin publish.classesIndex -->
+			<div align="center"><a href="../index.html">Class Index</a>
+| <a href="../files.html">File Index</a></div>
+<hr />
+<h2>Classes</h2>
+<ul class="classList">
+	
+	<li><i><a href="../symbols/_global_.html">_global_</a></i></li>
+	
+	<li><a href="../symbols/fCore.html">fCore</a></li>
+	
+	<li><a href="../symbols/fCryptography.html">fCryptography</a></li>
+	
+	<li><a href="../symbols/fDatabase.html">fDatabase</a></li>
+	
+	<li><a href="../symbols/fDate.html">fDate</a></li>
+	
+	<li><a href="../symbols/fGrammar.html">fGrammar</a></li>
+	
+	<li><a href="../symbols/fHTML.html">fHTML</a></li>
+	
+	<li><a href="../symbols/fJSON.html">fJSON</a></li>
+	
+	<li><a href="../symbols/fMoney.html">fMoney</a></li>
+	
+	<li><a href="../symbols/fNumber.html">fNumber</a></li>
+	
+	<li><a href="../symbols/fRequest.html">fRequest</a></li>
+	
+	<li><a href="../symbols/fSession.html">fSession</a></li>
+	
+	<li><a href="../symbols/fTime.html">fTime</a></li>
+	
+	<li><a href="../symbols/fTimestamp.html">fTimestamp</a></li>
+	
+	<li><a href="../symbols/fURL.html">fURL</a></li>
+	
+	<li><a href="../symbols/fUTF8.html">fUTF8</a></li>
+	
+</ul>
+<hr />
+			<!-- end publish.classesIndex -->
+		</div>
+		
+		<div id="content">
+<!-- ============================== class title ============================ -->
+			<h1 class="classTitle">
+				
+				Class fDatabase
+			</h1>
+
+<!-- ============================== class summary ========================== -->			
+			<p class="description">
+				
+				
+			
+				
+				
+				
+					<br /><i>Defined in: </i> <a href="../symbols/src/fDatabase.js.html">fDatabase.js</a>.
+				
+			</p>
+
+<!-- ============================== constructor summary ==================== -->			
+			
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class fDatabase.">
+				<caption>Class Summary</caption>
+				<thead>
+					<tr>
+						<th scope="col">Constructor Attributes</th>
+						<th scope="col">Constructor Name and Description</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="attributes">&nbsp;</td>
+						<td class="nameDescription" >
+							<div class="fixedFont">
+								<b><a href="../symbols/fDatabase.html#constructor">fDatabase</a></b>(name, version)
+							</div>
+							<div class="description">Front end to IndexedDB.</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			
+
+<!-- ============================== properties summary ===================== -->
+			
+
+<!-- ============================== methods summary ======================== -->
+			
+				
+				
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class fDatabase.">
+					<caption>Method Summary</caption>
+					<thead>
+						<tr>
+							<th scope="col">Method Attributes</th>
+							<th scope="col">Method Name and Description</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#connect">connect</a></b>(cb)
+								</div>
+								<div class="description">Connect to the database.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#getConnection">getConnection</a></b>()
+								</div>
+								<div class="description">Get the IDBDatabase object.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#getErrorHandler">getErrorHandler</a></b>()
+								</div>
+								<div class="description">Gets the error handler.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#getName">getName</a></b>()
+								</div>
+								<div class="description">Gets the database name.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#getVersion">getVersion</a></b>()
+								</div>
+								<div class="description">Get the version of this database.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#isConnected">isConnected</a></b>()
+								</div>
+								<div class="description">Check if the database is opened.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#setConnection">setConnection</a></b>(database)
+								</div>
+								<div class="description">Alias to setDatabase() for compliance.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/fDatabase.html#setDatabase">setDatabase</a></b>(database)
+								</div>
+								<div class="description">Set the database.</div>
+							</td>
+						</tr>
+					
+					</tbody>
+				</table>
+				
+				
+				
+			
+<!-- ============================== events summary ======================== -->
+			
+
+<!-- ============================== constructor details ==================== -->		
+			
+			<div class="details"><a name="constructor"> </a>
+				<div class="sectionTitle">
+					Class Detail
+				</div>
+				
+				<div class="fixedFont">
+						<b>fDatabase</b>(name, version)
+				</div>
+				
+				<div class="description">
+					Front end to IndexedDB. For all methods here, if the browser lacks support,
+  they will fail silently.
+					
+				</div>
+				
+				
+				
+				
+					
+						<dl class="detailList">
+						<dt class="heading">Parameters:</dt>
+						
+							<dt>
+								<span class="light fixedFont">{string}</span>  <b>name</b>
+								
+							</dt>
+								<dd>Database name to open.</dd>
+						
+							<dt>
+								<span class="light fixedFont">{string}</span>  <b>version</b>
+								<i>Optional</i>
+							</dt>
+								<dd>Version to open. Recommended but not required.</dd>
+						
+						</dl>
+					
+					
+					
+					
+					
+						<dl class="detailList">
+						<dt class="heading">Returns:</dt>
+						
+								<dd><span class="light fixedFont">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span> The database object.</dd>
+						
+						</dl>
+					
+					
+					
+
+			</div>
+			
+
+<!-- ============================== field details ========================== -->		
+			
+
+<!-- ============================== method details ========================= -->		
+			
+				<div class="sectionTitle">
+					Method Detail
+				</div>
+				
+					<a name="connect"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span>
+					<b>connect</b>(cb)
+					
+					</div>
+					<div class="description">
+						Connect to the database. All methods that need to connect will call this,
+  so calling this before doing anything is not required.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{function(fDatabase)}</span> <b>cb</b>
+									
+								</dt>
+								<dd>Callback for when the database is opened.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span> The object to allow method chaining.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getConnection"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{IDBDatabase|null}</span>
+					<b>getConnection</b>()
+					
+					</div>
+					<div class="description">
+						Get the IDBDatabase object.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{IDBDatabase|null}</span> The indexed database object, or null.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getErrorHandler"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{function(Error)}</span>
+					<b>getErrorHandler</b>()
+					
+					</div>
+					<div class="description">
+						Gets the error handler.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{function(Error)}</span> The error handler function.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getName"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{string}</span>
+					<b>getName</b>()
+					
+					</div>
+					<div class="description">
+						Gets the database name.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> The database name.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="getVersion"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{string}</span>
+					<b>getVersion</b>()
+					
+					</div>
+					<div class="description">
+						Get the version of this database.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{string}</span> The version string.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="isConnected"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{boolean}</span>
+					<b>isConnected</b>()
+					
+					</div>
+					<div class="description">
+						Check if the database is opened.
+						
+						
+					</div>
+					
+					
+					
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> If the database is opened.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="setConnection"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span>
+					<b>setConnection</b>(database)
+					
+					</div>
+					<div class="description">
+						Alias to setDatabase() for compliance.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{IDBDatabase}</span> <b>database</b>
+									
+								</dt>
+								<dd>Database.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span> The object to allow method chaining.</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
+					<a name="setDatabase"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span>
+					<b>setDatabase</b>(database)
+					
+					</div>
+					<div class="description">
+						Set the database.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{IDBDatabase}</span> <b>database</b>
+									
+								</dt>
+								<dd>Database.</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{<a href="../symbols/fDatabase.html">fDatabase</a>}</span> The object to allow method chaining.</dd>
+							
+							</dl>
+						
+						
+						
+
+					
+				
+			
+			
+<!-- ============================== event details ========================= -->		
+			
+			
+			<hr />
+		</div>
+
+		
+<!-- ============================== footer ================================= -->
+		<div class="fineprint" style="clear:both">
+			
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Sun Mar 18 2012 18:57:58 GMT-0500 (CDT)
+		</div>
+	</body>
+</html>

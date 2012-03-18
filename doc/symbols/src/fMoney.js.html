@@ -1,0 +1,421 @@
+<html><head><meta http-equiv="content-type" content="text/html; charset=utf-8"> <style>
+	.KEYW {color: #933;}
+	.COMM {color: #bbb; font-style: italic;}
+	.NUMB {color: #393;}
+	.STRN {color: #393;}
+	.REGX {color: #339;}
+	.line {border-right: 1px dotted #666; color: #666; font-style: normal;}
+	</style></head><body><pre><span class='line'>  1</span> <span class="COMM">/*jshint sub:true */</span><span class="WHIT">
+<span class='line'>  2</span> </span><span class="COMM">/**
+<span class='line'>  3</span>  * Provides currency function support.
+<span class='line'>  4</span>  * Copyrigh (c) 2012 StonerAries.
+<span class='line'>  5</span>  * License: http://www.opensource.org/licenses/mit-license.php
+<span class='line'>  6</span>  * @constructor
+<span class='line'>  7</span>  * @param {string|fNumber} amount The monetary value to represent, should
+<span class='line'>  8</span>  *   never be a float since those are imprecise.
+<span class='line'>  9</span>  * @param {string} [currency] The currency ISO code for this value.
+<span class='line'> 10</span>  * @returns {fMoney} The money object.
+<span class='line'> 11</span>  */</span><span class="WHIT">
+<span class='line'> 12</span> </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">fMoney</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">amount</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">currency</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 13</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fMoney.defaultCurrency</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'INVALID'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 14</span> </span><span class="WHIT">    </span><span class="NAME">fCore.debug</span><span class="PUNC">(</span><span class="STRN">'No default currency has been set.'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 15</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 16</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'> 17</span> 
+<span class='line'> 18</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 19</span>    * @private
+<span class='line'> 20</span>    * @type string|null
+<span class='line'> 21</span>    */</span><span class="WHIT">
+<span class='line'> 22</span> </span><span class="WHIT">  </span><span class="NAME">this.currency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">currency</span><span class="WHIT"> </span><span class="PUNC">!==</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="NAME">currency</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">fMoney.defaultCurrency</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 23</span> 
+<span class='line'> 24</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 25</span>    * @private
+<span class='line'> 26</span>    * @type number
+<span class='line'> 27</span>    */</span><span class="WHIT">
+<span class='line'> 28</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">precision</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT">  </span><span class="PUNC">+</span><span class="NAME">fMoney.getCurrencyInfo</span><span class="PUNC">(</span><span class="NAME">this.currency</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_PRECISION</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 29</span> 
+<span class='line'> 30</span> </span><span class="WHIT">  </span><span class="COMM">/**
+<span class='line'> 31</span>    * @private
+<span class='line'> 32</span>    * @type fNumber
+<span class='line'> 33</span>    */</span><span class="WHIT">
+<span class='line'> 34</span> </span><span class="WHIT">  </span><span class="NAME">this.amount</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">fNumber</span><span class="PUNC">(</span><span class="NAME">amount</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">precision</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 35</span> 
+<span class='line'> 36</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">this</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 37</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 38</span> </span><span class="COMM">/**
+<span class='line'> 39</span>  * Key for getting the currency name.
+<span class='line'> 40</span>  * @type number
+<span class='line'> 41</span>  */</span><span class="WHIT">
+<span class='line'> 42</span> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_NAME</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 43</span> </span><span class="COMM">/**
+<span class='line'> 44</span>  * Key for getting the currency symbol.
+<span class='line'> 45</span>  * @type number
+<span class='line'> 46</span>  */</span><span class="WHIT">
+<span class='line'> 47</span> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_SYMBOL</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">1</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 48</span> </span><span class="COMM">/**
+<span class='line'> 49</span>  * Key for getting the currency precision.
+<span class='line'> 50</span>  * @type number
+<span class='line'> 51</span>  */</span><span class="WHIT">
+<span class='line'> 52</span> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_PRECISION</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 53</span> </span><span class="COMM">/**
+<span class='line'> 54</span>  * Key for getting the currency value.
+<span class='line'> 55</span>  * @type number
+<span class='line'> 56</span>  */</span><span class="WHIT">
+<span class='line'> 57</span> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_VALUE</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 58</span> </span><span class="COMM">/**
+<span class='line'> 59</span>  * @private
+<span class='line'> 60</span>  * @type string
+<span class='line'> 61</span>  */</span><span class="WHIT">
+<span class='line'> 62</span> </span><span class="NAME">fMoney.defaultCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'INVALID'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 63</span> </span><span class="COMM">/**
+<span class='line'> 64</span>  * @private
+<span class='line'> 65</span>  * @type Object
+<span class='line'> 66</span>  */</span><span class="WHIT">
+<span class='line'> 67</span> </span><span class="NAME">fMoney._currencies</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 68</span> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 69</span> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_NAME</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'United States Dollar'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 70</span> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_SYMBOL</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'$'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 71</span> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_PRECISION</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 72</span> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_VALUE</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'1.00000000'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 73</span> </span><span class="COMM">/**
+<span class='line'> 74</span>  * Define a new currency for fMoney
+<span class='line'> 75</span>  * @param {string} isoCode The ISO code for the currency.
+<span class='line'> 76</span>  * @param {string} name The name of the currency
+<span class='line'> 77</span>  * @param {string} symbol The symbol associated with the currency
+<span class='line'> 78</span>  * @param {number} precision The number of digits after the decimal
+<span class='line'> 79</span>  * @param {string} value The value of the currency
+<span class='line'> 80</span>  * @see http://en.wikipedia.org/wiki/ISO_4217
+<span class='line'> 81</span>  */</span><span class="WHIT">
+<span class='line'> 82</span> </span><span class="NAME">fMoney.defineCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isoCode</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">symbol</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">precision</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 83</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 84</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_NAME</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">name</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 85</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_SYMBOL</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">symbol</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 86</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_PRECISION</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">precision</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 87</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_VALUE</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">value</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 88</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 89</span> </span><span class="COMM">/**
+<span class='line'> 90</span>  * List all the defined currencies.
+<span class='line'> 91</span>  * @param {boolean} [alpha=false] Set to &lt;em>true&lt;/em> if you want the
+<span class='line'> 92</span>  *   currencies in alphabetical order.
+<span class='line'> 93</span>  * @returns {Array} The currency ISO codes. If you set alpha to true they will be
+<span class='line'> 94</span>  * alphabetical order if not they will be in a unsorted order
+<span class='line'> 95</span>  */</span><span class="WHIT">
+<span class='line'> 96</span> </span><span class="NAME">fMoney.getCurrencies</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">alpha</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 97</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">alpha</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'> 98</span> </span><span class="WHIT">    </span><span class="NAME">alpha</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">false</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'> 99</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>100</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">objectKeys</span><span class="PUNC">(</span><span class="NAME">fMoney._currencies</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">alpha</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>101</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>102</span> </span><span class="COMM">/**
+<span class='line'>103</span>  * Retrieve information about a defined currency
+<span class='line'>104</span>  * @param {string} isoCode The iso code of the currency you want to retrieve
+<span class='line'>105</span>  * @param {number} [element] The element of the currency you want to retrieve.
+<span class='line'>106</span>  *   One of the fMoney.CURRENCY_INFO_* consts.
+<span class='line'>107</span>  * @returns {string|Object|number} The information about the retrieved currency.
+<span class='line'>108</span>  */</span><span class="WHIT">
+<span class='line'>109</span> </span><span class="NAME">fMoney.getCurrencyInfo</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isoCode</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">element</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>110</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>111</span> </span><span class="WHIT">    </span><span class="NAME">fCore.debug</span><span class="PUNC">(</span><span class="STRN">'The currency specified, %s, is not a valid currency. Returning empty object.'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isoCode</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>112</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>113</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>114</span> 
+<span class='line'>115</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">element</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>116</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>117</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>118</span> 
+<span class='line'>119</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">element</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>120</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>121</span> </span><span class="COMM">/**
+<span class='line'>122</span>  * Resets the fMoney class back to its default state.
+<span class='line'>123</span>  * @private
+<span class='line'>124</span>  */</span><span class="WHIT">
+<span class='line'>125</span> </span><span class="NAME">fMoney.reset</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>126</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>127</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>128</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_NAME</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'United States Dollar'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>129</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_SYMBOL</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'$'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>130</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_PRECISION</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">2</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>131</span> </span><span class="WHIT">  </span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="STRN">'USD'</span><span class="PUNC">]</span><span class="PUNC">[</span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_VALUE</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'1.00000000'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>132</span> </span><span class="WHIT">  </span><span class="NAME">fMoney.defaultCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'INVALID'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>133</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>134</span> </span><span class="COMM">/**
+<span class='line'>135</span>  * Set the default currency of fMoney
+<span class='line'>136</span>  * @param {string} isoCode The currency to set as the default
+<span class='line'>137</span>  */</span><span class="WHIT">
+<span class='line'>138</span> </span><span class="NAME">fMoney.setDefaultCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">isoCode</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>139</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fMoney._currencies</span><span class="PUNC">[</span><span class="NAME">isoCode</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>140</span> </span><span class="WHIT">    </span><span class="NAME">fCore.debug</span><span class="PUNC">(</span><span class="STRN">'The currency ISO code specified, %s, is not a valid ISO code. Not setting.'</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">isoCode</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>141</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>142</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>143</span> 
+<span class='line'>144</span> </span><span class="WHIT">  </span><span class="NAME">fMoney.defaultCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">isoCode</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>145</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>146</span> </span><span class="COMM">/**
+<span class='line'>147</span>  * List the default currency of fMoney.
+<span class='line'>148</span>  * @returns {string}
+<span class='line'>149</span>  */</span><span class="WHIT">
+<span class='line'>150</span> </span><span class="NAME">fMoney.getDefaultCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>151</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">fMoney.defaultCurrency</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>152</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>153</span> </span><span class="COMM">/**
+<span class='line'>154</span>  * toString implementation.
+<span class='line'>155</span>  * @returns {string} The monetary value without the currency symbol or
+<span class='line'>156</span>  *   thousands separator.
+<span class='line'>157</span>  */</span><span class="WHIT">
+<span class='line'>158</span> </span><span class="NAME">fMoney.prototype.toString</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>159</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.amount.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>160</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>161</span> </span><span class="COMM">/**
+<span class='line'>162</span>  * Returns the fNumber object representing the amount.
+<span class='line'>163</span>  * @returns {fNumber} The amount of this monetary value.
+<span class='line'>164</span>  */</span><span class="WHIT">
+<span class='line'>165</span> </span><span class="NAME">fMoney.prototype.getAmount</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>166</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.amount</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>167</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>168</span> </span><span class="COMM">/**
+<span class='line'>169</span>  * Get the current currency of this object.
+<span class='line'>170</span>  * @returns {string} The currency ISO code.
+<span class='line'>171</span>  */</span><span class="WHIT">
+<span class='line'>172</span> </span><span class="NAME">fMoney.prototype.getCurrency</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>173</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">this.currency</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>174</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>175</span> </span><span class="COMM">// TODO Needs .convert</span><span class="WHIT">
+<span class='line'>176</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>177</span> </span><span class="COMM">//  * Checks if two values are equal</span><span class="WHIT">
+<span class='line'>178</span> </span><span class="COMM">//  * @param {fMoney|string|number} money The money object to compare; a string</span><span class="WHIT">
+<span class='line'>179</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>180</span> </span><span class="COMM">//  * @returns {boolean} If the values are equal</span><span class="WHIT">
+<span class='line'>181</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>182</span> </span><span class="COMM">// fMoney.prototype.eq = function (money) {</span><span class="WHIT">
+<span class='line'>183</span> </span><span class="COMM">//   money = this.makeMoney(money);</span><span class="WHIT">
+<span class='line'>184</span> </span><span class="COMM">//   return this.amount.eq(money.convert(this.currency).amount);</span><span class="WHIT">
+<span class='line'>185</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>186</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>187</span> </span><span class="COMM">//  * Checks if this value is greater then the one passed</span><span class="WHIT">
+<span class='line'>188</span> </span><span class="COMM">//  * @param {fMoney|string|number} money The money object to compare; a string</span><span class="WHIT">
+<span class='line'>189</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>190</span> </span><span class="COMM">//  * @returns {boolean} If the value is greater then the one passed</span><span class="WHIT">
+<span class='line'>191</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>192</span> </span><span class="COMM">// fMoney.prototype.gt = function (money) {</span><span class="WHIT">
+<span class='line'>193</span> </span><span class="COMM">//   money = this.makeMoney(money);</span><span class="WHIT">
+<span class='line'>194</span> </span><span class="COMM">//   return this.amount.gt(money.convert(this.currency).amount);</span><span class="WHIT">
+<span class='line'>195</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>196</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>197</span> </span><span class="COMM">//  * Checks if this value is greater than or equal to the one passed</span><span class="WHIT">
+<span class='line'>198</span> </span><span class="COMM">//  * @param {fMoney|string|number} money The money object to compare; a string</span><span class="WHIT">
+<span class='line'>199</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>200</span> </span><span class="COMM">//  * @returns {boolean} If the value is greater then the one passed</span><span class="WHIT">
+<span class='line'>201</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>202</span> </span><span class="COMM">// fMoney.prototype.gte = function (money){</span><span class="WHIT">
+<span class='line'>203</span> </span><span class="COMM">//   money = this.makeMoney(money);</span><span class="WHIT">
+<span class='line'>204</span> </span><span class="COMM">//   return this.amount.gte(money.convert(this.currency).amount);</span><span class="WHIT">
+<span class='line'>205</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>206</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>207</span> </span><span class="COMM">//  * Checks if this value is less then the one passed</span><span class="WHIT">
+<span class='line'>208</span> </span><span class="COMM">//  * @param {fMoney|string|number} money The money object to compare; a string</span><span class="WHIT">
+<span class='line'>209</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>210</span> </span><span class="COMM">//  * @returns {boolean} If the value is greater then the one passed</span><span class="WHIT">
+<span class='line'>211</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>212</span> </span><span class="COMM">// fMoney.prototype.lt = function (money){</span><span class="WHIT">
+<span class='line'>213</span> </span><span class="COMM">//   money = this.makeMoney(money);</span><span class="WHIT">
+<span class='line'>214</span> </span><span class="COMM">//   return this.amount.lt(money.convert(this.currency).amount);</span><span class="WHIT">
+<span class='line'>215</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>216</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>217</span> </span><span class="COMM">//  * Checks if this value is less than or equal to the one passed</span><span class="WHIT">
+<span class='line'>218</span> </span><span class="COMM">//  * @param {fMoney|string|number} money The money object to compare; a string</span><span class="WHIT">
+<span class='line'>219</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>220</span> </span><span class="COMM">//  * @returns {boolean} If the value is greater then the one passed</span><span class="WHIT">
+<span class='line'>221</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>222</span> </span><span class="COMM">// fMoney.prototype.lte = function (money){</span><span class="WHIT">
+<span class='line'>223</span> </span><span class="COMM">//   money = this.makeMoney(money);</span><span class="WHIT">
+<span class='line'>224</span> </span><span class="COMM">//   return this.amount.lte(money.convert(this.currency).amount);</span><span class="WHIT">
+<span class='line'>225</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>226</span> </span><span class="COMM">/**
+<span class='line'>227</span>  * Turns a string into an fMoney object if a default currency is defined.
+<span class='line'>228</span>  * @private
+<span class='line'>229</span>  * @param {fMoney|string|number} money The value to convert to an fMoney
+<span class='line'>230</span>  *   object.
+<span class='line'>231</span>  * @returns {fMoney|number|string|null} The converted value; null if the value
+<span class='line'>232</span>  *   was invalid or if the default currency is not set for the class.
+<span class='line'>233</span>  */</span><span class="WHIT">
+<span class='line'>234</span> </span><span class="NAME">fMoney.prototype.makeMoney</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">money</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>235</span> </span><span class="WHIT">  </span><span class="COMM">// All fMoney objects have a makeMoney property</span><span class="WHIT">
+<span class='line'>236</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">money.makeMoney</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>237</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">money</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>238</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>239</span> 
+<span class='line'>240</span> </span><span class="WHIT">  </span><span class="COMM">// All JS objects except null and undefined have a toString() method</span><span class="WHIT">
+<span class='line'>241</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">money</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">money.toString</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>242</span> </span><span class="WHIT">    </span><span class="NAME">money</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">money.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>243</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>244</span> 
+<span class='line'>245</span> </span><span class="WHIT">  </span><span class="COMM">// Now just make sure it's not empty, or somehow boolean false</span><span class="WHIT">
+<span class='line'>246</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="PUNC">!</span><span class="NAME">money</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>247</span> </span><span class="WHIT">    </span><span class="NAME">fCore.debug</span><span class="PUNC">(</span><span class="STRN">'The money value specified is not valid.'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>248</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>249</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>250</span> 
+<span class='line'>251</span> </span><span class="WHIT">  </span><span class="COMM">// Class validation</span><span class="WHIT">
+<span class='line'>252</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fMoney.defaultCurrency</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'INVALID'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>253</span> </span><span class="WHIT">    </span><span class="NAME">fCore.debug</span><span class="PUNC">(</span><span class="STRN">'A default currency must be set in order to convert strings or numbers to fMoney objects on the fly.'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>254</span> </span><span class="WHIT">    </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">null</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>255</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>256</span> 
+<span class='line'>257</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="KEYW">new</span><span class="WHIT"> </span><span class="NAME">fMoney</span><span class="PUNC">(</span><span class="NAME">money</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>258</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>259</span> </span><span class="COMM">/**
+<span class='line'>260</span>  * Formats the amount by preceeding the amount with the currency symbol
+<span class='line'>261</span>  *   and adding thousand seperators.
+<span class='line'>262</span>  * @param {boolean} removeZeroFraction If true and all the digits after the
+<span class='line'>263</span>  *   decimal place are 0's the decimal place and all zeros are removed.
+<span class='line'>264</span>  * @returns {string} The formatted (and possibly converted) value.
+<span class='line'>265</span>  */</span><span class="WHIT">
+<span class='line'>266</span> </span><span class="NAME">fMoney.prototype.format</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="KEYW">function</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">removeZeroFraction</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>267</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">number</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">this.toString</span><span class="PUNC">(</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>268</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">parts</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">number.split</span><span class="PUNC">(</span><span class="STRN">'.'</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>269</span> 
+<span class='line'>270</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">integer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">parts</span><span class="PUNC">[</span><span class="NUMB">0</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>271</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">fraction</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">parts</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="NAME">undefined</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="STRN">''</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="NAME">parts</span><span class="PUNC">[</span><span class="NUMB">1</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>272</span> 
+<span class='line'>273</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">sign</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>274</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">integer.charAt</span><span class="PUNC">(</span><span class="NUMB">0</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">'-'</span><span class="PUNC">)</span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>275</span> </span><span class="WHIT">    </span><span class="NAME">sign</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">'-'</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>276</span> </span><span class="WHIT">    </span><span class="NAME">integer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">integer.substr</span><span class="PUNC">(</span><span class="NUMB">1</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>277</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>278</span> 
+<span class='line'>279</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">intSections</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">[</span><span class="PUNC">]</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>280</span> 
+<span class='line'>281</span> </span><span class="WHIT">  </span><span class="KEYW">for</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">integer.length</span><span class="PUNC">-</span><span class="NUMB">3</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">></span><span class="WHIT"> </span><span class="NUMB">0</span><span class="PUNC">;</span><span class="WHIT"> </span><span class="NAME">i</span><span class="WHIT"> </span><span class="PUNC">-</span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>282</span> </span><span class="WHIT">    </span><span class="NAME">intSections.unshift</span><span class="PUNC">(</span><span class="NAME">integer.substr</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>283</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>284</span> </span><span class="WHIT">  </span><span class="NAME">intSections.unshift</span><span class="PUNC">(</span><span class="NAME">integer.substr</span><span class="PUNC">(</span><span class="NAME">i</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NUMB">3</span><span class="PUNC">)</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>285</span> 
+<span class='line'>286</span> </span><span class="WHIT">  </span><span class="KEYW">var</span><span class="WHIT"> </span><span class="NAME">symbol</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">fMoney.getCurrencyInfo</span><span class="PUNC">(</span><span class="NAME">this.currency</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="NAME">fMoney.CURRENCY_INFO_ELEMENT_SYMBOL</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>287</span> </span><span class="WHIT">  </span><span class="NAME">integer</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="NAME">intSections.join</span><span class="PUNC">(</span><span class="STRN">','</span><span class="PUNC">)</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>288</span> </span><span class="WHIT">  </span><span class="NAME">fraction</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">fraction.length</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">?</span><span class="WHIT"> </span><span class="STRN">'.'</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">fraction</span><span class="WHIT"> </span><span class="PUNC">:</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>289</span> 
+<span class='line'>290</span> </span><span class="WHIT">  </span><span class="KEYW">if</span><span class="WHIT"> </span><span class="PUNC">(</span><span class="NAME">removeZeroFraction</span><span class="WHIT"> </span><span class="PUNC">&&</span><span class="WHIT"> </span><span class="NAME">fUTF8.rtrim</span><span class="PUNC">(</span><span class="NAME">fraction</span><span class="PUNC">,</span><span class="WHIT"> </span><span class="STRN">'.0'</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">===</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">)</span><span class="WHIT"> </span><span class="PUNC">{</span><span class="WHIT">
+<span class='line'>291</span> </span><span class="WHIT">    </span><span class="NAME">fraction</span><span class="WHIT"> </span><span class="PUNC">=</span><span class="WHIT"> </span><span class="STRN">''</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>292</span> </span><span class="WHIT">  </span><span class="PUNC">}</span><span class="WHIT">
+<span class='line'>293</span> 
+<span class='line'>294</span> </span><span class="WHIT">  </span><span class="KEYW">return</span><span class="WHIT"> </span><span class="NAME">sign</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">symbol</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">integer</span><span class="WHIT"> </span><span class="PUNC">+</span><span class="WHIT"> </span><span class="NAME">fraction</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>295</span> </span><span class="PUNC">}</span><span class="PUNC">;</span><span class="WHIT">
+<span class='line'>296</span> </span><span class="COMM">// TODO</span><span class="WHIT">
+<span class='line'>297</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>298</span> </span><span class="COMM">//  * Adds monetary value.</span><span class="WHIT">
+<span class='line'>299</span> </span><span class="COMM">//  * @param {fMoney|string|number} addend The money object to add, string or integer.</span><span class="WHIT">
+<span class='line'>300</span> </span><span class="COMM">//  * @returns {fMoney} The sum of the monary values in this currency.</span><span class="WHIT">
+<span class='line'>301</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>302</span> </span><span class="COMM">// fMoney.prototype.add = function (addend) {</span><span class="WHIT">
+<span class='line'>303</span> </span><span class="COMM">//   addend = this.makeMoney(addend);</span><span class="WHIT">
+<span class='line'>304</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>305</span> </span><span class="COMM">//   var convertedAddend = addend.convert(this.currency).amount;</span><span class="WHIT">
+<span class='line'>306</span> </span><span class="COMM">//   var precision = +fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);</span><span class="WHIT">
+<span class='line'>307</span> </span><span class="COMM">//   var newAmount = this.amount.add(convertedAddend, precision + 1).round(precision);</span><span class="WHIT">
+<span class='line'>308</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>309</span> </span><span class="COMM">//   return new fMoney(newAmount, this.currency);</span><span class="WHIT">
+<span class='line'>310</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>311</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>312</span> </span><span class="COMM">//  * Splits the current value into multiple parts ensuring that the sum of the</span><span class="WHIT">
+<span class='line'>313</span> </span><span class="COMM">//  *   results is exactly equal to this amount.</span><span class="WHIT">
+<span class='line'>314</span> </span><span class="COMM">//  * @param {fNumber|string|number} ratio1 The ratio of the first amount to this</span><span class="WHIT">
+<span class='line'>315</span> </span><span class="COMM">//  *   amount.</span><span class="WHIT">
+<span class='line'>316</span> </span><span class="COMM">//  * @param {fNumber|string|number} ratio2 The ratio of the second amount to this</span><span class="WHIT">
+<span class='line'>317</span> </span><span class="COMM">//  *   amount.</span><span class="WHIT">
+<span class='line'>318</span> </span><span class="COMM">//  * @returns {Array} Array of fMoney objects with the correct values.</span><span class="WHIT">
+<span class='line'>319</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>320</span> </span><span class="COMM">// fMoney.prototype.allocate = function (ratio1, ratio2) {</span><span class="WHIT">
+<span class='line'>321</span> </span><span class="COMM">//   var total = new fNumber('0', 10);</span><span class="WHIT">
+<span class='line'>322</span> </span><span class="COMM">//   var ratios = arguments;</span><span class="WHIT">
+<span class='line'>323</span> </span><span class="COMM">//   var monies = [], i;</span><span class="WHIT">
+<span class='line'>324</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>325</span> </span><span class="COMM">//   if (!total.eq('1.0')) {</span><span class="WHIT">
+<span class='line'>326</span> </span><span class="COMM">//     var ratioValues;</span><span class="WHIT">
+<span class='line'>327</span> </span><span class="COMM">//     for (i = 0, ratioValues = []; i &lt; ratios.length; i++) {</span><span class="WHIT">
+<span class='line'>328</span> </span><span class="COMM">//       ratioValues.push(ratios[i].toString());</span><span class="WHIT">
+<span class='line'>329</span> </span><span class="COMM">//     }</span><span class="WHIT">
+<span class='line'>330</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>331</span> </span><span class="COMM">//     fCore.debug('The ratios specified (%s) combined are not equal to 1.', ratioValues.join(', '));</span><span class="WHIT">
+<span class='line'>332</span> </span><span class="COMM">//     return monies;</span><span class="WHIT">
+<span class='line'>333</span> </span><span class="COMM">//   }</span><span class="WHIT">
+<span class='line'>334</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>335</span> </span><span class="COMM">//   var precision = +fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);</span><span class="WHIT">
+<span class='line'>336</span> </span><span class="COMM">//   var smallestAmount;</span><span class="WHIT">
+<span class='line'>337</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>338</span> </span><span class="COMM">//   if (precision === 0) {</span><span class="WHIT">
+<span class='line'>339</span> </span><span class="COMM">//     smallestAmount = new fNumber('1');</span><span class="WHIT">
+<span class='line'>340</span> </span><span class="COMM">//   } else {</span><span class="WHIT">
+<span class='line'>341</span> </span><span class="COMM">//     smallestAmount = new fNumber('0' + fUTF8.pad('', precision - 1, '0') + '1');</span><span class="WHIT">
+<span class='line'>342</span> </span><span class="COMM">//   }</span><span class="WHIT">
+<span class='line'>343</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>344</span> </span><span class="COMM">//   var smallestMoney = new fMoney(smallestAmount, this.currency);</span><span class="WHIT">
+<span class='line'>345</span> </span><span class="COMM">//   var sum = new fNumber('0', precision);</span><span class="WHIT">
+<span class='line'>346</span> </span><span class="COMM">//   var money, newAmount;</span><span class="WHIT">
+<span class='line'>347</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>348</span> </span><span class="COMM">//   for (i = 0, newAmount; i &lt; ratios.length; i++) {</span><span class="WHIT">
+<span class='line'>349</span> </span><span class="COMM">//     newAmount = this.amount.mul(ratios[i]).trunc(precision);</span><span class="WHIT">
+<span class='line'>350</span> </span><span class="COMM">//     sum = sum.add(newAmount, precision + 1).round(precision);</span><span class="WHIT">
+<span class='line'>351</span> </span><span class="COMM">//     monies.push(new fMoney(newAmount, this.currency));</span><span class="WHIT">
+<span class='line'>352</span> </span><span class="COMM">//   }</span><span class="WHIT">
+<span class='line'>353</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>354</span> </span><span class="COMM">//   a: while (sum.lt(this.amount)) {</span><span class="WHIT">
+<span class='line'>355</span> </span><span class="COMM">//       for (i = 0; i &lt; monies.length; i++) {</span><span class="WHIT">
+<span class='line'>356</span> </span><span class="COMM">//         if(sum.eq(this.amount)) {</span><span class="WHIT">
+<span class='line'>357</span> </span><span class="COMM">//           break a;</span><span class="WHIT">
+<span class='line'>358</span> </span><span class="COMM">//         }</span><span class="WHIT">
+<span class='line'>359</span> </span><span class="COMM">//         money = this.add(smallestMoney);</span><span class="WHIT">
+<span class='line'>360</span> </span><span class="COMM">//         sum = sum.add(smallestAmount, precision + 1).round(precision);</span><span class="WHIT">
+<span class='line'>361</span> </span><span class="COMM">//       }</span><span class="WHIT">
+<span class='line'>362</span> </span><span class="COMM">//     }</span><span class="WHIT">
+<span class='line'>363</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>364</span> </span><span class="COMM">//   return monies;</span><span class="WHIT">
+<span class='line'>365</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>366</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>367</span> </span><span class="COMM">//  * Converts this money amount to another currency.</span><span class="WHIT">
+<span class='line'>368</span> </span><span class="COMM">//  * @param {string} newCurrency The ISO code of the currency.</span><span class="WHIT">
+<span class='line'>369</span> </span><span class="COMM">//  * @returns {fMoney} A New fMoney object returning the new amount in a new</span><span class="WHIT">
+<span class='line'>370</span> </span><span class="COMM">//  *   currency.</span><span class="WHIT">
+<span class='line'>371</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>372</span> </span><span class="COMM">// fMoney.prototype.convert = function (newCurrency) {</span><span class="WHIT">
+<span class='line'>373</span> </span><span class="COMM">//   if (newCurrency == this.currency) {</span><span class="WHIT">
+<span class='line'>374</span> </span><span class="COMM">//     return this;</span><span class="WHIT">
+<span class='line'>375</span> </span><span class="COMM">//   }</span><span class="WHIT">
+<span class='line'>376</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>377</span> </span><span class="COMM">//   if (fMoney._currencies[newCurrency] === undefined) {</span><span class="WHIT">
+<span class='line'>378</span> </span><span class="COMM">//     fCore.debug('The currency specified, %s, is not a valid currency.');</span><span class="WHIT">
+<span class='line'>379</span> </span><span class="COMM">//     return this;</span><span class="WHIT">
+<span class='line'>380</span> </span><span class="COMM">//   }</span><span class="WHIT">
+<span class='line'>381</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>382</span> </span><span class="COMM">//   var currencyValue = fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_VALUE).toString();</span><span class="WHIT">
+<span class='line'>383</span> </span><span class="COMM">//   var newCurrencyValue = fMoney.getCurrencyInfo(newCurrency, fMoney.CURRENCY_INFO_ELEMENT_VALUE).toString();</span><span class="WHIT">
+<span class='line'>384</span> </span><span class="COMM">//   var newPrecision = +fMoney.getCurrencyInfo(newCurrency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);</span><span class="WHIT">
+<span class='line'>385</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>386</span> </span><span class="COMM">//   var newAmount = this.amount.mul(currencyValue, 8).div(newCurrencyValue, newPrecision + 1).round(newPrecision);</span><span class="WHIT">
+<span class='line'>387</span> </span><span class="COMM">// </span><span class="WHIT">
+<span class='line'>388</span> </span><span class="COMM">//   return new fMoney(newAmount, newCurrency);</span><span class="WHIT">
+<span class='line'>389</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>390</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>391</span> </span><span class="COMM">//  * Mupltiplies the value times the number passed.</span><span class="WHIT">
+<span class='line'>392</span> </span><span class="COMM">//  * @param {fNumber|string|number} multiplicand The number of times to multiply</span><span class="WHIT">
+<span class='line'>393</span> </span><span class="COMM">//  *   the amount.</span><span class="WHIT">
+<span class='line'>394</span> </span><span class="COMM">//  * @returns {fMoney} The product of the value and the multiplicand passed.</span><span class="WHIT">
+<span class='line'>395</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>396</span> </span><span class="COMM">// fMoney.prototype.mul = function (multiplicand) {</span><span class="WHIT">
+<span class='line'>397</span> </span><span class="COMM">//   var precision = fMoney.getCurrencyInfo(this.currency,fMoney.CURRENCY_INFO_ELEMENT_PRECISION);</span><span class="WHIT">
+<span class='line'>398</span> </span><span class="COMM">//   var newAmount = this.amount.mul(multiplicand, +precision+1).round(+precision);</span><span class="WHIT">
+<span class='line'>399</span> </span><span class="COMM">//   return new fMoney(newAmount, this.currency);</span><span class="WHIT">
+<span class='line'>400</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>401</span> </span><span class="COMM">// /**</span><span class="WHIT">
+<span class='line'>402</span> </span><span class="COMM">//  * Subtracts the value from our current.</span><span class="WHIT">
+<span class='line'>403</span> </span><span class="COMM">//  * @param {fMoney|string|number} subtrahend The money object to sub, a string</span><span class="WHIT">
+<span class='line'>404</span> </span><span class="COMM">//  *   or number will be converted to a default currency.</span><span class="WHIT">
+<span class='line'>405</span> </span><span class="COMM">//  * @returns {fMoney} The difference of the value in this currency.</span><span class="WHIT">
+<span class='line'>406</span> </span><span class="COMM">//  */</span><span class="WHIT">
+<span class='line'>407</span> </span><span class="COMM">// fMoney.prototype.sub = function (subtrahend) {</span><span class="WHIT">
+<span class='line'>408</span> </span><span class="COMM">//   subtrahend = this.makeMoney(subtrahend);</span><span class="WHIT">
+<span class='line'>409</span> </span><span class="COMM">//   var convertedSubtrahend = subtrahend.convert(this.currency).amount;</span><span class="WHIT">
+<span class='line'>410</span> </span><span class="COMM">//   var precision = +fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);</span><span class="WHIT">
+<span class='line'>411</span> </span><span class="COMM">//   var newAmount = this.amount.sub(convertedSubtrahend, precision + 1).round(precision);</span><span class="WHIT">
+<span class='line'>412</span> </span><span class="COMM">//   return new fMoney(newAmount, this.currency);</span><span class="WHIT">
+<span class='line'>413</span> </span><span class="COMM">// };</span><span class="WHIT">
+<span class='line'>414</span> </span></pre></body></html>
