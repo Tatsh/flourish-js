@@ -441,6 +441,7 @@ var objectKeys = function (obj, sort) {
  * @param {string|number|boolean} value The value to search for.
  * @param {Array} arr The array to search within.
  * @returns {boolean} If the value exists in the array.
+ * @private
  */
 var inArray = function (value, arr) {
   if (arr.indexOf) {
@@ -461,6 +462,7 @@ var inArray = function (value, arr) {
  * @param {Array} arr The array to search within.
  * @returns {number} The index of <code>value</code> in the array, or
  *   <code>-1</code> if the value does not exist.
+ * @private
  */
 var arrayIndexOf = function (value, arr) {
   if (arr.indexOf) {
