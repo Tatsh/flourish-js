@@ -698,13 +698,13 @@ fTimestamp.prototype.getFuzzyDifference = function (otherTimestamp, simple) {
     }
 
     if (relativeToNow) {
-      if (diff < 0) { // PHP has >
+      if (diff > 0) {
         return sprintf(prefix + ' from now', unitDiff, units);
       }
       return sprintf(prefix + ' ago', unitDiff, units);
     }
 
-    if (diff < 0) {
+    if (diff > 0) {
       return sprintf(prefix + ' after', unitDiff, units);
     }
 
