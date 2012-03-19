@@ -1,3 +1,6 @@
+# Documentation
+http://tatsh.github.com/flourish-js/
+
 # Contributing
 
 Please read this entire file. To contribute, please follow these rules for new code:
