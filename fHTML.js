@@ -87,8 +87,12 @@ fHTML._inlineElementsStrict = [
  * <li><code>&lt;tbody&gt;</code></li>
  * <li><code>&lt;td&gt;</code></li>
  * </ul>
- * To check for these elements, set the <code>strict</code> argument to
- *   <code>true</code>.
+ * <p>To check for these elements, set the <code>strict</code> argument to
+ *   <code>true</code>.</p>
+ * <p>Note that in IE versions prior to 9, because this uses innerHTML, HTML 5
+ *   elements and other unknown elements do not work unless a solution like
+ *   html5shiv is employed (Modernizr comes with this by default).</p>
+ * <p>http://code.google.com/p/html5shiv/</p>
  * @param {string} content The HTML content to check.
  * @param {boolean} [strict=false] Do not allow exceptions.
  * @returns {boolean} If the content has a block level tag.
