@@ -84,15 +84,30 @@ fGrammar.humanize = function (str) {
 
   var original = str;
 
-  if (str.indexOf(' ') === -1 && str.indexOf('_') !== -1) {
-    str = fGrammar.underscorize(str);
-  }
+  if (str.indexOf(' ') === -1) {
+    if (str.indexOf('_') === -1) {
+      str = fGrammar.underscorize(str);
+    }
 
-  //TODO Check that this part works; test!
-  var regex = /(\b(api|css|gif|html|id|jpg|js|mp3|pdf|php|png|sql|swf|url|xhtml|xml)\b|\b\w)/;
-  str = str.replace(/_/g, ' ').replace(regex, function (str, p1) {
-    return p1.charAt(0).toUpperCase();
-  });
+    str = str.replace(/_/g, ' ');
+
+    // Upper case every word
+    var split = str.split(' ');
+    for (var i = 0; i < split.length; i++) {
+      split[i] = split[i].charAt(0).toUpperCase() + split[i].substr(1);
+    }
+    str = split.join(' ');
+
+    var regex = /(\b(api|css|gif|html|id|jpg|js|mp3|pdf|php|png|sql|swf|url|xhtml|xml)\b)/gi;
+    str = str.replace(regex, function (m0) {
+      return m0.toUpperCase();
+    });
+
+    // Finally, to satisfy "somefile.doc" -> Somefile.Doc
+    str = str.replace(/\.(\w+)$/, function (m0, m1) {
+      return '.' + m1.charAt(0).toUpperCase() + m1.substr(1);
+    });
+  }
 
   fGrammar._humanizeCache[original] = str;
 
