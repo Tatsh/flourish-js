@@ -29,7 +29,7 @@ window['fGrammar'] = {
   'underscorize': fGrammar.underscorize,
   'humanize': fGrammar.humanize,
   'camelize': fGrammar.camelize,
-  'inflectOnQuanity': fGrammar.inflectOnQuanity
+  'inflectOnQuantity': fGrammar.inflectOnQuantity
 };
 
 // fHTML
