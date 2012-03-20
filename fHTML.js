@@ -300,10 +300,13 @@ fHTML.encode = function (content) {
   }
 
   // Mini version of htmlspecialchars()
+  // Needs more work to ensure ampersands between words are replaced
   var specialChars = function (str) {
     var ret = str.replace(/</g, '&lt;').replace(/>/g, '&gt;');
     ret = ret.replace(/"/g, '&quot;');
     ret = ret.replace(/'/g, '&#039;');
+    ret = ret.replace(/&[^\w](\b)?/g, '&amp; ');
+
     return ret;
   };
   for (var i = 0; i < content.length; i++) {
@@ -367,9 +370,9 @@ fHTML.makeLinks = function(content, linkTextLength) {
               scheme = 'mailto:';
             }
 
-            replace = '<a href="' + scheme + matches[j] + '" ';
+            replace = '<a href="' + scheme + matches[j] + '"';
             if (linkTextLength !== undefined) {
-              replace += 'title="' + matches[j] + '"';
+              replace += ' title="' + matches[j] + '"';
             }
             replace += '>' + printedText + '</a>';
 
@@ -396,6 +399,11 @@ fHTML.prepare = function (content) {
 
   var div = document.createElement('div');
   div.innerHTML = content.join('');
+  var ret = div.innerHTML;
 
-  return div.innerHTML;
+  // TODO
+  // BUG IE7,8 'nicely' upper-cases the tags and undoes the quotes where possible
+  // This function should fix that before returning the string
+
+  return ret;
 };
