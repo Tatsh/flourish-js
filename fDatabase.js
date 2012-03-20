@@ -148,21 +148,7 @@ fDatabase.prototype.connect = function (cb) {
     request.onsuccess = function (event) {
       instance.setDatabase(event.target.result);
       instance._isConnected = true;
-
-      var db = instance.getConnection();
-      var version = instance.getVersion();
-
-      if (version !== db.version) {
-        var versionRequest = db.setVersion(version);
-
-        versionRequest.onfailure = instance.getErrorHandler();
-        versionRequest.onsuccess = function () {
-          cb(instance);
-        };
-      }
-      else {
-        cb(instance);
-      }
+      cb(instance);
     };
     request.onfailure = this._errorHandler;
   }
