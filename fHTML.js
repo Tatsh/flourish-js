@@ -44,6 +44,7 @@ fHTML._inlineElements = [
   'q',
   's',
   'samp',
+  'script',
   'select',
   'small',
   'source',
@@ -60,7 +61,7 @@ fHTML._inlineElements = [
   '#text'
 ];
 /**
- * These elements are normally not thought to be block-level in practise most
+ * These elements are normally not thought to be inline-level in practise most
  *   of the time.
  * @type Array
  * @private
@@ -100,7 +101,7 @@ fHTML.containsBlockLevelHTML = function (content, strict) {
   // NOTE This checks both HTML 5 and previous versions
   var inline = fHTML._inlineElements;
 
-  // Many might consider these block-level elements in practise
+  // Many might consider these inline-level elements in practise
   if (strict) {
     inline = inline.concat.apply(inline, fHTML._inlineElementsStrict);
   }
@@ -114,12 +115,12 @@ fHTML.containsBlockLevelHTML = function (content, strict) {
         continue;
       }
 
-      if (!inArray(nodes[i].nodeName, inline)) {
-        return true;
-      }
-
       if (nodes[i].hasChildNodes()) {
         return check(nodes[i].childNodes);
+      }
+
+      if (!inArray(nodes[i].nodeName.toLowerCase(), inline)) {
+        return true;
       }
     }
 
