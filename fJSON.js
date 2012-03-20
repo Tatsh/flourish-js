@@ -190,7 +190,7 @@ fJSON.getElementType = function (last, element) {
   if (element === '}') {
     return fJSON.J_OBJ_CLOSE;
   }
-  if (!isNaN(parseInt(element, 10))) {
+  if (!isNaN(parseInt(element, 10)) && element.indexOf('.') === -1) {
     return fJSON.J_INTEGER;
   }
   if (!isNaN(parseFloat(element))) {
@@ -241,7 +241,7 @@ fJSON.scalarize = function (type, element) {
     }
   }
   if (type === fJSON.J_FLOAT) {
-    ret = parseFloat(ret);
+    ret = parseFloat(element);
     if (isNaN(ret)) {
       ret = 0;
     }
@@ -308,6 +308,17 @@ fJSON.decode = function (json, useNative) {
   json = fUTF8.trim(json);
 
   if (json === '') {
+    return null;
+  }
+
+  // If the value is just true, false, or null return the real value back
+  if (json === 'true' || json === 'false' || json === 'null') {
+    switch (json) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+    }
     return null;
   }
 
@@ -539,7 +550,7 @@ fJSON.encode = function (mixed_val) {
 
         var str = function (key, holder) {
             var gap = '';
-            var indent = '    ';
+            var indent = '';
             var i = 0; // The loop counter.
             var k = ''; // The member key.
             var v = ''; // The member value.
@@ -596,7 +607,7 @@ fJSON.encode = function (mixed_val) {
 
                     // Join all of the elements together, separated with commas, and wrap them in
                     // brackets.
-                    v = partial.length === 0 ? '[]' : gap ? '[\n' + gap + partial.join(',\n' + gap) + '\n' + mind + ']' : '[' + partial.join(',') + ']';
+                    v = partial.length === 0 ? '[]' : gap ? '[' + gap + partial.join(',' + gap) + '' + mind + ']' : '[' + partial.join(',') + ']';
                     gap = mind;
                     return v;
                 }
@@ -613,7 +624,7 @@ fJSON.encode = function (mixed_val) {
 
                 // Join all of the member texts together, separated with commas,
                 // and wrap them in braces.
-                v = partial.length === 0 ? '{}' : gap ? '{\n' + gap + partial.join(',\n' + gap) + '\n' + mind + '}' : '{' + partial.join(',') + '}';
+                v = partial.length === 0 ? '{}' : gap ? '{' + gap + partial.join(',' + gap) + '' + mind + '}' : '{' + partial.join(',') + '}';
                 gap = mind;
                 return v;
             case 'undefined':
