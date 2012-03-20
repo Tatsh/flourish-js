@@ -1,5 +1,17 @@
 # Documentation
+
 http://tatsh.github.com/flourish-js/
+
+# Browser compatibility
+
+* IE 7+
+* Chrome 17+ (probably much earlier too)
+* Firefox 3.6+
+* Safari 5.1+ (and probably 5.0)
+
+# Known issues
+
+* Inconsistent return value from `fHTML.prepare()`. IE versions 6-8 return HTML with uppercased tags and quotes removed from attributes where possible. All other browsers (Chrome 17+, Firefox 3.6+, Safari 5.1+) work fine.
 
 # Contributing
 
