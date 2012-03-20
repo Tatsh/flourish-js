@@ -192,7 +192,7 @@ fGrammar.camelize = function (str, upper, delimiter) {
  */
 fGrammar.inflectOnQuantity = function (number, singular, plural) {
   if (number !== 1) {
-    return plural.replace('%d', number.toString())
+    return plural.replace('%d', number.toString());
   }
   return singular;
 };
