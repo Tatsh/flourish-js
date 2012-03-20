@@ -20,20 +20,38 @@ fRequest._cast = function (value, to) {
   var lcValue, trues = {
     'true': 1,
     'yes': 1,
-    'on': 1
+    'on': 1,
+    'false': 0,
+    'no': 0,
+    'off': 0
   };
+  var original = value;
 
   switch (to) {
     case 'number':
-      return parseInt(value, 10);
+      value =  parseInt(value, 10);
+      if (isNaN(value)) {
+        value = original ? 1 : 0;
+      }
+      break;
 
     case 'float':
-      return parseFloat(value);
+      value = parseFloat(value);
+      if (isNaN(value)) {
+        value = original ? 1 : 0;
+      }
+      break;
 
     case 'bool':
     case 'boolean':
-      lcValue = value.toLowerCase();
-      return trues[lcValue] !== undefined;
+      lcValue = value && value.toLowerCase ? value.toLowerCase() : '';
+      if (trues[lcValue] !== undefined) {
+        value = trues[lcValue] ? true : false;
+      }
+      else {
+        value = original ? true : false;
+      }
+      break;
   }
 
   return value;
@@ -81,15 +99,18 @@ fRequest.get = function (name, castTo, defaultValue, useDefaultForBlank) {
     castTo = 'string';
   }
 
-  if (!fURL.getQueryString() || fRequest._REQUEST[name] === undefined ||
-    (fRequest._REQUEST[name] === '' && useDefaultForBlank)) {
+  var value = fRequest._REQUEST[name];
+
+  if (value === '' && useDefaultForBlank) {
+    return defaultValue;
+  }
+  else if (value === undefined) {
+    value = defaultValue;
+  }
+
+  if (defaultValue !== null) {
     return defaultValue;
   }
 
-  var ret = fRequest._cast(fRequest._REQUEST[name], castTo);
-  if (isNaN(ret) && (castTo === 'number' || castTo === 'float')) {
-    ret = null;
-  }
-
-  return ret;
+  return fRequest._cast(value, castTo);
 };
