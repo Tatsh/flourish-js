@@ -311,11 +311,15 @@ fUTF8.cmp = function (str1, str2) {
 /**
  * Explodes a string on a delimiter.
  * @param {string} string The string to explode.
- * @param {string} [delimiter] The delimiter.
+ * @param {string|null} [delimiter] The delimiter.
  * @returns {Array} The exploded string.
  */
 fUTF8.explode = function (string, delimiter) {
-  if (delimiter === undefined) {
+  if (!string && !delimiter) {
+    return [''];
+  }
+
+  if (!delimiter) {
     return string.split('');
   }
 
