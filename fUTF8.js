@@ -22,7 +22,7 @@ var fUTF8 = function () {};
  * @returns {string} The trimmed string.
  */
 fUTF8.trim = function (str, charlist) {
-    if (str.trim && charlist === undefined) {
+    if (str.trim && !charlist) {
       return str.trim();
     }
 
@@ -90,7 +90,7 @@ fUTF8.trim = function (str, charlist) {
  * @returns {string} The trimmed string.
  */
 fUTF8.ltrim = function (str, charlist) {
-  if (str.trimLeft && charlist === undefined) {
+  if (str.trimLeft && !charlist) {
     return str.trimLeft();
   }
 
@@ -209,7 +209,7 @@ fUTF8.pos = function (haystack, needle, offset) {
  * @returns {string} The trimmed string.
  */
 fUTF8.rtrim = function (str, charlist) {
-  if (str.trimRight && charlist === undefined) {
+  if (str.trimRight && !charlist) {
     return str.trimRight();
   }
   // http://kevin.vanzonneveld.net
@@ -398,16 +398,29 @@ fUTF8.ireplace = function (string, search, replace) {
  * @param {string} needle String to search for.
  * @param {number} [offset=0] The character position to start searching from.
  * @returns {number|boolean} The last position of the character, or boolean
- *   false if it is not found.
+ *   <code>false</code> if it is not found.
  */
 fUTF8.rpos = function (haystack, needle, offset) {
+  // If all three are false-like values, return false
+  if (!haystack && !needle && !offset) {
+    return false;
+  }
+
+  // If the needle is a false-like value, return false
+  if (!needle) {
+    return false;
+  }
+
   var i = -1;
 
-  if (offset !== undefined) {
+  if (offset !== undefined && offset > 0) {
     i = haystack.slice(offset).lastIndexOf(needle);
     if (i !== -1) {
       i += offset;
     }
+  }
+  else if (offset < 0) {
+    i = haystack.slice(Math.abs(offset)).lastIndexOf(needle) + 1;
   }
   else {
     i = haystack.lastIndexOf(needle);
@@ -591,8 +604,26 @@ fUTF8.ucfirst = function (string) {
 fUTF8.ucwords = function (str) {
   // JavaScript seems to have less problems with this compared to PHP, so this should work most of the time
   // 'ⓔ ἡ ᾥ ａ ჴ ց ր' -> Ⓔ Ἡ ᾭ Ａ ჴ Ց Ր
-  return str.replace(/(?:^|\s)\S/g, function ($1) {
-    return $1.toUpperCase();
+  // Can only be the first character
+  var special = {
+    '(': '(',
+    '"': '"',
+    "'": "'",
+    '‘': '‘',
+    '“': '“',
+  };
+  var regex = /^(\w)|\s+(\w)|(\w\'\w)|(\b)?[\("\/\'\u2018\u201c](\w)|(\-\w)/g;
+
+  return str.replace(regex, function (m0) {
+    if (special[m0.charAt(0)] !== undefined && m0.length === 2) {
+      return m0.charAt(0) + m0.charAt(1).toUpperCase();
+    }
+
+    if (m0.length === 3) {
+      return m0.toLowerCase();
+    }
+
+    return m0.toUpperCase();
   });
 };
 /**
