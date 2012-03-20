@@ -1,8 +1,7 @@
 /*jshint sub:true */
 /**
- * Provides currency function support.
- * Copyrigh (c) 2012 StonerAries.
- * License: http://www.opensource.org/licenses/mit-license.php
+ * Provides currency function support.<br>
+ * Copyright (c) 2012 Charles S.
  * @constructor
  * @param {string|fNumber} amount The monetary value to represent, should
  *   never be a float since those are imprecise.
@@ -301,11 +300,11 @@ fMoney.prototype.format = function (removeZeroFraction) {
 //  */
 // fMoney.prototype.add = function (addend) {
 //   addend = this.makeMoney(addend);
-// 
+//
 //   var convertedAddend = addend.convert(this.currency).amount;
 //   var precision = +fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);
 //   var newAmount = this.amount.add(convertedAddend, precision + 1).round(precision);
-// 
+//
 //   return new fMoney(newAmount, this.currency);
 // };
 // /**
@@ -321,36 +320,36 @@ fMoney.prototype.format = function (removeZeroFraction) {
 //   var total = new fNumber('0', 10);
 //   var ratios = arguments;
 //   var monies = [], i;
-// 
+//
 //   if (!total.eq('1.0')) {
 //     var ratioValues;
 //     for (i = 0, ratioValues = []; i < ratios.length; i++) {
 //       ratioValues.push(ratios[i].toString());
 //     }
-// 
+//
 //     fCore.debug('The ratios specified (%s) combined are not equal to 1.', ratioValues.join(', '));
 //     return monies;
 //   }
-// 
+//
 //   var precision = +fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);
 //   var smallestAmount;
-// 
+//
 //   if (precision === 0) {
 //     smallestAmount = new fNumber('1');
 //   } else {
 //     smallestAmount = new fNumber('0' + fUTF8.pad('', precision - 1, '0') + '1');
 //   }
-// 
+//
 //   var smallestMoney = new fMoney(smallestAmount, this.currency);
 //   var sum = new fNumber('0', precision);
 //   var money, newAmount;
-// 
+//
 //   for (i = 0, newAmount; i < ratios.length; i++) {
 //     newAmount = this.amount.mul(ratios[i]).trunc(precision);
 //     sum = sum.add(newAmount, precision + 1).round(precision);
 //     monies.push(new fMoney(newAmount, this.currency));
 //   }
-// 
+//
 //   a: while (sum.lt(this.amount)) {
 //       for (i = 0; i < monies.length; i++) {
 //         if(sum.eq(this.amount)) {
@@ -360,7 +359,7 @@ fMoney.prototype.format = function (removeZeroFraction) {
 //         sum = sum.add(smallestAmount, precision + 1).round(precision);
 //       }
 //     }
-// 
+//
 //   return monies;
 // };
 // /**
@@ -373,18 +372,18 @@ fMoney.prototype.format = function (removeZeroFraction) {
 //   if (newCurrency == this.currency) {
 //     return this;
 //   }
-// 
+//
 //   if (fMoney._currencies[newCurrency] === undefined) {
 //     fCore.debug('The currency specified, %s, is not a valid currency.');
 //     return this;
 //   }
-// 
+//
 //   var currencyValue = fMoney.getCurrencyInfo(this.currency, fMoney.CURRENCY_INFO_ELEMENT_VALUE).toString();
 //   var newCurrencyValue = fMoney.getCurrencyInfo(newCurrency, fMoney.CURRENCY_INFO_ELEMENT_VALUE).toString();
 //   var newPrecision = +fMoney.getCurrencyInfo(newCurrency, fMoney.CURRENCY_INFO_ELEMENT_PRECISION);
-// 
+//
 //   var newAmount = this.amount.mul(currencyValue, 8).div(newCurrencyValue, newPrecision + 1).round(newPrecision);
-// 
+//
 //   return new fMoney(newAmount, newCurrency);
 // };
 // /**
