@@ -191,8 +191,8 @@ fGrammar.camelize = function (str, upper, delimiter) {
  *   quantity specified.
  */
 fGrammar.inflectOnQuantity = function (number, singular, plural) {
-  if (number === 0 || number > 1) {
-    return plural.replace('%d', String(number));
+  if (number !== 1) {
+    return plural.replace('%d', number.toString())
   }
   return singular;
 };
