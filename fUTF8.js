@@ -610,19 +610,14 @@ fUTF8.ucwords = function (str) {
     '"': '"',
     "'": "'",
     '‘': '‘',
-    '“': '“',
+    '“': '“'
   };
-  var regex = /^(\w)|\s+(\w)|(\w\'\w)|(\b)?[\("\/\'\u2018\u201c](\w)|(\-\w)/g;
+  var regex = /\w[’']\w|\b\w/g;
 
   return str.replace(regex, function (m0) {
-    if (special[m0.charAt(0)] !== undefined && m0.length === 2) {
-      return m0.charAt(0) + m0.charAt(1).toUpperCase();
+    if (m0.length > 1) {
+      return m0;
     }
-
-    if (m0.length === 3) {
-      return m0.toLowerCase();
-    }
-
     return m0.toUpperCase();
   });
 };
