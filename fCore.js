@@ -31,6 +31,10 @@ fCore.checkOS = function (args) {
   var ua = navigator.userAgent;
 
   for (i = 0; i < arguments.length; i++) {
+    if (!arguments[i]) {
+      continue;
+    }
+
     if (ua.match(new RegExp(arguments[i], 'i'))) {
       return true;
     }
