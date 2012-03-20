@@ -25,20 +25,20 @@ fRequest._cast = function (value, to) {
     'no': 0,
     'off': 0
   };
-  var original = value;
+  var ret = value;
 
   switch (to) {
     case 'number':
-      value =  parseInt(value, 10);
-      if (isNaN(value)) {
-        value = original ? 1 : 0;
+      ret =  parseInt(value, 10);
+      if (isNaN(ret)) {
+        ret = value ? 1 : 0;
       }
       break;
 
     case 'float':
-      value = parseFloat(value);
-      if (isNaN(value)) {
-        value = original ? 1 : 0;
+      ret = parseFloat(ret);
+      if (isNaN(ret)) {
+        ret = value ? 1 : 0;
       }
       break;
 
@@ -46,15 +46,15 @@ fRequest._cast = function (value, to) {
     case 'boolean':
       lcValue = value && value.toLowerCase ? value.toLowerCase() : '';
       if (trues[lcValue] !== undefined) {
-        value = trues[lcValue] ? true : false;
+        ret = trues[lcValue] ? true : false;
       }
       else {
-        value = original ? true : false;
+        ret = value ? true : false;
       }
       break;
   }
 
-  return value;
+  return ret;
 };
 /**
  * Initialises the class.
