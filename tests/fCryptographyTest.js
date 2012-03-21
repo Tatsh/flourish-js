@@ -8,4 +8,5 @@ test('fCryptography.randomString', function () {
   strictEqual(fCryptography.randomString().length, 32, 'Default random string length is 32');
   strictEqual(fCryptography.randomString(16).length, 16, 'String length 16 passed and returned string length is 16');
   notStrictEqual(fCryptography.randomString(16, 'numeric'), 'a', 'String returned with argument "numeric" has only numbers');
+  notStrictEqual(fCryptography.randomString(16, 'alpha'), '1', 'String returned with argument "alpha" has only letters');
 });
