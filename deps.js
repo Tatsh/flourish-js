@@ -88,15 +88,18 @@ var sprintf = function (fmt, args) {
      * @param {string} value
      * @param {boolean} leftJustify
      * @param {number} minWidth
-     * @param {number|undefined} precision
-     * @param {boolean} zeroPad
+     * @param {number} [precision]
+     * @param {boolean} [zeroPad]
      * @param {string} [customPadChar]
      * @returns {string}
      * @private
      */
     var formatString = function (value, leftJustify, minWidth, precision, zeroPad, customPadChar) {
-        if (precision !== null) {
+        if (precision) {
+          precision = parseInt(precision, 10);
+          if (!isNaN(precision)) {
             value = value.slice(0, precision);
+          }
         }
         return justify(value, '', leftJustify, minWidth, zeroPad, customPadChar);
     };
