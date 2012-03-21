@@ -691,7 +691,7 @@ fTimestamp.prototype.getFuzzyDifference = function (otherTimestamp, simple) {
       }
     }
 
-    var prefix = '%1$s %2$s';
+    var prefix = '%d %s';
 
     if (simple) {
       return sprintf(prefix, unitDiff, units);
