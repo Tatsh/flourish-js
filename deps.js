@@ -53,7 +53,7 @@ var sprintf = function (fmt, args) {
      * @param {string} prefix
      * @param {boolean} leftJustify
      * @param {number} minWidth
-     * @param {boolean} zeroPad
+     * @param {boolean} [zeroPad]
      * @param {string} [customPadChar]
      * @returns {string}
      * @private
