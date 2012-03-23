@@ -79,6 +79,7 @@ fCore.debug = function (fmt, args) {
     // If all of the arguments are compatible with sprintf, call it
     // Safari/Chrome: Can't save a reference to window.console.log and can't use apply with console.log
     // IE8 also cannot use apply with console.log
+    // http://code.google.com/p/chromium/issues/detail?id=119780
     if (window.console && window.console.log) {
       window.console.log(validForSprintf ? sprintf.apply(fCore, arguments) : arguments);
     }
