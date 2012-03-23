@@ -482,7 +482,7 @@ var arrayIndexOf = function (value, arr) {
 };
 /**
  * Check if an object is really an Object (made with <code>{}</code>).
- * @param {object} obj Object to check.
+ * @param {Object} obj Object to check.
  * @returns {boolean} If the variable is an object.
  */
 var objectIsObject = function (obj) {
