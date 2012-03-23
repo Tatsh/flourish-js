@@ -77,19 +77,25 @@ fCore.debug = function (fmt, args) {
     }
 
     // If all of the arguments are compatible with sprintf, call it
-    // Safari/Chrome: Can't save a reference to window.console.log and can't use apply with console.log
-    // IE8 also cannot use apply with console.log
-    // http://code.google.com/p/chromium/issues/detail?id=119780
+    // IE8 and 9 cannot use .apply() with console.log
     if (window.console && window.console.log) {
-      window.console.log(validForSprintf ? sprintf.apply(fCore, arguments) : arguments);
-    }
-    if (window['Debug'] && window['Debug'].writeln) {
-      if (validForSprintf) {
-        window['Debug'].writeln(sprintf.apply(fCore, arguments));
+      var callNormal = function () {
+        window.console.log(validForSprintf ? sprintf.apply(fCore, arguments) : arguments);
+      };
+      if (window.console.log.apply) {
+        try {
+          window.console.log.apply(window.console, validForSprintf ? [sprintf.apply(fCore, arguments)] : arguments);
+        }
+        catch (e) {
+          callNormal();
+        }
       }
       else {
-        window['Debug'].writeln.apply(window, arguments);
+        callNormal();
       }
+    }
+    else if (window['Debug'] && window['Debug'].writeln) {
+      window['Debug'].writeln.apply(window, validForSprintf ? [sprintf.apply(fCore, arguments)] : arguments);
     }
     else if (window['opera'] && window['opera'].postError) {
       window['opera'].postError(validForSprintf ? sprintf.apply(fCore, arguments) : arguments);
