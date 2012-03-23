@@ -1,3 +1,4 @@
+/*jshint evil:true */
 /**
  * JSON encoding and decoding.
  * @constructor
@@ -270,7 +271,8 @@ fJSON.scalarize = function (type, element) {
  * Decode a JSON string.
  * @param {string} json JSON string to decode.
  * @param {boolean} [useNative=true] Pass <code>false</code> to force not using
- *   <code>window.JSON</code> (if it is available).
+ *   <code>window.JSON</code> (if it is available) or the other native fallback
+ *   that uses <code>eval()</code> (based on json2).
  * @returns {*} An object, array, string, number, or null. Can also return
  *   undefined. However, if the non-native decoder is used, only the mentioned
  *   types can be returned.
@@ -283,8 +285,6 @@ fJSON.decode = function (json, useNative) {
     useNative = true;
   }
 
-  var type;
-
   if (window.JSON && window.JSON.parse && useNative) {
     try {
       return window.JSON.parse(json);
@@ -293,9 +293,67 @@ fJSON.decode = function (json, useNative) {
       return null;
     }
   }
+  else if (useNative) {
+    // http://kevin.vanzonneveld.net
+    // +      original by: Public Domain (http://www.json.org/json2.js)
+    // + reimplemented by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      improved by: T.J. Leahy
+    // +      improved by: Michael White
+    // +      edited by: Andrew Udvare (for use by fJSON)
+    // *        example 1: json_decode('[\n    "e",\n    {\n    "pluribus": "unum"\n}\n]');
+    // *        returns 1: ['e', {pluribus: 'unum'}]
+/*
+        http://www.JSON.org/json2.js
+        2008-11-19
+        Public Domain.
+        NO WARRANTY EXPRESSED OR IMPLIED. USE AT YOUR OWN RISK.
+        See http://www.JSON.org/js.html
+    */
+    var cx = /[\u0000\u00ad\u0600-\u0604\u070f\u17b4\u17b5\u200c-\u200f\u2028-\u202f\u2060-\u206f\ufeff\ufff0-\uffff]/g;
+    var j;
+    var text = json.toString();
 
+    // Parsing happens in four stages. In the first stage, we replace certain
+    // Unicode characters with escape sequences. JavaScript handles many characters
+    // incorrectly, either silently deleting them, or treating them as line endings.
+    cx.lastIndex = 0;
+    if (cx.test(text)) {
+      text = text.replace(cx, function (a) {
+        return '\\u' + ('0000' + a.charCodeAt(0).toString(16)).slice(-4);
+      });
+    }
+
+    // In the second stage, we run the text against regular expressions that look
+    // for non-JSON patterns. We are especially concerned with '()' and 'new'
+    // because they can cause invocation, and '=' because it can cause mutation.
+    // But just to be safe, we want to reject all unexpected forms.
+    // We split the second stage into 4 regexp operations in order to work around
+    // crippling inefficiencies in IE's and Safari's regexp engines. First we
+    // replace the JSON backslash pairs with '@' (a non-JSON character). Second, we
+    // replace all simple value tokens with ']' characters. Third, we delete all
+    // open brackets that follow a colon or comma or that begin the text. Finally,
+    // we look to see that the remaining characters are only whitespace or ']' or
+    // ',' or ':' or '{' or '}'. If that is so, then the text is safe for eval.
+    var testText = text.replace(/\\(?:["\\\/bfnrt]|u[0-9a-fA-F]{4})/g, '@');
+    testText = testText.replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']');
+    testText = testText.replace(/(?:^|:|,)(?:\s*\[)+/g, '');
+
+    if (/^[\],:{}\s]*$/.test(testText)) {
+      // In the third stage we use the eval function to compile the text into a
+      // JavaScript structure. The '{' operator is subject to a syntactic ambiguity
+      // in JavaScript: it can begin a block or an object literal. We wrap the text
+      // in parens to eliminate the ambiguity.
+      return eval('(' + text + ')');
+    }
+
+    fJSON.lastError = 4;
+    return null;
+  }
+
+  // NOTE This port is much slower than JSON.parse and eval (~2% the speed of either Chrome). It is only here for study purposes.
   fJSON._stack = [];
 
+  var type;
   var intNumber = parseInt(json, 10);
   var floatNumber = parseFloat(json);
   if (intNumber.toString() === json) {
