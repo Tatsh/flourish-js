@@ -480,3 +480,29 @@ var arrayIndexOf = function (value, arr) {
 
   return -1;
 };
+/**
+ * Check if an object is really an Object (made with <code>{}</code>).
+ * @param {object} obj Object to check.
+ * @returns {boolean} If the variable is an object.
+ */
+var objectIsObject = function (obj) {
+  if (Object.prototype.toString.call(obj) !== '[object Object]') {
+    return false;
+  }
+
+  for (var key in obj) {}
+
+  return !key || Object.hasOwnProperty(obj, key);
+};
+/**
+ * Check if an array is an actual array (and not array-like).
+ * @param {Array} arr Array to check.
+ * @returns {boolean} If the variable is an array.
+ */
+var arrayIsArray = function (arr) {
+  if (Array.isArray) {
+    return Array.isArray(arr);
+  }
+
+  return Object.prototype.toString.call(arr) === '[object Array]';
+};
