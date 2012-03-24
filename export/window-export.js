@@ -48,6 +48,14 @@ window['fJSON'] = {
   'encode': fJSON.encode
 };
 
+window['fCache'] = {
+  'add': fCache.add,
+  'clear': fCache.clear,
+  'deleteKey': fCache.deleteKey,
+  'get': fCache.get,
+  'set': fCache.set
+};
+
 // fRequest
 window['fRequest'] = {
   'get': fRequest.get

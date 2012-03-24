@@ -6,6 +6,7 @@
   "fHTML.js",
   "fUTF8.js",
   "fJSON.js",
+  "fCache.js",
   "fURL.js",
   "fRequest.js",
   "fSession.js",
