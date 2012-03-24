@@ -19,7 +19,8 @@ fCache.store = window.localStorage || window.globalStorage[location.hostname];
  * Tries to set a value to the cache, but stops if a value already exists.
  * @param {string} key The key store as.
  * @param {Object|Array|string|number|boolean} value The value to store. Will
- *   be serialised into a string.
+ *   be serialised into a string. The <code>null</code> literal value will be
+ *   ignored.
  * @returns {boolean} If the key/value pair were added successfully.
  */
 fCache.add = function (key, value) {
@@ -120,8 +121,9 @@ fCache.get = function (key, defaultValue) {
 /**
  * Sets a value to the cache, overriding any previous value.
  * @param {string} key The key to store as.
- * @param {Object|boolean|number|string} value The value to store.  Will be serialised into a string. The
- *   <code>null</code> literal value will be ignored.
+ * @param {Object|Array|boolean|number|string} value The value to store. Will
+ *   be serialised into a string. The <code>null</code> literal value will be
+ *   ignored.
  */
 fCache.set = function (key, value) {
   if (!fCache._isSupported || value === null) {
