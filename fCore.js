@@ -48,8 +48,8 @@ fCore.checkOS = function (args) {
   *   in IE versions prior to 8, you must have debugging enabled ('Disable
   *   Debugging' not checked) and have Visual Studio attached to the Script
   *   process (<em>Script,x86</em>).</p>
-  * <p>If the arguments passed are valid for sprintf() it will be used.
-  *   Otherwise, the <code>arguments</code> will be logged.</p>
+  * <p>If the arguments passed are valid for <code>sprintf()</code> it will be
+  *   used. Otherwise, the <code>arguments</code> will be logged as is.</p>
   * @param {*} fmt The format string is composed of zero or more directives:
   *   ordinary characters (excluding <code>%</code>) that are copied directly
   *   to the result, and conversion specifications, each of which results in
