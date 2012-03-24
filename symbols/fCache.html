@@ -5,7 +5,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<meta name="generator" content="JsDoc Toolkit" />
 		
-		<title>JsDoc Reference - fSession</title>
+		<title>JsDoc Reference - fCache</title>
 
 		<style type="text/css">
 			/* default.css */
@@ -232,7 +232,7 @@ ul.inheritsList
 <!-- ============================== class title ============================ -->
 			<h1 class="classTitle">
 				
-				Class fSession
+				Class fCache
 			</h1>
 
 <!-- ============================== class summary ========================== -->			
@@ -243,13 +243,13 @@ ul.inheritsList
 				
 				
 				
-					<br /><i>Defined in: </i> &lt;./fSession.js&gt;.
+					<br /><i>Defined in: </i> &lt;./fCache.js&gt;.
 				
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
 			
-			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class fSession.">
+			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class fCache.">
 				<caption>Class Summary</caption>
 				<thead>
 					<tr>
@@ -262,9 +262,9 @@ ul.inheritsList
 						<td class="attributes">&nbsp;</td>
 						<td class="nameDescription" >
 							<div class="fixedFont">
-								<b><a href="../symbols/fSession.html#constructor">fSession</a></b>()
+								<b><a href="../symbols/fCache.html#constructor">fCache</a></b>()
 							</div>
-							<div class="description">Front end to web sessionStorage object for browsers that support it.</div>
+							<div class="description">Front-end to <code>localStorage</code> for browsers that support it.</div>
 						</td>
 					</tr>
 				</tbody>
@@ -278,7 +278,7 @@ ul.inheritsList
 			
 				
 				
-				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class fSession.">
+				<table class="summaryTable" cellspacing="0" summary="A summary of the methods documented in the class fCache.">
 					<caption>Method Summary</caption>
 					<thead>
 						<tr>
@@ -291,54 +291,45 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.add">add</a></b>(key, value, beginning)
+								<div class="fixedFont">fCache.<b><a href="../symbols/fCache.html#.add">add</a></b>(key, value)
 								</div>
-								<div class="description">Add a value.</div>
+								<div class="description">Tries to set a value to the cache, but stops if a value already exists.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.clear">clear</a></b>(prefix)
+								<div class="fixedFont">fCache.<b><a href="../symbols/fCache.html#.clear">clear</a></b>()
 								</div>
-								<div class="description">Removes all session values with the provided prefix.</div>
+								<div class="description">Clears the whole cache of every key.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.deleteKey">deleteKey</a></b>(key, defaultValue)
+								<div class="fixedFont">fCache.<b><a href="../symbols/fCache.html#.deleteKey">deleteKey</a></b>(key)
 								</div>
-								<div class="description">Delete a value.</div>
+								<div class="description">Deletes a value from the cache.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.destroy">destroy</a></b>()
+								<div class="fixedFont">fCache.<b><a href="../symbols/fCache.html#.get">get</a></b>(key, defaultValue)
 								</div>
-								<div class="description">Deletes all values in the session storage.</div>
+								<div class="description">Returns a value from the cache.</div>
 							</td>
 						</tr>
 					
 						<tr>
 							<td class="attributes">&lt;static&gt; &nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.get">get</a></b>(key, defaultValue)
+								<div class="fixedFont">fCache.<b><a href="../symbols/fCache.html#.set">set</a></b>(key, value)
 								</div>
-								<div class="description">Get data from the session storage.</div>
-							</td>
-						</tr>
-					
-						<tr>
-							<td class="attributes">&lt;static&gt; &nbsp;</td>
-							<td class="nameDescription">
-								<div class="fixedFont">fSession.<b><a href="../symbols/fSession.html#.set">set</a></b>(key, value)
-								</div>
-								<div class="description">Set data to session storage.</div>
+								<div class="description">Sets a value to the cache, overriding any previous value.</div>
 							</td>
 						</tr>
 					
@@ -359,12 +350,12 @@ ul.inheritsList
 				</div>
 				
 				<div class="fixedFont">
-						<b>fSession</b>()
+						<b>fCache</b>()
 				</div>
 				
 				<div class="description">
-					Front end to web sessionStorage object for browsers that support it. There
-  is no fallback yet.
+					Front-end to <code>localStorage</code> for browsers that support it. Will
+  use <code>globalStorage</code> as a fallback if it is available.
 					
 				</div>
 				
@@ -375,6 +366,13 @@ ul.inheritsList
 					
 					
 					
+					
+						<dl class="detailList">
+						<dt class="heading">Returns:</dt>
+						
+								<dd><span class="light fixedFont">{<a href="../symbols/fCache.html">fCache</a>}</span> The object.</dd>
+						
+						</dl>
 					
 					
 					
@@ -394,12 +392,12 @@ ul.inheritsList
 					<a name=".add"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					
-					<span class="light">fSession.</span><b>add</b>(key, value, beginning)
+					<span class="light">{boolean}</span>
+					<span class="light">fCache.</span><b>add</b>(key, value)
 					
 					</div>
 					<div class="description">
-						Add a value. Object key access is not supported.
+						Tries to set a value to the cache, but stops if a value already exists.
 						
 						
 					</div>
@@ -414,25 +412,27 @@ ul.inheritsList
 									<span class="light fixedFont">{string}</span> <b>key</b>
 									
 								</dt>
-								<dd>Key.</dd>
+								<dd>The key store as.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string|number|boolean}</span> <b>value</b>
+									<span class="light fixedFont">{Object|Array|string|number|boolean}</span> <b>value</b>
 									
 								</dt>
-								<dd>Value to store.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{boolean}</span> <b>beginning</b>
-									
-								</dt>
-								<dd>If the value should be added to the beginning.</dd>
+								<dd>The value to store. Will
+  be serialised into a string.</dd>
 							
 							</dl>
 						
 						
 						
 						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{boolean}</span> If the key/value pair were added successfully.</dd>
+							
+							</dl>
 						
 						
 						
@@ -443,28 +443,17 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">fSession.</span><b>clear</b>(prefix)
+					<span class="light">fCache.</span><b>clear</b>()
 					
 					</div>
 					<div class="description">
-						Removes all session values with the provided prefix.
+						Clears the whole cache of every key. Use with caution!
 						
 						
 					</div>
 					
 					
 					
-						
-							<dl class="detailList">
-							<dt class="heading">Parameters:</dt>
-							
-								<dt>
-									<span class="light fixedFont">{string|null}</span> <b>prefix</b>
-									<i>Optional, Default: null</i>
-								</dt>
-								<dd>Prefix to clear all session values for.</dd>
-							
-							</dl>
 						
 						
 						
@@ -478,13 +467,13 @@ ul.inheritsList
 					<a name=".deleteKey"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{string|null}</span>
-					<span class="light">fSession.</span><b>deleteKey</b>(key, defaultValue)
+					<span class="light">{boolean}</span>
+					<span class="light">fCache.</span><b>deleteKey</b>(key)
 					
 					</div>
 					<div class="description">
-						Delete a value. This cannot be called <code>delete</code> because
-  <code>delete</code> is a reserved word in JavaScript.
+						Deletes a value from the cache. Has to be named this because the
+  <code>delete</code> keyword is reserved.
 						
 						
 					</div>
@@ -499,14 +488,7 @@ ul.inheritsList
 									<span class="light fixedFont">{string}</span> <b>key</b>
 									
 								</dt>
-								<dd>Key. Object key access is not supported.</dd>
-							
-								<dt>
-									<span class="light fixedFont">{string|null}</span> <b>defaultValue</b>
-									<i>Optional, Default: null</i>
-								</dt>
-								<dd>The default value to return if
-  <code>key</code> is not set.</dd>
+								<dd>The key to delete.</dd>
 							
 							</dl>
 						
@@ -517,34 +499,9 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{string|null}</span> The value of the key that was deleted.</dd>
+								<dd><span class="light fixedFont">{boolean}</span> If the delete succeeded.</dd>
 							
 							</dl>
-						
-						
-						
-
-					<hr />
-				
-					<a name=".destroy"> </a>
-					<div class="fixedFont">&lt;static&gt; 
-					
-					
-					<span class="light">fSession.</span><b>destroy</b>()
-					
-					</div>
-					<div class="description">
-						Deletes all values in the session storage.
-						
-						
-					</div>
-					
-					
-					
-						
-						
-						
-						
 						
 						
 						
@@ -554,12 +511,12 @@ ul.inheritsList
 					<a name=".get"> </a>
 					<div class="fixedFont">&lt;static&gt; 
 					
-					<span class="light">{string|null}</span>
-					<span class="light">fSession.</span><b>get</b>(key, defaultValue)
+					<span class="light">{*}</span>
+					<span class="light">fCache.</span><b>get</b>(key, defaultValue)
 					
 					</div>
 					<div class="description">
-						Get data from the session storage.
+						Returns a value from the cache.
 						
 						
 					</div>
@@ -574,14 +531,14 @@ ul.inheritsList
 									<span class="light fixedFont">{string}</span> <b>key</b>
 									
 								</dt>
-								<dd>Key. Object key access is not supported.</dd>
+								<dd>The key to return the value for.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string|null}</span> <b>defaultValue</b>
-									<i>Optional, Default: null</i>
+									<span class="light fixedFont">{*}</span> <b>defaultValue</b>
+									<i>Optional</i>
 								</dt>
-								<dd>The default value to return if
-  <code>key</code> does not exist.</dd>
+								<dd>The default value to return if the key did
+  not exist.</dd>
 							
 							</dl>
 						
@@ -592,7 +549,8 @@ ul.inheritsList
 							<dl class="detailList">
 							<dt class="heading">Returns:</dt>
 							
-								<dd><span class="light fixedFont">{string|null}</span> The key value.</dd>
+								<dd><span class="light fixedFont">{*}</span> The cached value or the default value if no cached value was
+  found. Can return <code>undefined</code>.</dd>
 							
 							</dl>
 						
@@ -605,11 +563,11 @@ ul.inheritsList
 					<div class="fixedFont">&lt;static&gt; 
 					
 					
-					<span class="light">fSession.</span><b>set</b>(key, value)
+					<span class="light">fCache.</span><b>set</b>(key, value)
 					
 					</div>
 					<div class="description">
-						Set data to session storage.
+						Sets a value to the cache, overriding any previous value.
 						
 						
 					</div>
@@ -624,13 +582,14 @@ ul.inheritsList
 									<span class="light fixedFont">{string}</span> <b>key</b>
 									
 								</dt>
-								<dd>Key to set.</dd>
+								<dd>The key to store as.</dd>
 							
 								<dt>
-									<span class="light fixedFont">{string|boolean|number}</span> <b>value</b>
+									<span class="light fixedFont">{Object|boolean|number|string}</span> <b>value</b>
 									
 								</dt>
-								<dd>Value to set.</dd>
+								<dd>The value to store.  Will be serialised into a string. The
+  <code>null</code> literal value will be ignored.</dd>
 							
 							</dl>
 						
