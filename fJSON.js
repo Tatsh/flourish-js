@@ -554,7 +554,7 @@ fJSON.decode = function (json, useNative) {
 };
 /**
  * Encode a JavaScript object to a JSON string.
- * @param {Array|Object|number|string} mixed_val Value to encode.
+ * @param {Array|Object|number|string|boolean} mixed_val Value to encode.
  * @returns {string|null} JSON string or <code>null</code>.
  */
 fJSON.encode = function (mixed_val) {
