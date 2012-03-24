@@ -484,6 +484,7 @@ var arrayIndexOf = function (value, arr) {
  * Check if an object is really an Object (made with <code>{}</code>).
  * @param {Object} obj Object to check.
  * @returns {boolean} If the variable is an object.
+ * @private
  */
 var objectIsObject = function (obj) {
   if (Object.prototype.toString.call(obj) !== '[object Object]') {
@@ -498,6 +499,7 @@ var objectIsObject = function (obj) {
  * Check if an array is an actual array (and not array-like).
  * @param {Array} arr Array to check.
  * @returns {boolean} If the variable is an array.
+ * @private
  */
 var arrayIsArray = function (arr) {
   if (Array.isArray) {
