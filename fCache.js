@@ -14,7 +14,14 @@ fCache._isSupported = 'localStorage' in window || 'globalStorage' in window;
  * @type (Storage|StorageObsolete|undefined)
  * @private
  */
-fCache.store = window.localStorage || window.globalStorage && window.globalStorage[location.hostname];
+fCache.store = (function () {
+  if (window.localStorage) {
+    return window.localStorage;
+  }
+  else if (window.globalStorage) {
+    return window.globalStorage[location.hostname];
+  }
+})();
 /**
  * Tries to set a value to the cache, but stops if a value already exists.
  * @param {string} key The key store as.
