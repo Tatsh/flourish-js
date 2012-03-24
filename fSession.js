@@ -1,7 +1,7 @@
 /*jshint expr:true */
 /**
- * Front end to web localStorage object for browsers that support it. There is
- *   no fallback yet.
+ * Front end to web sessionStorage object for browsers that support it. There
+ *   is no fallback yet.
  * @constructor
  */
 var fSession = function () {};
@@ -10,9 +10,7 @@ var fSession = function () {};
  * @type boolean
  * @private
  */
-fSession.isSupported = (function () {
-  return 'sessionStorage' in window;
-})();
+fSession.isSupported = 'sessionStorage' in window;
 /**
  * Local reference to session.
  * @type Storage|undefined
