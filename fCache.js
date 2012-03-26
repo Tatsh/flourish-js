@@ -100,7 +100,7 @@ fCache.deleteKey = function (key) {
  */
 fCache.get = function (key, defaultValue) {
   if (!fCache._isSupported) {
-    return undefined;
+    return defaultValue || undefined;
   }
 
   var item = fCache.store.getItem(key);
