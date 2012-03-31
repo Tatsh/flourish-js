@@ -37,6 +37,10 @@ var fTimestamp = function (datetime, timezone) {
     timezone = defaultTimezone;
   }
 
+  /**
+   * The timezone of this timestamp.
+   * @type {string}
+   */
   this.timezone = timezone;
 
   if (!datetime || datetime.toString().substr(0, 12).toUpperCase()  === 'CURRENT_TIME') {
@@ -91,6 +95,7 @@ var fTimestamp = function (datetime, timezone) {
   }
 
   /**
+   * The UNIX timestamp (in seconds) this object is representing.
    * @type {number}
    */
   this.timestamp = parseInt(timestamp, 10);
