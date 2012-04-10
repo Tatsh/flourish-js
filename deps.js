@@ -518,6 +518,7 @@ var arrayIsArray = function (arr) {
  * @returns {string|boolean} Returns the translated string. If the replacement
  *   pairs argument contains a key which is an empty string, <code>false</code>
  *   will be returned.
+ * @private
  */
 var strtr = function (str, from, to) {
     // http://kevin.vanzonneveld.net
