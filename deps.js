@@ -508,3 +508,129 @@ var arrayIsArray = function (arr) {
 
   return Object.prototype.toString.call(arr) === '[object Array]';
 };
+/**
+ * Translate characters or replace substrings.
+ *
+ * @param {string} str The string being translated.
+ * @param {string|Object} from The string being translated to to. If object,
+ *   should be replacement pairs.
+ * @param {string} [to] The string replacing from.
+ * @returns {string|boolean} Returns the translated string. If the replacement
+ *   pairs argument contains a key which is an empty string, <code>false</code>
+ *   will be returned.
+ */
+var strtr = function (str, from, to) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: Brett Zamir (http://brett-zamir.me)
+    // +      input by: uestla
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      input by: Alan C
+    // +   bugfixed by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +      input by: Taras Bogach
+    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // +      input by: jpfle
+    // +   bugfixed by: Brett Zamir (http://brett-zamir.me)
+    // -   depends on: krsort
+    // -   depends on: ini_set
+    // *     example 1: $trans = {'hello' : 'hi', 'hi' : 'hello'};
+    // *     example 1: strtr('hi all, I said hello', $trans)
+    // *     returns 1: 'hello all, I said hi'
+    // *     example 2: strtr('äaabaåccasdeöoo', 'äåö','aao');
+    // *     returns 2: 'aaabaaccasdeooo'
+    // *     example 3: strtr('ääääääää', 'ä', 'a');
+    // *     returns 3: 'aaaaaaaa'
+    // *     example 4: strtr('http', 'pthxyz','xyzpth');
+    // *     returns 4: 'zyyx'
+    // *     example 5: strtr('zyyx', 'pthxyz','xyzpth');
+    // *     returns 5: 'http'
+    // *     example 6: strtr('aa', {'a':1,'aa':2});
+    // *     returns 6: '2'
+    var fr = '',
+        i = 0,
+        j = 0,
+        lenStr = 0,
+        lenFrom = 0,
+        tmpStrictForIn = false,
+        fromTypeStr = '',
+        toTypeStr = '',
+        istr = '';
+    var tmpFrom = [];
+    var tmpTo = [];
+    var ret = '';
+    var match = false;
+
+    // Received replace_pairs?
+    // Convert to normal from->to chars
+    if (typeof from === 'object') {
+//         tmpStrictForIn = this.ini_set('phpjs.strictForIn', false); // Not thread-safe; temporarily set to true
+//         from = window.krsort(from);
+//         this.ini_set('phpjs.strictForIn', tmpStrictForIn);
+
+        for (fr in from) {
+            if (from.hasOwnProperty(fr)) {
+                tmpFrom.push(fr);
+                tmpTo.push(from[fr]);
+            }
+        }
+
+        from = tmpFrom;
+        to = tmpTo;
+    }
+
+    // Walk through subject and replace chars when needed
+    lenStr = str.length;
+    lenFrom = from.length;
+    fromTypeStr = typeof from === 'string';
+    toTypeStr = typeof to === 'string';
+
+    for (i = 0; i < lenStr; i++) {
+        match = false;
+        if (fromTypeStr) {
+            istr = str.charAt(i);
+            for (j = 0; j < lenFrom; j++) {
+                if (istr == from.charAt(j)) {
+                    match = true;
+                    break;
+                }
+            }
+        } else {
+            for (j = 0; j < lenFrom; j++) {
+                if (str.substr(i, from[j].length) == from[j]) {
+                    match = true;
+                    // Fast forward
+                    i = (i + from[j].length) - 1;
+                    break;
+                }
+            }
+        }
+        if (match) {
+            ret += toTypeStr ? to.charAt(j) : to[j];
+        } else {
+            ret += str.charAt(i);
+        }
+    }
+
+    return ret;
+};
+/**
+ * Quote regular expression characters.
+ * @param {string} str The input string.
+ * @param {string} [delimiter] If the optional delimiter is specified, it will
+ *   also be escaped.
+ * @return {string} Returns the quoted string.
+ */
+var preg_quote = function (str, delimiter) {
+    // http://kevin.vanzonneveld.net
+    // +   original by: booeyOH
+    // +   improved by: Ates Goral (http://magnetiq.com)
+    // +   improved by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
+    // +   bugfixed by: Onno Marsman
+    // +   improved by: Brett Zamir (http://brett-zamir.me)
+    // *     example 1: preg_quote("$40");
+    // *     returns 1: '\$40'
+    // *     example 2: preg_quote("*RRRING* Hello?");
+    // *     returns 2: '\*RRRING\* Hello\?'
+    // *     example 3: preg_quote("\\.+*?[^]$(){}=!<>|:");
+    // *     returns 3: '\\\.\+\*\?\[\^\]\$\(\)\{\}\=\!\<\>\|\:'
+    return str.replace(new RegExp('[.\\\\+*?\\[\\^\\]$(){}=!<>|:\\' + (delimiter || '') + '-]', 'g'), '\\$&');
+};
