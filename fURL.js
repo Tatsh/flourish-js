@@ -37,7 +37,8 @@ fURL.getWithQueryString = function () {
 /**
  * Changes a string into a URL-friendly string.
  * @param {string} string The string to convert.
- * @param {number} [maxLength=null] The maximum length of the friendly URL.
+ * @param {number|string|null} [maxLength=null] The maximum length of the
+ *   friendly URL.
  * @param {string} [delimiter=_] The delimiter to use between words.
  * @returns {string} The URL-friendly version of the string.
  */
@@ -51,9 +52,10 @@ fURL.makeFriendly = function (string, maxLength, delimiter) {
   }
 
   //string = fHTML.decode(fUTF8.ascii(string));
+  delimiter = delimiter.toString();
   string = string.toLowerCase().replace(/'/g, '');
 
-  var delimiterReplacement = strtr(delimiter, {'\\': '\\\\', '$': '\\$'});
+  var delimiterReplacement = strtr(delimiter.toString(), {'\\': '\\\\', '$': '\\$'}).toString();
   var delimiterRegex = delimiter.replace(/[.\\+*?\[\^\]$(){}=!<>|:\#-]/g, '\\$&');
 
   string = string.replace(/[^a-z0-9\-_]+/g, delimiterReplacement);
@@ -63,7 +65,7 @@ fURL.makeFriendly = function (string, maxLength, delimiter) {
 
   var length = string.length;
   if (maxLength && length > maxLength) {
-    var lastPos = fUTF8.rpos(string, delimiter, (length - maxLength - 1) * -1);
+    var lastPos = +fUTF8.rpos(string, delimiter, (length - maxLength - 1) * -1);
     if (lastPos < Math.ceil(maxLength / 2)) {
       lastPos = maxLength;
     }
