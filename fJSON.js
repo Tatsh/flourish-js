@@ -294,6 +294,11 @@ fJSON.decode = function (json, useNative) {
     }
   }
   else if (useNative) {
+    // IE7 and eval(): Immediately return when given empty string
+    if (json === '') {
+      return null;
+    }
+
     // http://kevin.vanzonneveld.net
     // +      original by: Public Domain (http://www.json.org/json2.js)
     // + reimplemented by: Kevin van Zonneveld (http://kevin.vanzonneveld.net)
