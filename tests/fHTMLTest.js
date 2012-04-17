@@ -49,7 +49,7 @@ test('fHTML.makeLinks', function () {
 
 test('fHTML.prepare', function () {
   // TODO Currently fails in IE7,8
-  var original = '<p class="mine" data-i="1 2">Bad markup & <></p>';
-  var good = '<p class="mine" data-i="1 2">Bad markup &amp; &lt;&gt;</p>';
+  var original = '<param></param><p class="mine" data-i="1 2">Bad markup & <></p>';
+  var good = '<param></param><p class="mine" data-i="1 2">Bad markup &amp; &lt;&gt;</p>';
   strictEqual(fHTML.prepare(original), good, 'Called with unsanitised &, <, >.');
 });
