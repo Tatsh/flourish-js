@@ -559,6 +559,7 @@ var strtr = function (str, from, to) {
     var tmpTo = [];
     var ret = '';
     var match = false;
+    var toArray = null;
 
     // Received replace_pairs?
     // Convert to normal from->to chars
@@ -575,14 +576,14 @@ var strtr = function (str, from, to) {
         }
 
         from = tmpFrom;
-        to = tmpTo;
+        toArray = tmpTo;
     }
 
     // Walk through subject and replace chars when needed
     lenStr = str.length;
     lenFrom = from.length;
     fromTypeStr = typeof from === 'string';
-    toTypeStr = typeof to === 'string';
+    toTypeStr = toArray === null;
 
     for (i = 0; i < lenStr; i++) {
         match = false;
@@ -605,7 +606,7 @@ var strtr = function (str, from, to) {
             }
         }
         if (match) {
-            ret += toTypeStr ? to.charAt(j) : to[j];
+            ret += toTypeStr ? to.charAt(j) : toArray[j];
         } else {
             ret += str.charAt(i);
         }
