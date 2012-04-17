@@ -402,8 +402,11 @@ fHTML.prepare = function (content) {
   var ret = div.innerHTML;
 
   // TODO
-  // BUG IE7,8 'nicely' upper-cases the tags and undoes the quotes where possible
-  // This function should fix that before returning the string
+  // Quote all tag properties
+  // This fixes where some browsers 'nicely' upper case the tags
+  ret = ret.replace(/(<\/?([A-Z]+))(>|\s+)/g, function (m0) {
+    return m0.toLowerCase();
+  });
 
   return ret;
 };
