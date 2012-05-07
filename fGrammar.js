@@ -25,6 +25,18 @@ fGrammar._camelizeCache = {
   lower: {}
 };
 /**
+ * Cache of pluralisations.
+ * @type Object
+ * @private
+ */
+fGrammar._pluralizeCache = {};
+/**
+ * Cache of singularlisations.
+ * @type Object
+ * @private
+ */
+fGrammar._singularizeCache = {};
+/**
  * Rules for singular to plural inflection of nouns.
  * @type Array
  * @private
@@ -49,6 +61,31 @@ fGrammar._singularToPluralRules = [
   [/([^o])o$/i, 'oes'],
   [/s$/i, 'ses'],
   [/(.)$/i, 's']
+];
+/**
+ * Rules for plural to singular inflection of nouns.
+ * @type Array
+ * @private
+ */
+fGrammar._pluralToSingularRules = [
+  [/([ml])ice$/i, 'ouse'],
+  [/(media|info(rmation)?|news)$/i, ''],
+  [/(q)uizzes$/i, 'uiz'],
+  [/(c)hildren$/i, 'ild'],
+  [/(p)eople$/i, 'erson'],
+  [/(m)en$/i, 'an'],
+  [/((?!sh).)oes$/i, 'o'],
+  [/((?!o)[ieu]s|[ieuo]x)es$/i, ''],
+  [/([cs]h)es$/i, ''],
+  [/(ss)es$/i, ''],
+  [/([aeo]l)ves$/i, 'f'],
+  [/([^d]ea)ves$/i, 'f'],
+  [/(ar)ves$/i, 'f'],
+  [/([nlw]i)ves$/i, 'fe'],
+  [/([aeiou]y)s$/i, ''],
+  [/([^aeiou])ies$/i, 'y'],
+  [/(la)ses$/i, 's'],
+  [/(.)s$/i, '']
 ];
 /**
  * This method is marked private, but it is intended to be used by extensions
@@ -223,12 +260,6 @@ fGrammar.inflectOnQuantity = function (number, singular, plural) {
   return singular;
 };
 /**
- * Cache of pluralisations.
- * @type Object
- * @private
- */
-fGrammar._pluralizeCache = {};
-/**
  * Splits the last word from a <code>camelCase</code> or
  *   <code>underscore_notation</code> string.
  * @param {string} str String the split the word from.
@@ -264,7 +295,7 @@ fGrammar._splitLastWord = function (str) {
   return ['', str];
 };
 /**
- * Convert noun to plural form.
+ * Converts noun to plural form.
  * @param {string} noun The noun to pluralise.
  * @returns {string} The noun in plural form, or <code>null</code>.
  */
@@ -296,4 +327,38 @@ fGrammar.pluralize = function (noun) {
   fGrammar._pluralizeCache[original] = plural;
 
   return plural;
+};
+/**
+ * Converts plural noun to singular form.
+ * @param {string} noun The noun to singularise.
+ * @returns {string} The noun in singular form, or <code>null</code>.
+ */
+fGrammar.singularize = function (noun) {
+  if (fGrammar._singularizeCache[noun] !== undefined) {
+    return fGrammar._singularizeCache[noun];
+  }
+
+  var original = noun;
+  var singular = null;
+  var beginning, plural, matches;
+  var to, regex, found;
+
+  matches = fGrammar._splitLastWord(noun);
+  beginning = matches[0];
+  plural = matches[1];
+
+  for (var i = 0; i < fGrammar._pluralToSingularRules.length; i++) {
+    regex = fGrammar._pluralToSingularRules[i][0];
+    to = fGrammar._pluralToSingularRules[i][1];
+
+    if (regex.test(plural)) {
+      found = plural.match(regex);
+      singular = beginning + plural.replace(regex, (found[1] ? '$1': '') + to);
+      break;
+    }
+  }
+
+  fGrammar._singularizeCache[original] = singular;
+
+  return singular;
 };
