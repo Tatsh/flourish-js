@@ -30,25 +30,25 @@ fGrammar._camelizeCache = {
  * @private
  */
 fGrammar._singularToPluralRules = [
-  ['([ml])ouse$', 'ice'],
-  ['(media|info(rmation)?|news)$', ''],
-  ['(phot|log|vide)o$', 'os'],
-  ['^(q)uiz$', 'uizzes'],
-  ['(c)hild$', 'hildren'],
-  ['(p)erson$', 'eople'],
-  ['(m)an$', 'en'],
-  ['([ieu]s|[ieuo]x)$', 'es'],
-  ['([cs]h)$', 'es'],
-  ['(ss)$', 'es'],
-  ['([aeo]l)f$', 'ves'],
-  ['([^d]ea)f$', 'ves'],
-  ['(ar)f$', 'ves'],
-  ['([nlw]i)fe$', 'ves'],
-  ['([aeiou]y)$', 's'],
-  ['([^aeiou])y$', 'ies'],
-  ['([^o])o$', 'oes'],
-  ['s$', 'ses'],
-  ['(.)$', 's']
+  [/([ml])ouse$/i, 'ice'],
+  [/(media|info(rmation)?|news)$/i, ''],
+  [/(phot|log|vide)o$/i, 'os'],
+  [/^(q)uiz$/i, 'uizzes'],
+  [/(c)hild$/i, 'hildren'],
+  [/(p)erson$/i, 'eople'],
+  [/(m)an$/i, 'en'],
+  [/([ieu]s|[ieuo]x)$/i, 'es'],
+  [/([cs]h)$/i, 'es'],
+  [/(ss)$/i, 'es'],
+  [/([aeo]l)f$/i, 'ves'],
+  [/([^d]ea)f$/i, 'ves'],
+  [/(ar)f$/i, 'ves'],
+  [/([nlw]i)fe$/i, 'ves'],
+  [/([aeiou]y)$/i, 's'],
+  [/([^aeiou])y$/i, 'ies'],
+  [/([^o])o$/i, 'oes'],
+  [/s$/i, 'ses'],
+  [/(.)$/i, 's']
 ];
 /**
  * This method is marked private, but it is intended to be used by extensions
@@ -246,7 +246,7 @@ fGrammar._splitLastWord = function (str) {
 
   // Handle underscore notation
   if (str === fGrammar.underscorize(str)) {
-    if (str.substr(' ') === -1) {
+    if (str.indexOf(' ') === -1) {
       return ['', str];
     }
     return [
@@ -283,9 +283,8 @@ fGrammar.pluralize = function (noun) {
   singular = matches[1];
 
   for (var i = 0; i < fGrammar._singularToPluralRules.length; i++) {    
-    from = fGrammar._singularToPluralRules[i][0];
+    regex = fGrammar._singularToPluralRules[i][0];
     to = fGrammar._singularToPluralRules[i][1];
-    regex = new RegExp(from, 'i');
     
     if (regex.test(singular)) {
       found = singular.match(regex);

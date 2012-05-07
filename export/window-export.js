@@ -29,7 +29,8 @@ window['fGrammar'] = {
   'underscorize': fGrammar.underscorize,
   'humanize': fGrammar.humanize,
   'camelize': fGrammar.camelize,
-  'inflectOnQuantity': fGrammar.inflectOnQuantity
+  'inflectOnQuantity': fGrammar.inflectOnQuantity,
+  'pluralize': fGrammar.pluralize
 };
 
 // fHTML
