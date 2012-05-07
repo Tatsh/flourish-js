@@ -25,6 +25,18 @@ fGrammar._camelizeCache = {
   lower: {}
 };
 /**
+ * Special rules.
+ * @type Object
+ * @private
+ */
+fGrammar._rules = {
+  humanize: {},
+  camelize: {},
+  singularize: {},
+  pluralize: {},
+  underscorize: {}
+};
+/**
  * Cache of pluralisations.
  * @type Object
  * @private
@@ -43,7 +55,6 @@ fGrammar._singularizeCache = {};
  */
 fGrammar._singularToPluralRules = [
   [/([ml])ouse$/i, 'ice'],
-  [/(dat)um$/i, 'a'],
   [/(media|info(rmation)?|news)$/i, ''],
   [/(phot|log|vide)o$/i, 'os'],
   [/^(q)uiz$/i, 'uizzes'],
@@ -70,7 +81,6 @@ fGrammar._singularToPluralRules = [
  */
 fGrammar._pluralToSingularRules = [
   [/([ml])ice$/i, 'ouse'],
-  [/(dat)a$/i, 'um'],
   [/(media|info(rmation)?|news)$/i, ''],
   [/(q)uizzes$/i, 'uiz'],
   [/(c)hildren$/i, 'ild'],
@@ -134,6 +144,10 @@ fGrammar._commonize = function (str, delimiter, cacheToCheck) {
  * @returns {string} String, underscorised.
  */
 fGrammar.underscorize = function (str) {
+  if (fGrammar._rules.underscorize[str] !== undefined) {
+    return fGrammar._rules.underscorize[str];
+  }
+
   return fGrammar._commonize(str, '_', fGrammar._underscorizeCache);
 };
 /**
@@ -143,6 +157,10 @@ fGrammar.underscorize = function (str) {
  * @returns {string} String, 'humanised.'
  */
 fGrammar.humanize = function (str) {
+  if (fGrammar._rules.humanize[str] !== undefined) {
+    return fGrammar._rules.humanize[str];
+  }
+  
   if (fGrammar._humanizeCache[str]) {
     return fGrammar._humanizeCache[str];
   }
@@ -188,6 +206,10 @@ fGrammar.humanize = function (str) {
  * @returns {string} The converted string.
  */
 fGrammar.camelize = function (str, upper, delimiter) {
+  if (fGrammar._rules.camelize[str] !== undefined) {
+    return fGrammar._rules.camelize[str];
+  }
+  
   if (upper && fGrammar._camelizeCache.upper[str]) {
     return fGrammar._camelizeCache.upper[str];
   }
@@ -302,6 +324,10 @@ fGrammar._splitLastWord = function (str) {
  * @returns {string} The noun in plural form, or <code>null</code>.
  */
 fGrammar.pluralize = function (noun) {
+  if (fGrammar._rules.pluralize[noun] !== undefined) {
+    return fGrammar._rules.pluralize[noun];
+  }
+  
   if (fGrammar._pluralizeCache[noun] !== undefined) {
     return fGrammar._pluralizeCache[noun];
   }
@@ -336,6 +362,10 @@ fGrammar.pluralize = function (noun) {
  * @returns {string} The noun in singular form, or <code>null</code>.
  */
 fGrammar.singularize = function (noun) {
+  if (fGrammar._rules.singularize[noun] !== undefined) {
+    return fGrammar._rules.singularize[noun];
+  }
+  
   if (fGrammar._singularizeCache[noun] !== undefined) {
     return fGrammar._singularizeCache[noun];
   }
@@ -363,4 +393,30 @@ fGrammar.singularize = function (noun) {
   fGrammar._singularizeCache[original] = singular;
 
   return singular;
+};
+/**
+ * Add a rule for <code>singularize()</code> and <code>pluralize()</code>.
+ * @param {string} singular Singular version of the noun.
+ * @param {string} plural Plural version of the noun.
+ */
+fGrammar.addSingularPluralRule = function (singular, plural) {
+  fGrammar._rules.singularize[plural] = singular;
+  fGrammar._rules.pluralize[singular] = plural;
+};
+/**
+ * Add a rule for <code>humanize()</code>.
+ * @param {string} original Original string.
+ * @param {string} to The string to return.
+ */
+fGrammar.addHumanizeRule = function (original, to) {
+  fGrammar._rules.humanize[original] = to;
+};
+/**
+ * Add a rule for <code>camelize()</code> and <code>underscorize()</code>.
+ * @param {string} camelCase Original <code>camelCase</code> string.
+ * @param {string} underscore The string to return.
+ */
+fGrammar.addCamelUnderscoreRule = function (camelCase, underscore) {
+  fGrammar._rules.camelize[underscore] = camelCase;
+  fGrammar._rules.underscorize[camelCase] = underscore;
 };
