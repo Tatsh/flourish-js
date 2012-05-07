@@ -30,7 +30,8 @@ window['fGrammar'] = {
   'humanize': fGrammar.humanize,
   'camelize': fGrammar.camelize,
   'inflectOnQuantity': fGrammar.inflectOnQuantity,
-  'pluralize': fGrammar.pluralize
+  'pluralize': fGrammar.pluralize,
+  'singularize': fGrammar.singularize
 };
 
 // fHTML
