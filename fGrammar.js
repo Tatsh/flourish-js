@@ -25,6 +25,32 @@ fGrammar._camelizeCache = {
   lower: {}
 };
 /**
+ * Rules for singular to plural inflection of nouns.
+ * @type Array
+ * @private
+ */
+fGrammar._singularToPluralRules = [
+  ['([ml])ouse$', 'ice'],
+  ['(media|info(rmation)?|news)$', ''],
+  ['(phot|log|vide)o$', 'os'],
+  ['^(q)uiz$', 'uizzes'],
+  ['(c)hild$', 'hildren'],
+  ['(p)erson$', 'eople'],
+  ['(m)an$', 'en'],
+  ['([ieu]s|[ieuo]x)$', 'es'],
+  ['([cs]h)$', 'es'],
+  ['(ss)$', 'es'],
+  ['([aeo]l)f$', 'ves'],
+  ['([^d]ea)f$', 'ves'],
+  ['(ar)f$', 'ves'],
+  ['([nlw]i)fe$', 'ves'],
+  ['([aeiou]y)$', 's'],
+  ['([^aeiou])y$', 'ies'],
+  ['([^o])o$', 'oes'],
+  ['s$', 'ses'],
+  ['(.)$', 's']
+];
+/**
  * This method is marked private, but it is intended to be used by extensions
  *   such as sGrammar.
  * @private
@@ -195,4 +221,80 @@ fGrammar.inflectOnQuantity = function (number, singular, plural) {
     return plural.replace('%d', number.toString());
   }
   return singular;
+};
+/**
+ * Cache of pluralisations.
+ * @type Object
+ * @private
+ */
+fGrammar._pluralizeCache = {};
+/**
+ * Splits the last word from a <code>camelCase</code> or
+ *   <code>underscore_notation</code> string.
+ * @param {string} str String the split the word from.
+ * @return {Array} The first element is the beginning of the string. The second
+ *   is the last word.
+ * @private
+ */
+fGrammar._splitLastWord = function (str) {
+  if (str.indexOf(' ') !== -1) {
+    return [
+      str.substr(0, str.lastIndexOf(' ') + 1),
+      str.substr(str.lastIndexOf(' ') + 1)
+    ];
+  }
+
+  // Handle underscore notation
+  if (str === fGrammar.underscorize(str)) {
+    if (str.substr(' ') === -1) {
+      return ['', str];
+    }
+    return [
+      str.substr(0, str.lastIndexOf('_') + 1),
+      str.substr(str.lastIndexOf('_') + 1)
+    ];
+  }
+
+  // Handle camelCase
+  var matches = str.match(/(.*)((?=[a-zA-Z_]|^)(?:[0-9]+|[A-Z][a-z]*)|(?=[0-9A-Z_]|^)(?:[A-Z][a-z]*))$/);
+  if (matches.length && matches.length === 3) {
+    return [matches[1], matches[2]];
+  }
+
+  return ['', str];
+};
+/**
+ * Convert noun to plural form.
+ * @param {string} noun The noun to pluralise.
+ * @returns {string} The noun in plural form, or <code>null</code>.
+ */
+fGrammar.pluralize = function (noun) {
+  if (fGrammar._pluralizeCache[noun] !== undefined) {
+    return fGrammar._pluralizeCache[noun];
+  }
+
+  var original = noun;
+  var plural = null;
+  var beginning, singular;
+  var matches = fGrammar._splitLastWord(noun);
+  var to, regex, found;
+  
+  beginning = matches[0];
+  singular = matches[1];
+
+  for (var i = 0; i < fGrammar._singularToPluralRules.length; i++) {    
+    from = fGrammar._singularToPluralRules[i][0];
+    to = fGrammar._singularToPluralRules[i][1];
+    regex = new RegExp(from, 'i');
+    
+    if (regex.test(singular)) {
+      found = singular.match(regex);
+      plural = beginning + singular.replace(regex, (found[1] ? '$1' : '') + to);
+      break;
+    }
+  }
+
+  fGrammar._pluralizeCache[original] = plural;
+
+  return plural;
 };
