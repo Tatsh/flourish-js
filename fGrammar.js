@@ -43,6 +43,7 @@ fGrammar._singularizeCache = {};
  */
 fGrammar._singularToPluralRules = [
   [/([ml])ouse$/i, 'ice'],
+  [/(dat)um/i, 'a'],
   [/(media|info(rmation)?|news)$/i, ''],
   [/(phot|log|vide)o$/i, 'os'],
   [/^(q)uiz$/i, 'uizzes'],
@@ -69,6 +70,7 @@ fGrammar._singularToPluralRules = [
  */
 fGrammar._pluralToSingularRules = [
   [/([ml])ice$/i, 'ouse'],
+  [/(dat)a/i, 'um'],
   [/(media|info(rmation)?|news)$/i, ''],
   [/(q)uizzes$/i, 'uiz'],
   [/(c)hildren$/i, 'ild'],
