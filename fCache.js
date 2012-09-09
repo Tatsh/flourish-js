@@ -163,7 +163,7 @@ fCache.get = function (key, defaultValue) {
 
   if (ret.value) {
     if (ret.ttl !== 0) {
-      var diff = (new Date()).getTime() - ret.dateCreated;
+      diff = (new Date()).getTime() - ret.dateCreated;
       if (diff > ret.ttl) {
         return defaultValue;
       }
