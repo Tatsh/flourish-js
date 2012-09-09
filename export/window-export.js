@@ -52,6 +52,7 @@ window['fJSON'] = {
 
 window['fCache'] = {
   'add': fCache.add,
+  'clean': fCache.clean,
   'clear': fCache.clear,
   'deleteKey': fCache.deleteKey,
   'get': fCache.get,
