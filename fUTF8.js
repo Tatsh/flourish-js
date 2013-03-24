@@ -515,7 +515,7 @@ fUTF8.replace = function (string, search, replace) {
   if (typeof search === 'string') {
     search = [search];
   }
-  if (typeof replace === 'replace') {
+  if (typeof replace === 'string') {
     replace = [replace];
   }
 

@@ -28,11 +28,17 @@ fCache.store = (function () {
  * @param {Object|Array|string|number|boolean} value The value to store. Will
  *   be serialised into a string. The <code>null</code> literal value will be
  *   ignored.
+ * @param {number} [ttl=0] The numer of seconds to keep the cache valid for,
+ *   0 for no limit.
  * @returns {boolean} If the key/value pair were added successfully.
  */
-fCache.add = function (key, value) {
+fCache.add = function (key, value, ttl) {
   if (!fCache._isSupported) {
     return false;
+  }
+
+  if (ttl === undefined) {
+    ttl = 0;
   }
 
   // Block null because globalStorage returns null for non-existant keys
@@ -46,7 +52,11 @@ fCache.add = function (key, value) {
     return false;
   }
 
-  fCache.store.setItem(key, fJSON.encode(value));
+  fCache.store.setItem(key, fJSON.encode({
+    value: value,
+    ttl: ttl * 1000,
+    dateCreated: (new Date()).getTime()
+  }));
   return true;
 };
 /**
@@ -65,6 +75,33 @@ fCache.clear = function () {
     for (var key in fCache.store) {
       if (fCache.store.hasOwnProperty(key)) {
         fCache.store.removeItem(key);
+      }
+    }
+  }
+};
+/**
+ * Removes all cache entries that have expired.
+ */
+fCache.clean = function () {
+  var item, diff, key;
+
+  if (!fCache.store.length) {
+    return;
+  }
+
+  for (key in fCache.store) {
+    if (fCache.store.hasOwnProperty(key)) {
+      item = fJSON.decode(fCache.store[key]);
+
+      if (item === null) {
+        continue;
+      }
+
+      if (item.ttl !== 0) {
+        diff = (new Date()).getTime() - item.dateCreated;
+        if (item.ttl < diff) {
+          fCache.store.removeItem(key);
+        }
       }
     }
   }
@@ -104,6 +141,7 @@ fCache.get = function (key, defaultValue) {
   }
 
   var item = fCache.store.getItem(key);
+  var diff;
 
   if (item === null) {
     // globalStorage
@@ -123,7 +161,16 @@ fCache.get = function (key, defaultValue) {
     return item;
   }
 
-  return ret;
+  if (ret.value) {
+    if (ret.ttl !== 0) {
+      diff = (new Date()).getTime() - ret.dateCreated;
+      if (diff > ret.ttl) {
+        return defaultValue;
+      }
+    }
+  }
+
+  return ret.value;
 };
 /**
  * Sets a value to the cache, overriding any previous value.
@@ -131,11 +178,17 @@ fCache.get = function (key, defaultValue) {
  * @param {Object|Array|boolean|number|string} value The value to store. Will
  *   be serialised into a string. The <code>null</code> literal value will be
  *   ignored.
+ * @param {number} [ttl=0] The numer of seconds to keep the cache valid for,
+ *   0 for no limit.
  */
-fCache.set = function (key, value) {
+fCache.set = function (key, value, ttl) {
   if (!fCache._isSupported || value === null) {
     return;
   }
 
-  fCache.store.setItem(key, fJSON.encode(value));
+  fCache.store.setItem(key, fJSON.encode({
+    value: value,
+    ttl: ttl * 1000,
+    dateCreated: (new Date()).getTime()
+  }));
 };
