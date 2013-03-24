@@ -52,4 +52,8 @@ test('fHTML.prepare', function () {
   var original = '<param></param><p class="mine" data-i="1 2">Bad markup & <></p>';
   var good = '<param></param><p class="mine" data-i="1 2">Bad markup &amp; &lt;&gt;</p>';
   strictEqual(fHTML.prepare(original), good, 'Called with unsanitised &, <, >.');
+
+  original = '<param></param><p class="mine" data-i="1 2"><span class="a">aaa</span>Bad markup & <></p>';
+  good = '<param></param><p class="mine" data-i="1 2"><span class="a">aaa</span>Bad markup &amp; &lt;&gt;</p>';
+  strictEqual(fHTML.prepare(original), good, 'Called with unsanitised &, <, > and inner span tag.');
 });

@@ -409,7 +409,12 @@ fHTML.prepare = function (content) {
   div.innerHTML = content.join('');
 
   for (var i = 0, len = div.childNodes.length; i < len; i++) {
-    tagName = div.childNodes[i].tagName.toLowerCase();
+    if (div.childNodes[i].nodeType === 3) {
+      ret += fHTML.encode(div.childNodes[i].nodeValue);
+      continue;
+    }
+
+    tagName = div.childNodes[i].nodeName.toLowerCase();
 
     ret += '<' + tagName;
 
