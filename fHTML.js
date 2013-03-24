@@ -397,16 +397,50 @@ fHTML.prepare = function (content) {
     content = [content];
   }
 
-  var div = document.createElement('div');
-  div.innerHTML = content.join('');
-  var ret = div.innerHTML;
+  if (!(/<[A-Za-z][^>]+>/).test(content)) {
+    return content;
+  }
 
-  // TODO
-  // Quote all tag properties
-  // This fixes where some browsers 'nicely' upper case the tags
-  ret = ret.replace(/(<\/?([A-Z]+))(>|\s+)/g, function (m0) {
-    return m0.toLowerCase();
-  });
+  var div = document.createElement('div');
+  var ret = '';
+  var tagName;
+  var attrLen, j, attributes = [], add;
+
+  div.innerHTML = content.join('');
+
+  for (var i = 0, len = div.childNodes.length; i < len; i++) {
+    tagName = div.childNodes[i].tagName.toLowerCase();
+
+    ret += '<' + tagName;
+
+    attrLen = div.childNodes[i].attributes.length;
+
+    if (attrLen) {
+      ret += ' ';
+    }
+
+    for (j = 0; j < attrLen; j++) {
+      add = div.childNodes[i].attributes[j].nodeName.toLowerCase();
+
+      if (div.childNodes[i].attributes[j].nodeValue) {
+        add += '="' + div.childNodes[i].attributes[j].nodeValue + '"';
+      }
+
+      // Strip extra white space
+      add = add.replace(/\s+/, ' ');
+
+      attributes.push(add);
+    }
+
+    ret += attributes.join(' ');
+    ret += '>';
+
+    if (div.childNodes[i].hasChildNodes()) {
+      ret += fHTML.prepare(div.childNodes[i].innerHTML);
+    }
+
+    ret += '</' + tagName + '>';
+  }
 
   return ret;
 };
