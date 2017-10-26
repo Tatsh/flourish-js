@@ -23,7 +23,7 @@ export class Grammar {
     };
 
     constructor(useGlobalCache: boolean = false) {
-        if (!useGlobalCache) {
+        if (useGlobalCache) {
             this.cache = GlobalCache;
         } else {
             this.cache = {
